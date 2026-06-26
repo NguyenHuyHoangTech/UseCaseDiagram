@@ -18,6 +18,7 @@ import BrainGymDashboard from '../components/widgets/BrainGymDashboard';
 import HighlighterWidget from '../components/widgets/HighlighterWidget';
 import DecisionTreeWidget from '../components/widgets/DecisionTreeWidget';
 import SpotErrorWidget from '../components/widgets/SpotErrorWidget';
+import Level1AssociationWidget from '../components/widgets/Level1AssociationWidget';
 
 // Import helper
 import { injectSpacedRepetitionQuestion } from '../utils/spacedRepetition';
@@ -120,6 +121,8 @@ const LessonPage = () => {
         return <MultipleChoiceWidget lesson={lesson} onSolved={setMainSolved} />;
       case 'spaced-repetition-hub':
         return <BrainGymDashboard onSolved={setMainSolved} />;
+      case 'level1-association':
+        return <Level1AssociationWidget lesson={lesson} onSolved={setMainSolved} />;
       default:
         // Default text-only lesson fallback
         const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);

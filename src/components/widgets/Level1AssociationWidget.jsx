@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Search, CreditCard, Key, ShoppingCart, Ticket, ArrowRight, ArrowLeft, HelpCircle, RotateCcw, CheckCircle, Car, MapPin, Star, Heart, Crown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { User, Search, CreditCard, Key, ShoppingCart, Ticket, HelpCircle, RotateCcw, CheckCircle, Car, MapPin, Star, Heart, Crown } from 'lucide-react';
 
-export default function UseCaseMVP() {
-  const [level, setLevel] = useState(1);
+export default function Level1AssociationWidget({ lesson, onSolved }) {
   const [droppedItems, setDroppedItems] = useState({});
   const [errorZone, setErrorZone] = useState(null);
   const [showWhy, setShowWhy] = useState(false);
   const [whyText, setWhyText] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
-  
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    setDroppedItems({});
+    setIsSuccess(false);
+    setShowWhy(false);
+    setErrorZone(null);
+    onSolved(false);
+  }, [lesson, onSolved]);
 
   const levelData = {
     1: {
-      title: 'BÀI 5 • QUAN HỆ GIAO TIẾP (ASSOCIATION)',
       heading: 'Khách hàng tương tác',
       desc: 'Hệ thống cần người kích hoạt. Hãy chọn đường nối đúng.',
       flows: [
@@ -32,7 +35,6 @@ export default function UseCaseMVP() {
       successText: 'Chính xác! Actor và Use Case tương tác trực tiếp luôn được nối bằng đường nét liền.'
     },
     2: {
-      title: 'BÀI 6 • QUAN HỆ BẮT BUỘC (<<include>>)',
       heading: 'Rút tiền ở cây ATM',
       desc: 'Để rút được tiền, hệ thống BẮT BUỘC phải kiểm tra mã PIN.',
       flows: [
@@ -49,7 +51,6 @@ export default function UseCaseMVP() {
       successText: 'Tuyệt vời! Lệnh <<include>> chĩa vào "Kiểm tra mã PIN" báo hiệu hành động này là bắt buộc!'
     },
     3: {
-      title: 'BÀI 7 • QUAN HỆ TÙY CHỌN (<<extend>>)',
       heading: 'Mua hàng & Áp mã giảm giá',
       desc: 'Hệ thống có tính năng "Áp mã giảm giá" nhưng đây là tùy chọn.',
       flows: [
@@ -66,7 +67,6 @@ export default function UseCaseMVP() {
       successText: 'Chuẩn không cần chỉnh! Lệnh <<extend>> chĩa mũi tên NGƯỢC về chức năng gốc chính là quy tắc ăn điểm!'
     },
     4: {
-      title: 'BÀI 8 • PHÂN BIỆT <<include>> VÀ <<extend>>',
       heading: 'So sánh luồng Đặt xe Grab',
       desc: 'Phân biệt rõ cái nào bắt buộc, cái nào tùy chọn bằng cách lấp đầy 4 khoảng trống.',
       flows: [
@@ -105,7 +105,6 @@ export default function UseCaseMVP() {
       successText: 'Quá đỉnh! Nhìn vào sơ đồ, bạn đã tự phân biệt được ngay sự khác nhau cốt lõi giữa Include và Extend rồi đấy!'
     },
     5: {
-      title: 'BÀI 9 • QUAN HỆ KẾ THỪA (GENERALIZATION)',
       heading: 'Gom nhóm đối tượng',
       desc: 'Khách hàng VIP bản chất vẫn là một Khách hàng. Hãy dùng lệnh Kế thừa để gom nhóm chúng lại.',
       flows: [
@@ -126,7 +125,7 @@ export default function UseCaseMVP() {
     }
   };
 
-  const current = levelData[level];
+  const current = levelData[lesson.levelIndex || 1];
 
   const handleDragStart = (e, itemType) => {
     e.dataTransfer.setData("type", itemType);
@@ -151,6 +150,7 @@ export default function UseCaseMVP() {
       if (isAllSolved) {
         setIsSuccess(true);
         setShowWhy(false);
+        onSolved(true);
       } else {
         setShowWhy(false);
       }
@@ -173,40 +173,19 @@ export default function UseCaseMVP() {
     setIsSuccess(false);
     setShowWhy(false);
     setErrorZone(null);
-  };
-
-  const nextLevel = () => {
-    if (level < 5) {
-      setLevel(level + 1);
-      resetLevel();
-    } else {
-      navigate('/');
-    }
-  };
-
-  const prevLevel = () => {
-    if (level > 1) {
-      setLevel(level - 1);
-      resetLevel();
-    }
+    onSolved(false);
   };
 
   return (
-    <div style={{ backgroundColor: '#0b0f19', color: 'white', minHeight: '100vh', padding: '40px', fontFamily: 'sans-serif' }}>
+    <div style={{ backgroundColor: '#0b0f19', color: 'white', padding: '40px', borderRadius: '16px', fontFamily: 'sans-serif' }}>
       
       <div style={{ maxWidth: '900px', margin: '0 auto 40px auto', position: 'relative' }}>
-        <h2 style={{ color: '#6366f1', fontSize: '14px', letterSpacing: '1px', fontWeight: 'bold' }}>{current.title}</h2>
         <h1 style={{ fontSize: '28px', marginTop: '10px' }}>{current.heading}</h1>
         <p style={{ color: '#9ca3af', lineHeight: '1.6', fontSize: '16px', maxWidth: '600px' }}>{current.desc}</p>
         
         <div style={{ position: 'absolute', top: '10px', right: '0', display: 'flex', gap: '10px' }}>
-          {level > 1 && (
-            <button onClick={prevLevel} style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 12px', backgroundColor: 'transparent', color: '#9ca3af', border: '1px solid #374151', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
-              <ArrowLeft size={16} /> Quay lại
-            </button>
-          )}
           <button onClick={resetLevel} style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 12px', backgroundColor: '#1f293d', color: '#9ca3af', border: '1px solid #374151', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
-            <RotateCcw size={16} /> Làm lại màn này
+            <RotateCcw size={16} /> Làm lại
           </button>
         </div>
       </div>
@@ -230,7 +209,7 @@ export default function UseCaseMVP() {
                         {node.type === 'Actor' ? (
                           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             {node.icon}
-                            <span style={{ marginTop: '10px', fontWeight: 'bold', textAlign: 'center', color: node.id === 'n1' && level === 5 ? '#fcd34d' : 'white' }}>{node.text}</span>
+                            <span style={{ marginTop: '10px', fontWeight: 'bold', textAlign: 'center', color: node.id === 'n1' && lesson.levelIndex === 5 ? '#fcd34d' : 'white' }}>{node.text}</span>
                           </div>
                         ) : (
                           <div style={{ width: '100%', height: '60px', border: '2px solid #3b82f6', borderRadius: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#1e3a8a', gap: '8px', padding: '0 10px' }}>
@@ -290,14 +269,6 @@ export default function UseCaseMVP() {
             );
           })}
         </div>
-
-        <AnimatePresence>
-          {isSuccess && (
-            <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} onClick={nextLevel} style={{ position: 'absolute', bottom: '-20px', left: '50%', transform: 'translateX(-50%)', padding: '12px 30px', backgroundColor: '#10b981', color: 'black', fontWeight: 'bold', border: 'none', borderRadius: '30px', cursor: 'pointer', zIndex: 20, boxShadow: '0 4px 15px rgba(16, 185, 129, 0.4)' }}>
-              {level < 5 ? `Tiếp tục Bài học tiếp theo` : 'Kết thúc & Về trang chủ'}
-            </motion.button>
-          )}
-        </AnimatePresence>
       </div>
 
       <div style={{ maxWidth: '900px', margin: '60px auto 0 auto', display: 'flex', gap: '30px' }}>

@@ -50,27 +50,37 @@ export const courseData = [
       {
         id: "lesson-5",
         title: "Bài 5: Quan hệ giao tiếp (Association)",
-        content: "Quy tắc nối đường thẳng cơ bản giữa Actor và Use Case. Nguyên tắc: Hai Actor không giao tiếp với nhau trong biểu đồ này."
+        type: "level1-association",
+        levelIndex: 1,
+        content: "Hệ thống cần người kích hoạt. Hãy chọn đường nối đúng."
       },
       {
         id: "lesson-6",
         title: "Bài 6: Quan hệ bắt buộc (<<include>>)",
-        content: "Định nghĩa, cách vẽ mũi tên (chĩa vào Use Case được gọi). Lấy ví dụ minh họa (VD: 'Rút tiền' bắt buộc phải có 'Kiểm tra mã PIN')."
+        type: "level1-association",
+        levelIndex: 2,
+        content: "Để rút được tiền, hệ thống BẮT BUỘC phải kiểm tra mã PIN."
       },
       {
         id: "lesson-7",
         title: "Bài 7: Quan hệ tùy chọn (<<extend>> & Extension Point)",
-        content: "Định nghĩa điều kiện rẽ nhánh, cách vẽ mũi tên (chĩa ngược lại Use Case gốc). Lấy ví dụ minh họa (VD: 'Mua hàng' có tùy chọn 'Áp mã giảm giá')."
+        type: "level1-association",
+        levelIndex: 3,
+        content: "Hệ thống có tính năng \"Áp mã giảm giá\" nhưng đây là tùy chọn."
       },
       {
         id: "lesson-8",
         title: "Bài 8: Phân biệt <<include>> và <<extend>>",
-        content: "Tổng hợp bảng so sánh điểm khác biệt và soạn 10 tình huống trắc nghiệm để người học tự phân biệt."
+        type: "level1-association",
+        levelIndex: 4,
+        content: "Phân biệt rõ cái nào bắt buộc, cái nào tùy chọn bằng cách lấp đầy 4 khoảng trống."
       },
       {
         id: "lesson-9",
         title: "Bài 9: Quan hệ kế thừa (Generalization)",
-        content: "Hướng dẫn cách gom nhóm các Actor có chung quyền hạn hoặc các Use Case có chung bản chất."
+        type: "level1-association",
+        levelIndex: 5,
+        content: "Khách hàng VIP bản chất vẫn là một Khách hàng. Hãy dùng lệnh Kế thừa để gom nhóm chúng lại."
       }
     ]
   },
