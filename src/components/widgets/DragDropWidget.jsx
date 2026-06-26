@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HelpCircle, CheckCircle, AlertCircle, RefreshCw, MoveRight } from 'lucide-react';
+import { HelpCircle, CheckCircle, AlertCircle, RefreshCw, MoveRight, GripVertical } from 'lucide-react';
 
 const DragDropWidget = ({ lesson, onSolved }) => {
   const [pool, setPool] = useState([]);
@@ -145,23 +145,29 @@ const DragDropWidget = ({ lesson, onSolved }) => {
                 draggable
                 onDragStart={(e) => handleDragStart(e, item)}
                 onClick={() => handleItemClick(item)}
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05, y: -4, boxShadow: '0 10px 20px rgba(0,0,0,0.08)' }}
+                whileTap={{ scale: 0.95 }}
                 style={{
-                  padding: '12px 18px',
-                  background: 'white',
-                  borderRadius: '12px',
-                  boxShadow: isSelected ? '0 0 0 3px var(--brand-color), 0 8px 16px rgba(0,0,0,0.06)' : '0 2px 8px rgba(0,0,0,0.05)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '14px 20px',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #fcfdfd 100%)',
+                  borderRadius: '16px',
+                  boxShadow: isSelected 
+                    ? '0 0 0 3px var(--brand-color), 0 8px 20px rgba(18, 184, 134, 0.2)' 
+                    : '0 4px 12px rgba(0,0,0,0.05)',
                   cursor: 'grab',
-                  fontSize: '0.95rem',
+                  fontSize: '0.98rem',
                   fontWeight: 600,
                   color: 'var(--text-main)',
-                  border: isSelected ? '1px solid var(--brand-color)' : '1px solid #e9ecef',
+                  border: isSelected ? '1px solid var(--brand-color)' : '1px solid #e2e8f0',
                   userSelect: 'none',
-                  transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+                  transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease'
                 }}
               >
-                {item.text}
+                <GripVertical size={16} style={{ color: '#adb5bd', flexShrink: 0 }} />
+                <span>{item.text}</span>
               </motion.div>
             );
           })}
@@ -209,13 +215,17 @@ const DragDropWidget = ({ lesson, onSolved }) => {
                   onClick={(e) => { e.stopPropagation(); handleItemClick(item); }}
                   animate={isWrong && shakeTrigger ? { x: [-10, 10, -10, 10, 0] } : {}}
                   transition={{ duration: 0.4 }}
+                  whileHover={{ scale: 1.02, y: -1 }}
                   style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
                     padding: '12px 16px',
                     background: 'white',
                     borderRadius: '12px',
                     border: checked 
                       ? (isWrong ? '2px solid #fa5252' : '2px solid #40c057')
-                      : '1px solid #e9ecef',
+                      : '1px solid #e2e8f0',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
                     fontSize: '0.9rem',
                     fontWeight: 600,
@@ -224,7 +234,8 @@ const DragDropWidget = ({ lesson, onSolved }) => {
                     color: isWrong ? '#fa5252' : 'var(--text-main)'
                   }}
                 >
-                  {item.text}
+                  <GripVertical size={14} style={{ color: '#ced4da', flexShrink: 0 }} />
+                  <span style={{ marginRight: checked ? '24px' : '0px' }}>{item.text}</span>
                   {checked && (
                     <div style={{ position: 'absolute', right: '12px', top: '12px' }}>
                       {isWrong ? <AlertCircle size={16} color="#fa5252" /> : <CheckCircle size={16} color="#40c057" />}
@@ -280,13 +291,17 @@ const DragDropWidget = ({ lesson, onSolved }) => {
                   onClick={(e) => { e.stopPropagation(); handleItemClick(item); }}
                   animate={isWrong && shakeTrigger ? { x: [-10, 10, -10, 10, 0] } : {}}
                   transition={{ duration: 0.4 }}
+                  whileHover={{ scale: 1.02, y: -1 }}
                   style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
                     padding: '12px 16px',
                     background: 'white',
                     borderRadius: '12px',
                     border: checked 
                       ? (isWrong ? '2px solid #fa5252' : '2px solid #40c057')
-                      : '1px solid #e9ecef',
+                      : '1px solid #e2e8f0',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
                     fontSize: '0.9rem',
                     fontWeight: 600,
@@ -295,7 +310,8 @@ const DragDropWidget = ({ lesson, onSolved }) => {
                     color: isWrong ? '#fa5252' : 'var(--text-main)'
                   }}
                 >
-                  {item.text}
+                  <GripVertical size={14} style={{ color: '#ced4da', flexShrink: 0 }} />
+                  <span style={{ marginRight: checked ? '24px' : '0px' }}>{item.text}</span>
                   {checked && (
                     <div style={{ position: 'absolute', right: '12px', top: '12px' }}>
                       {isWrong ? <AlertCircle size={16} color="#fa5252" /> : <CheckCircle size={16} color="#40c057" />}

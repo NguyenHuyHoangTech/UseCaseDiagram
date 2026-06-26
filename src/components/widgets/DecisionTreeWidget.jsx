@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, AlertCircle, ShieldAlert, ShieldCheck, User, Users } from 'lucide-react';
+import { CheckCircle, AlertCircle, ShieldAlert, ShieldCheck, User, Users, CreditCard, FileText, Percent } from 'lucide-react';
 
 const DecisionTreeWidget = ({ lesson, onSolved }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
@@ -171,126 +171,308 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                     )}
                   </>
                 ) : (
-                  /* Fallback to CSS/SVG miniature UML diagrams (Lesson 11) */
-                  lesson.id === 'lesson-11' && (
-                    idx === 0 ? (
-                      /* Mock Diagram for Option 1 */
-                      <>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', zIndex: 2 }}>
-                          <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
-                            <User size={12} color="#1c7ed6" />
-                            <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Khách hàng</span>
+                  /* Fallback to CSS/SVG miniature UML diagrams (Lesson 11, 11b, 12b) */
+                  <>
+                    {lesson.id === 'lesson-11' && (
+                      idx === 0 ? (
+                        /* Mock Diagram for Option 1 */
+                        <>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', zIndex: 2 }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+                              <User size={12} color="#1c7ed6" />
+                              <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Khách hàng</span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+                              <Users size={12} color="#495057" />
+                              <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Admin</span>
+                            </div>
                           </div>
-                          <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
-                            <Users size={12} color="#495057" />
-                            <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Admin</span>
+
+                          {/* SVG Connector Lines */}
+                          <svg style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, pointerEvents: 'none' }}>
+                            <line x1="100" y1="45" x2="160" y2="70" stroke="#ced4da" strokeWidth="1.5" />
+                            <line x1="100" y1="95" x2="160" y2="70" stroke="#ced4da" strokeWidth="1.5" />
+                          </svg>
+
+                          <div style={{
+                            zIndex: 2,
+                            background: 'white',
+                            border: '1.5px solid #495057',
+                            padding: '12px',
+                            borderRadius: '50px',
+                            textAlign: 'center',
+                            boxShadow: '0 4px 8px rgba(0,0,0,0.02)'
+                          }}>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#495057' }}>Quản lý thông tin</span>
                           </div>
+
+                          {/* Security Leak Indicator (Only show after selection checked) */}
+                          {checked && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '10px',
+                              right: '10px',
+                              background: '#fff5f5',
+                              border: '1px solid #ffc9c9',
+                              borderRadius: '50%',
+                              width: '28px',
+                              height: '28px',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              animation: 'pulse 1.5s infinite'
+                            }}>
+                              <ShieldAlert size={16} color="#fa5252" />
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        /* Mock Diagram for Option 2 */
+                        <>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center', zIndex: 2 }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+                              <User size={12} color="#1c7ed6" />
+                              <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Khách hàng</span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+                              <Users size={12} color="#495057" />
+                              <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Admin</span>
+                            </div>
+                          </div>
+
+                          {/* SVG Connector Lines */}
+                          <svg style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, pointerEvents: 'none' }}>
+                            {/* Khách hàng -> Xem */}
+                            <line x1="100" y1="40" x2="160" y2="40" stroke="#ced4da" strokeWidth="1.5" />
+                            {/* Admin -> Xem */}
+                            <line x1="100" y1="100" x2="160" y2="40" stroke="#ced4da" strokeWidth="1.5" />
+                            {/* Admin -> Sửa/Xóa */}
+                            <line x1="100" y1="100" x2="160" y2="100" stroke="#ced4da" strokeWidth="1.5" />
+                          </svg>
+
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', zIndex: 2 }}>
+                            <div style={{
+                              background: 'white',
+                              border: '1.5px solid #495057',
+                              padding: '6px 12px',
+                              borderRadius: '50px',
+                              textAlign: 'center'
+                            }}>
+                              <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#495057' }}>Xem thông tin</span>
+                            </div>
+                            <div style={{
+                              background: 'white',
+                              border: '1.5px solid #495057',
+                              padding: '6px 12px',
+                              borderRadius: '50px',
+                              textAlign: 'center'
+                            }}>
+                              <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#495057' }}>Sửa/Xóa thông tin</span>
+                            </div>
+                          </div>
+
+                          {/* Secure Shield Indicator (Only show after selection checked) */}
+                          {checked && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '10px',
+                              right: '10px',
+                              background: '#ebfbee',
+                              border: '1px solid #b2f2bb',
+                              borderRadius: '50%',
+                              width: '28px',
+                              height: '28px',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center'
+                            }}>
+                              <ShieldCheck size={16} color="#40c057" />
+                            </div>
+                          )}
+                        </>
+                      )
+                    )}
+
+                    {lesson.id === 'lesson-11b' && (
+                      /* Render dynamic SVG for <<include>> Lesson */
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '12px',
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 2
+                      }}>
+                        {/* Left Use Case: Rút tiền ATM */}
+                        <div style={{
+                          background: 'linear-gradient(135deg, #e7f5ff 0%, #d0ebff 100%)',
+                          border: '1.5px solid #228be6',
+                          padding: '10px 14px',
+                          borderRadius: '24px',
+                          boxShadow: '0 4px 10px rgba(34, 139, 230, 0.1)',
+                          textAlign: 'center',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '4px',
+                          width: '110px'
+                        }}>
+                          <CreditCard size={14} color="#1c7ed6" />
+                          <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#1c7ed6', lineHeight: 1.2 }}>Rút tiền ATM</span>
                         </div>
 
-                        {/* SVG Connector Lines */}
-                        <svg style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, pointerEvents: 'none' }}>
-                          <line x1="100" y1="45" x2="160" y2="70" stroke="#ced4da" strokeWidth="1.5" />
-                          <line x1="100" y1="95" x2="160" y2="70" stroke="#ced4da" strokeWidth="1.5" />
+                        {/* SVG Connection Arrow */}
+                        <svg width="70" height="40" style={{ overflow: 'visible' }}>
+                          <defs>
+                            <marker id="gray-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                              <path d="M 0 2 L 10 5 L 0 8 z" fill="#495057" />
+                            </marker>
+                          </defs>
+                          {idx === 0 ? (
+                            /* Incorrect: Right to Left (Kiểm tra số dư -> Rút tiền) */
+                            <line x1="65" y1="20" x2="5" y2="20" stroke="#495057" strokeWidth="1.8" strokeDasharray="4 4" markerEnd="url(#gray-arrow)" />
+                          ) : (
+                            /* Correct: Left to Right (Rút tiền -> Kiểm tra số dư) */
+                            <line x1="5" y1="20" x2="65" y2="20" stroke="#495057" strokeWidth="1.8" strokeDasharray="4 4" markerEnd="url(#gray-arrow)" />
+                          )}
+                          <text x="35" y="10" textAnchor="middle" fontSize="0.55rem" fill="#495057" fontWeight="900">&lt;&lt;include&gt;&gt;</text>
                         </svg>
 
+                        {/* Right Use Case: Kiểm tra số dư */}
                         <div style={{
-                          zIndex: 2,
-                          background: 'white',
-                          border: '1.5px solid #495057',
-                          padding: '12px',
-                          borderRadius: '50px',
+                          background: 'linear-gradient(135deg, #e7f5ff 0%, #d0ebff 100%)',
+                          border: '1.5px solid #228be6',
+                          padding: '10px 14px',
+                          borderRadius: '24px',
+                          boxShadow: '0 4px 10px rgba(34, 139, 230, 0.1)',
                           textAlign: 'center',
-                          boxShadow: '0 4px 8px rgba(0,0,0,0.02)'
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '4px',
+                          width: '110px'
                         }}>
-                          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#495057' }}>Quản lý thông tin</span>
+                          <FileText size={14} color="#1c7ed6" />
+                          <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#1c7ed6', lineHeight: 1.2 }}>Kiểm tra số dư</span>
                         </div>
 
-                        {/* Security Leak Indicator (Only show after selection checked) */}
+                        {/* Security Indicator Overlay */}
                         {checked && (
                           <div style={{
                             position: 'absolute',
                             top: '10px',
                             right: '10px',
-                            background: '#fff5f5',
-                            border: '1px solid #ffc9c9',
+                            background: option.correct ? '#ebfbee' : '#fff5f5',
+                            border: option.correct ? '1px solid #b2f2bb' : '1px solid #ffc9c9',
                             borderRadius: '50%',
                             width: '28px',
                             height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            animation: 'pulse 1.5s infinite'
+                            zIndex: 3
                           }}>
-                            <ShieldAlert size={16} color="#fa5252" />
+                            {option.correct ? (
+                              <ShieldCheck size={16} color="#40c057" />
+                            ) : (
+                              <ShieldAlert size={16} color="#fa5252" />
+                            )}
                           </div>
                         )}
-                      </>
-                    ) : (
-                      /* Mock Diagram for Option 2 */
-                      <>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center', zIndex: 2 }}>
-                          <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
-                            <User size={12} color="#1c7ed6" />
-                            <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Khách hàng</span>
-                          </div>
-                          <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
-                            <Users size={12} color="#495057" />
-                            <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Admin</span>
-                          </div>
+                      </div>
+                    )}
+
+                    {lesson.id === 'lesson-12b' && (
+                      /* Render dynamic SVG for <<extend>> Lesson */
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '12px',
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 2
+                      }}>
+                        {/* Left Use Case: Thanh toán hóa đơn */}
+                        <div style={{
+                          background: 'linear-gradient(135deg, #e7f5ff 0%, #d0ebff 100%)',
+                          border: '1.5px solid #228be6',
+                          padding: '10px 12px',
+                          borderRadius: '24px',
+                          boxShadow: '0 4px 10px rgba(34, 139, 230, 0.1)',
+                          textAlign: 'center',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '4px',
+                          width: '110px'
+                        }}>
+                          <CreditCard size={14} color="#1c7ed6" />
+                          <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#1c7ed6', lineHeight: 1.2 }}>Thanh toán HĐ</span>
                         </div>
 
-                        {/* SVG Connector Lines */}
-                        <svg style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, pointerEvents: 'none' }}>
-                          {/* Khách hàng -> Xem */}
-                          <line x1="100" y1="40" x2="160" y2="40" stroke="#ced4da" strokeWidth="1.5" />
-                          {/* Admin -> Xem */}
-                          <line x1="100" y1="100" x2="160" y2="40" stroke="#ced4da" strokeWidth="1.5" />
-                          {/* Admin -> Sửa/Xóa */}
-                          <line x1="100" y1="100" x2="160" y2="100" stroke="#ced4da" strokeWidth="1.5" />
+                        {/* SVG Connection Arrow */}
+                        <svg width="70" height="40" style={{ overflow: 'visible' }}>
+                          <defs>
+                            <marker id="gray-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                              <path d="M 0 2 L 10 5 L 0 8 z" fill="#495057" />
+                            </marker>
+                          </defs>
+                          {idx === 0 ? (
+                            /* Incorrect: Left to Right (Thanh toán -> Áp mã) */
+                            <line x1="5" y1="20" x2="65" y2="20" stroke="#495057" strokeWidth="1.8" strokeDasharray="4 4" markerEnd="url(#gray-arrow)" />
+                          ) : (
+                            /* Correct: Right to Left (Áp mã -> Thanh toán) */
+                            <line x1="65" y1="20" x2="5" y2="20" stroke="#495057" strokeWidth="1.8" strokeDasharray="4 4" markerEnd="url(#gray-arrow)" />
+                          )}
+                          <text x="35" y="10" textAnchor="middle" fontSize="0.55rem" fill="#495057" fontWeight="900">&lt;&lt;extend&gt;&gt;</text>
                         </svg>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', zIndex: 2 }}>
-                          <div style={{
-                            background: 'white',
-                            border: '1.5px solid #495057',
-                            padding: '6px 12px',
-                            borderRadius: '50px',
-                            textAlign: 'center'
-                          }}>
-                            <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#495057' }}>Xem thông tin</span>
-                          </div>
-                          <div style={{
-                            background: 'white',
-                            border: '1.5px solid #495057',
-                            padding: '6px 12px',
-                            borderRadius: '50px',
-                            textAlign: 'center'
-                          }}>
-                            <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#495057' }}>Sửa/Xóa thông tin</span>
-                          </div>
+                        {/* Right Use Case: Áp mã giảm giá */}
+                        <div style={{
+                          background: 'linear-gradient(135deg, #e7f5ff 0%, #d0ebff 100%)',
+                          border: '1.5px solid #228be6',
+                          padding: '10px 12px',
+                          borderRadius: '24px',
+                          boxShadow: '0 4px 10px rgba(34, 139, 230, 0.1)',
+                          textAlign: 'center',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '4px',
+                          width: '110px'
+                        }}>
+                          <Percent size={14} color="#1c7ed6" />
+                          <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#1c7ed6', lineHeight: 1.2 }}>Áp mã giảm giá</span>
                         </div>
 
-                        {/* Secure Shield Indicator (Only show after selection checked) */}
+                        {/* Security Indicator Overlay */}
                         {checked && (
                           <div style={{
                             position: 'absolute',
                             top: '10px',
                             right: '10px',
-                            background: '#ebfbee',
-                            border: '1px solid #b2f2bb',
+                            background: option.correct ? '#ebfbee' : '#fff5f5',
+                            border: option.correct ? '1px solid #b2f2bb' : '1px solid #ffc9c9',
                             borderRadius: '50%',
                             width: '28px',
                             height: '28px',
                             display: 'flex',
                             justifyContent: 'center',
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            zIndex: 3
                           }}>
-                            <ShieldCheck size={16} color="#40c057" />
+                            {option.correct ? (
+                              <ShieldCheck size={16} color="#40c057" />
+                            ) : (
+                              <ShieldAlert size={16} color="#fa5252" />
+                            )}
                           </div>
                         )}
-                      </>
-                    )
-                  )
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </motion.div>

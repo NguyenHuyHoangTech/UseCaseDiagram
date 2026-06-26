@@ -14,6 +14,17 @@ import HighlighterWidget from '../components/widgets/HighlighterWidget';
 import DecisionTreeWidget from '../components/widgets/DecisionTreeWidget';
 import SpotErrorWidget from '../components/widgets/SpotErrorWidget';
 
+// Import specific lesson components (split files)
+import Lesson10 from '../lesson 3/Lesson10';
+import Lesson11 from '../lesson 3/Lesson11';
+import Lesson11b from '../lesson 3/Lesson11b';
+import Lesson12 from '../lesson 3/Lesson12';
+import Lesson12b from '../lesson 3/Lesson12b';
+import Lesson13 from '../lesson 4/Lesson13';
+import Lesson14 from '../lesson 4/Lesson14';
+import Lesson15 from '../lesson 4/Lesson15';
+import Lesson16 from '../lesson 4/Lesson16';
+
 // Import helper
 import { injectSpacedRepetitionQuestion } from '../utils/spacedRepetition';
 
@@ -85,45 +96,68 @@ const LessonPage = () => {
 
   // Render the appropriate work area based on lesson type
   const renderWorkspace = () => {
-    switch (lesson.type) {
-      case 'highlighter':
-        return <HighlighterWidget lesson={lesson} onSolved={setMainSolved} />;
-      case 'decision-tree':
-        return <DecisionTreeWidget lesson={lesson} onSolved={setMainSolved} />;
-      case 'spot-the-error':
-        return <SpotErrorWidget lesson={lesson} onSolved={setMainSolved} />;
-      case 'drag-and-drop':
-        return <DragDropWidget lesson={lesson} onSolved={setMainSolved} />;
-      case 'reorder':
-        return <ReorderWidget lesson={lesson} onSolved={setMainSolved} />;
-      case 'multiple-choice':
-        return <MultipleChoiceWidget lesson={lesson} onSolved={setMainSolved} />;
-      case 'spaced-repetition-hub':
-        return <BrainGymDashboard onSolved={setMainSolved} />;
+    // Prioritize rendering specific modular lesson components if matched by ID
+    switch (lesson.id) {
+      case 'lesson-10':
+        return <Lesson10 onSolved={setMainSolved} />;
+      case 'lesson-11':
+        return <Lesson11 onSolved={setMainSolved} />;
+      case 'lesson-11b':
+        return <Lesson11b onSolved={setMainSolved} />;
+      case 'lesson-12':
+        return <Lesson12 onSolved={setMainSolved} />;
+      case 'lesson-12b':
+        return <Lesson12b onSolved={setMainSolved} />;
+      case 'lesson-13':
+        return <Lesson13 onSolved={setMainSolved} />;
+      case 'lesson-14':
+        return <Lesson14 onSolved={setMainSolved} />;
+      case 'lesson-15':
+        return <Lesson15 onSolved={setMainSolved} />;
+      case 'lesson-16':
+        return <Lesson16 onSolved={setMainSolved} />;
       default:
-        // Default text-only lesson fallback
-        return (
-          <div>
-            <p style={{ fontSize: '1.1rem', color: '#495057', lineHeight: 1.8, marginBottom: '30px' }}>
-              {lesson.content}
-            </p>
-            <div style={{
-              marginTop: '40px',
-              padding: '24px',
-              background: '#f8f9fa',
-              borderRadius: '16px',
-              borderLeft: '4px solid var(--brand-color)'
-            }}>
-              <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-hover)', marginBottom: '8px', fontWeight: 700 }}>
-                <CheckCircle2 size={20} />
-                Hướng dẫn lý thuyết
-              </h4>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                Đọc kỹ lý thuyết trên để chuẩn bị cho các bài tập thực hành tương tác ở các bài tiếp theo trong chặng này. Hãy nhấn Tiếp tục để đi tiếp!
-              </p>
-            </div>
-          </div>
-        );
+        // Fallback to generic widget engine
+        switch (lesson.type) {
+          case 'highlighter':
+            return <HighlighterWidget lesson={lesson} onSolved={setMainSolved} />;
+          case 'decision-tree':
+            return <DecisionTreeWidget lesson={lesson} onSolved={setMainSolved} />;
+          case 'spot-the-error':
+            return <SpotErrorWidget lesson={lesson} onSolved={setMainSolved} />;
+          case 'drag-and-drop':
+            return <DragDropWidget lesson={lesson} onSolved={setMainSolved} />;
+          case 'reorder':
+            return <ReorderWidget lesson={lesson} onSolved={setMainSolved} />;
+          case 'multiple-choice':
+            return <MultipleChoiceWidget lesson={lesson} onSolved={setMainSolved} />;
+          case 'spaced-repetition-hub':
+            return <BrainGymDashboard onSolved={setMainSolved} />;
+          default:
+            // Default text-only lesson fallback
+            return (
+              <div>
+                <p style={{ fontSize: '1.1rem', color: '#495057', lineHeight: 1.8, marginBottom: '30px' }}>
+                  {lesson.content}
+                </p>
+                <div style={{
+                  marginTop: '40px',
+                  padding: '24px',
+                  background: '#f8f9fa',
+                  borderRadius: '16px',
+                  borderLeft: '4px solid var(--brand-color)'
+                }}>
+                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-hover)', marginBottom: '8px', fontWeight: 700 }}>
+                    <CheckCircle2 size={20} />
+                    Hướng dẫn lý thuyết
+                  </h4>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                    Đọc kỹ lý thuyết trên để chuẩn bị cho các bài tập thực hành tương tác ở các bài tiếp theo trong chặng này. Hãy nhấn Tiếp tục để đi tiếp!
+                  </p>
+                </div>
+              </div>
+            );
+        }
     }
   };
 

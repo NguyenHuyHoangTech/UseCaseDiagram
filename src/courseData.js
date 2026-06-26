@@ -66,9 +66,9 @@ export const courseData = [
     lessons: [
       {
         id: "lesson-10",
-        title: "Bài 10: Kỹ thuật trích xuất từ khóa & Lọc nhiễu",
+        title: 'Bài 10: Thử thách "Gạn Đục Khơi Trong" – Actor, Use Case, Lọc Nhiễu',
         type: "highlighter",
-        content: "Hãy phân tích yêu cầu dưới đây. Trích xuất Actor (👤), Use Case (⚙️) và Lọc nhiễu chi tiết kỹ thuật (🚫) bằng cách tô màu thích hợp.",
+        content: "Tô màu các cụm từ trong đoạn văn dưới đây: 🔵 Actor | 🟢 Use Case | 🟠 Lọc Nhiễu",
         raw_text: "Kế toán trưởng muốn đăng nhập vào hệ thống bằng tài khoản công ty để xuất báo cáo tài chính cuối tháng dưới dạng file PDF. Giao diện xuất báo cáo phải sử dụng font chữ Arial và dữ liệu được lấy từ database Oracle.",
         segments: [
           { text: "Kế toán trưởng", type: "actor" },
@@ -106,6 +106,26 @@ export const courseData = [
         ]
       },
       {
+        id: "lesson-11b",
+        title: "Bài 11b: Chiều mũi tên Bắt buộc (<<include>>)",
+        type: "decision-tree",
+        content: "Phân biệt chiều mũi tên chính xác của quan hệ bắt buộc <<include>> trong thiết kế thực tế.",
+        scenario: "Hệ thống yêu cầu mỗi khi khách hàng thực hiện chức năng [Rút tiền ATM], hệ thống bắt buộc phải tự động thực hiện tác vụ [Kiểm tra số dư tài khoản] để đảm bảo an toàn giao dịch.",
+        question: "Thiết kế nào dưới đây thể hiện đúng chiều mũi tên của quan hệ <<include>> giữa hai Use Case này?",
+        options: [
+          {
+            text: "Vẽ mũi tên <<include>> hướng từ Use Case 'Kiểm tra số dư' trỏ ngược về Use Case 'Rút tiền ATM'.",
+            correct: false,
+            feedback: "Sai rồi! Trong mối quan hệ <<include>>, mũi tên nét đứt luôn luôn bắt đầu từ Use Case cơ sở (Use Case chính - ở đây là 'Rút tiền ATM') và trỏ vào Use Case bắt buộc được bao gồm (Use Case phụ - ở đây là 'Kiểm tra số dư'). Trỏ ngược lại là sai hoàn toàn chuẩn UML!"
+          },
+          {
+            text: "Vẽ mũi tên <<include>> hướng từ Use Case 'Rút tiền ATM' trỏ thẳng vào Use Case 'Kiểm tra số dư'.",
+            correct: true,
+            feedback: "Xuất sắc! Quan hệ <<include>> (bao gồm) thể hiện rằng Use Case chính bắt buộc cần tích hợp hành vi của Use Case phụ để hoàn thành nhiệm vụ. Vì vậy, mũi tên bắt buộc phải hướng từ chính sang phụ (Rút tiền ATM -> Kiểm tra số dư)!"
+          }
+        ]
+      },
+      {
         id: "lesson-12",
         title: "Bài 12: Biến Use Case thành Flowchart (Anti-patterns)",
         type: "decision-tree",
@@ -124,6 +144,26 @@ export const courseData = [
             image: "/correct_pattern_flowchart.png",
             correct: true,
             feedback: "Xuất sắc! Các Use Case trên sơ đồ phải hoàn toàn độc lập về mặt quy trình. Thứ tự thực hiện trước sau (phải đăng nhập trước) sẽ được mô tả cụ thể trong tài liệu Đặc tả kịch bản (mục Tiền điều kiện) hoặc sử dụng biểu đồ Activity Diagram!"
+          }
+        ]
+      },
+      {
+        id: "lesson-12b",
+        title: "Bài 12b: Chiều mũi tên Tùy chọn (<<extend>>)",
+        type: "decision-tree",
+        content: "Phân biệt chiều mũi tên chính xác của quan hệ tùy chọn <<extend>> để tránh nhầm lẫn với <<include>>.",
+        scenario: "Khi khách hàng thực hiện chức năng [Thanh toán hóa đơn], họ có tùy chọn [Áp mã giảm giá] để được giảm trừ tiền. Hành động này là không bắt buộc và chỉ xảy ra khi khách hàng có mã.",
+        question: "Thiết kế nào dưới đây thể hiện đúng chiều mũi tên của quan hệ <<extend>> giữa hai Use Case này?",
+        options: [
+          {
+            text: "Vẽ mũi tên <<extend>> hướng từ Use Case 'Thanh toán hóa đơn' trỏ sang Use Case 'Áp mã giảm giá'.",
+            correct: false,
+            feedback: "Sai rồi! Trái ngược hoàn toàn với <<include>>, quan hệ <<extend>> (mở rộng) có chiều mũi tên đi ngược lại: hướng từ Use Case mở rộng (tùy chọn - ở đây là 'Áp mã giảm giá') trỏ ngược về Use Case cơ sở (chính - ở đây là 'Thanh toán hóa đơn'). Trỏ từ chính sang phụ là sai nguyên tắc!"
+          },
+          {
+            text: "Vẽ mũi tên <<extend>> hướng từ Use Case 'Áp mã giảm giá' trỏ ngược về Use Case 'Thanh toán hóa đơn'.",
+            correct: true,
+            feedback: "Tuyệt vời! Trong quan hệ <<extend>>, mũi tên nét đứt luôn hướng từ Use Case mở rộng (Áp mã giảm giá) trỏ ngược về Use Case cơ sở (Thanh toán hóa đơn). Điều này thể hiện tính năng phụ đang 'mở rộng' và chèn thêm hành vi vào tính năng chính!"
           }
         ]
       }
