@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Lock, ChevronDown, PlayCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,14 @@ const JourneyMap = () => {
   // Keep track of which stages are expanded. 
   // By default, expand all stages so the user can see all lessons.
   const [expandedStages, setExpandedStages] = useState(courseData.map(s => s.id));
+  const [showHiddenLessons, setShowHiddenLessons] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleToggle = () => setShowHiddenLessons(prev => !prev);
+    window.addEventListener('toggle-hidden-lessons', handleToggle);
+    return () => window.removeEventListener('toggle-hidden-lessons', handleToggle);
+  }, []);
 
   const handleStageClick = (stageId) => {
     setExpandedStages(prev => 
@@ -107,56 +114,61 @@ const JourneyMap = () => {
                   style={{ overflow: 'hidden', width: '100%', maxWidth: '450px' }}
                 >
                   <div style={{ padding: '10px 0 20px 40px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    {stage.lessons.map((lesson, idx) => (
-                      <motion.div
-                        whileHover={{ x: 5 }}
-                        key={lesson.id}
-                        onClick={() => handleLessonClick(lesson.id)}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '16px',
-                          cursor: 'pointer',
-                          position: 'relative'
-                        }}
-                      >
-                        {/* Mini vertical connector for lessons */}
-                        {idx !== stage.lessons.length - 1 && (
-                           <div style={{
-                             position: 'absolute',
-                             left: '11px',
-                             top: '24px',
-                             bottom: '-36px',
-                             width: '2px',
-                             background: 'var(--connector-color)',
-                             zIndex: 1
-                           }} />
-                        )}
-                        
-                        <div style={{
-                          width: '24px',
-                          height: '24px',
-                          borderRadius: '50%',
-                          background: 'white',
-                          border: '2px solid var(--brand-color)',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          zIndex: 2
-                        }}>
-                          <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--brand-color)' }} />
-                        </div>
-                        
-                        <div style={{ flex: 1, background: 'white', padding: '12px 16px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                          <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--brand-hover)', marginBottom: '4px' }}>
-                            {lesson.title}
-                          </h4>
-                          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                            {lesson.content.substring(0, 60)}...
-                          </p>
-                        </div>
-                      </motion.div>
-                    ))}
+                    {stage.lessons.map((lesson, idx) => {
+                      const isHiddenLesson = ['lesson-18', 'lesson-19', 'lesson-20'].includes(lesson.id);
+                      if (isHiddenLesson && !showHiddenLessons) return null;
+
+                      return (
+                        <motion.div
+                          whileHover={{ x: 5 }}
+                          key={lesson.id}
+                          onClick={() => handleLessonClick(lesson.id)}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '16px',
+                            cursor: 'pointer',
+                            position: 'relative'
+                          }}
+                        >
+                          {/* Mini vertical connector for lessons */}
+                          {idx !== stage.lessons.length - 1 && (
+                             <div style={{
+                               position: 'absolute',
+                               left: '11px',
+                               top: '24px',
+                               bottom: '-36px',
+                               width: '2px',
+                               background: 'var(--connector-color)',
+                               zIndex: 1
+                             }} />
+                          )}
+                          
+                          <div style={{
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '50%',
+                            background: 'white',
+                            border: '2px solid var(--brand-color)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: 2
+                          }}>
+                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--brand-color)' }} />
+                          </div>
+                          
+                          <div style={{ flex: 1, background: 'white', padding: '12px 16px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
+                            <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--brand-hover)', marginBottom: '4px' }}>
+                              {lesson.title}
+                            </h4>
+                            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                              {lesson.content.substring(0, 60)}...
+                            </p>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 </motion.div>
               )}

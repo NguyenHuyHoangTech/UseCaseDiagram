@@ -3,6 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, CheckCircle2, Lock, HelpCircle } from 'lucide-react';
 import { courseData } from '../courseData';
 import Navbar from '../components/Navbar';
+import Lesson17Interactive from '../components/Lesson17Interactive';
+import Lesson18Interactive from '../components/Lesson18Interactive';
+import Lesson19Interactive from '../components/Lesson19Interactive';
 
 // Import widgets
 import DragDropWidget from '../components/widgets/DragDropWidget';
@@ -69,7 +72,8 @@ const LessonPage = () => {
   useEffect(() => {
     // If the lesson has an interactive type, it starts as unsolved.
     // If it's a standard static lesson, it starts as solved.
-    setMainSolved(lesson.type ? false : true);
+    const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
+    setMainSolved((lesson.type || isHardcodedInteractive) ? false : true);
     
     // If there is a Spaced Repetition card injected, it starts as unsolved.
     // If not, it starts as solved.
@@ -134,27 +138,45 @@ const LessonPage = () => {
           case 'spaced-repetition-hub':
             return <BrainGymDashboard onSolved={setMainSolved} />;
           default:
-            // Default text-only lesson fallback
+            // Default text-only lesson fallback (Combined with remote changes for hardcoded interactive 17-19)
+            const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
             return (
               <div>
                 <p style={{ fontSize: '1.1rem', color: '#495057', lineHeight: 1.8, marginBottom: '30px' }}>
                   {lesson.content}
                 </p>
-                <div style={{
-                  marginTop: '40px',
-                  padding: '24px',
-                  background: '#f8f9fa',
-                  borderRadius: '16px',
-                  borderLeft: '4px solid var(--brand-color)'
-                }}>
-                  <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-hover)', marginBottom: '8px', fontWeight: 700 }}>
-                    <CheckCircle2 size={20} />
-                    Hướng dẫn lý thuyết
-                  </h4>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                    Đọc kỹ lý thuyết trên để chuẩn bị cho các bài tập thực hành tương tác ở các bài tiếp theo trong chặng này. Hãy nhấn Tiếp tục để đi tiếp!
-                  </p>
-                </div>
+                
+                {lesson.id === 'lesson-17' && <Lesson17Interactive onFinish={() => setMainSolved(true)} />}
+                {lesson.id === 'lesson-18' && <Lesson18Interactive onFinish={() => setMainSolved(true)} />}
+                {lesson.id === 'lesson-19' && <Lesson19Interactive onFinish={() => setMainSolved(true)} />}
+
+                {isHardcodedInteractive ? (
+                  <div style={{ marginTop: '40px', padding: '24px', background: 'white', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px', border: '1px solid #dee2e6' }}>
+                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#d3f9d8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <CheckCircle2 size={24} color="#2b8a3e" />
+                    </div>
+                    <div>
+                      <h4 style={{ color: '#2b8a3e', marginBottom: '4px' }}>Mục tiêu bài học</h4>
+                      <p style={{ color: '#495057', fontSize: '0.95rem' }}>Bằng việc hoàn thành bài học này, bạn đã tiến thêm một bước trong hành trình chinh phục Use Case Diagram.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{
+                    marginTop: '40px',
+                    padding: '24px',
+                    background: '#f8f9fa',
+                    borderRadius: '16px',
+                    borderLeft: '4px solid var(--brand-color)'
+                  }}>
+                    <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-hover)', marginBottom: '8px', fontWeight: 700 }}>
+                      <CheckCircle2 size={20} />
+                      Hướng dẫn lý thuyết
+                    </h4>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                      Đọc kỹ lý thuyết trên để chuẩn bị cho các bài tập thực hành tương tác ở các bài tiếp theo trong chặng này. Hãy nhấn Tiếp tục để đi tiếp!
+                    </p>
+                  </div>
+                )}
               </div>
             );
         }
@@ -177,7 +199,7 @@ const LessonPage = () => {
 
       <main style={{ 
         flex: 1, 
-        maxWidth: '850px', 
+        maxWidth: ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id) ? '1200px' : '850px', 
         width: '100%', 
         margin: '0 auto', 
         padding: '30px 20px 80px',
