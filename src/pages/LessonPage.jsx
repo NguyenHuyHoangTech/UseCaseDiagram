@@ -6,6 +6,8 @@ import Navbar from '../components/Navbar';
 import Lesson17Interactive from '../components/Lesson17Interactive';
 import Lesson18Interactive from '../components/Lesson18Interactive';
 import Lesson19Interactive from '../components/Lesson19Interactive';
+import LessonPlayer from '../components/lesson/LessonPlayer';
+import { interactiveLessons } from '../components/lessonEngine/lessonData';
 
 // Import widgets
 import DragDropWidget from '../components/widgets/DragDropWidget';
@@ -86,6 +88,20 @@ const LessonPage = () => {
 
   const isLastLesson = currentIndex === allLessons.length - 1;
   const isFullySolved = mainSolved && srSolved;
+
+  if (lesson.type === 'interactive-engine') {
+    const interactiveLessonData = interactiveLessons.find(l => l.id === lesson.engineId);
+    if (interactiveLessonData) {
+      return (
+        <LessonPlayer 
+          lesson={interactiveLessonData} 
+          onBack={() => navigate('/')} 
+          onNextLesson={isLastLesson ? () => navigate('/') : handleNext} 
+          hasNextLesson={!isLastLesson} 
+        />
+      );
+    }
+  }
 
   // Render the appropriate work area based on lesson type
   const renderWorkspace = () => {
