@@ -6,24 +6,39 @@ export const courseData = [
     description: "Giúp người học biết ngay Use Case dùng để làm gì và gọi tên đúng các thành phần.",
     lessons: [
       {
+        id: "lesson-0",
+        title: "Bài 0: Hệ thống tạo ra giá trị cho ai?",
+        content: "Trước khi học Use Case, hãy nhìn hệ thống từ bên ngoài: một người hoặc tác nhân tương tác với hệ thống để đạt được một kết quả có ích.",
+        type: "interactive-engine",
+        engineId: "intro-machine"
+      },
+      {
         id: "lesson-1",
-        title: "Bài 1: Use Case là gì và Lăng kính hệ thống",
-        content: "Soạn nội dung giải thích khái niệm Use Case. Nhấn mạnh nguyên tắc: Use Case mô tả 'Hệ thống làm được gì?' (What) chứ không phải 'Hệ thống làm điều đó như thế nào?' (How)."
+        title: "Bài 1: Use Case là gì?",
+        content: "Cinema Booking System: nhìn Use Case như mục tiêu và giá trị mà Actor muốn đạt được, không phải UI, database, API hay xử lý kỹ thuật.",
+        type: "interactive-engine",
+        engineId: "what-not-how"
       },
       {
         id: "lesson-2",
         title: "Bài 2: Ranh giới hệ thống (System Boundary)",
-        content: "Dạy cách vẽ và xác định vạch ranh giới. Định nghĩa rõ cái gì nằm trong (phần mềm cần code) và cái gì nằm ngoài (môi trường)."
+        content: "Use Case nằm trong boundary; Actor và external system đứng ngoài.",
+        type: "interactive-engine",
+        engineId: "system-boundary"
       },
       {
         id: "lesson-3",
-        title: "Bài 3: Tác nhân (Actor)",
-        content: "Phân loại và lấy ví dụ chi tiết về 3 loại Actor: Con người (Khách hàng, Admin), Hệ thống bên ngoài (Cổng thanh toán, API), và Thời gian (Hệ thống tự động chạy lúc 00:00)."
+        title: "Bài 3: Tác nhân (Actor không chỉ là con người)",
+        content: "Actor là vai trò, external system hoặc thời gian kích hoạt hệ thống.",
+        type: "interactive-engine",
+        engineId: "actor"
       },
       {
         id: "lesson-4",
-        title: "Bài 4: Ca sử dụng (Use Case) Quy tắc đặt tên",
-        content: "Hướng dẫn công thức đặt tên chuẩn bằng 'Động từ + Danh từ' (VD: Đăng nhập, Thêm vào giỏ hàng) và liệt kê các tên gọi sai phổ biến cần tránh."
+        title: "Bài 4: Quy tắc đặt tên Use Case",
+        content: "Tên tốt thường là động từ nghiệp vụ + đối tượng nghiệp vụ.",
+        type: "interactive-engine",
+        engineId: "naming"
       }
     ]
   },
