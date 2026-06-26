@@ -3,6 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, CheckCircle2, Lock, HelpCircle } from 'lucide-react';
 import { courseData } from '../courseData';
 import Navbar from '../components/Navbar';
+import Lesson17Interactive from '../components/Lesson17Interactive';
+import Lesson18Interactive from '../components/Lesson18Interactive';
+import Lesson19Interactive from '../components/Lesson19Interactive';
 
 // Import widgets
 import DragDropWidget from '../components/widgets/DragDropWidget';
@@ -143,7 +146,11 @@ const LessonPage = () => {
 
       <main style={{ 
         flex: 1, 
+<<<<<<< Updated upstream
         maxWidth: '850px', 
+=======
+        maxWidth: '1200px', 
+>>>>>>> Stashed changes
         width: '100%', 
         margin: '0 auto', 
         padding: '30px 20px 80px',
@@ -189,6 +196,7 @@ const LessonPage = () => {
           flex: 1,
           marginBottom: '32px'
         }}>
+<<<<<<< Updated upstream
           {/* Subtitle / Prompt for interactive lessons */}
           {lesson.type && lesson.type !== 'spaced-repetition-hub' && (
             <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '28px', borderBottom: '1px solid #f1f3f5', paddingBottom: '16px' }}>
@@ -275,6 +283,25 @@ const LessonPage = () => {
             {isFullySolved && !isLastLesson && <ChevronRight size={20} />}
           </button>
         </div>
+=======
+          <p style={{ fontSize: '1.1rem', color: '#495057', lineHeight: 1.8 }}>
+            {lesson.content}
+          </p>
+          {lesson.id === 'lesson-17' && <Lesson17Interactive onFinish={() => navigate('/')} />}
+          {lesson.id === 'lesson-18' && <Lesson18Interactive onFinish={() => navigate('/')} />}
+          {lesson.id === 'lesson-19' && <Lesson19Interactive onFinish={() => navigate('/')} />}
+          
+          <div style={{ marginTop: '40px', padding: '24px', background: 'white', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px', border: '1px solid #dee2e6' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#d3f9d8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <CheckCircle2 size={24} color="#2b8a3e" />
+            </div>
+            <div>
+              <h4 style={{ color: '#2b8a3e', marginBottom: '4px' }}>Mục tiêu bài học</h4>
+              <p style={{ color: '#495057', fontSize: '0.95rem' }}>Bằng việc hoàn thành bài học này, bạn đã tiến thêm một bước trong hành trình chinh phục Use Case Diagram.</p>
+            </div>
+          </div>
+        </div>
+>>>>>>> Stashed changes
       </main>
     </div>
   );
