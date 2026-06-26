@@ -46,6 +46,21 @@ const Step1Extract = ({ onComplete }) => {
 
   const handleDragOver = (e) => e.preventDefault();
 
+  const handleDropToText = (e) => {
+    e.preventDefault();
+    const tokenStr = e.dataTransfer.getData('token');
+    if (!tokenStr) return;
+    const token = JSON.parse(tokenStr);
+
+    setPlacedTokens(prev => {
+      return {
+        actor: prev.actor.filter(t => t.id !== token.id),
+        usecase: prev.usecase.filter(t => t.id !== token.id),
+        trash: prev.trash.filter(t => t.id !== token.id)
+      };
+    });
+  };
+
   const handleCheck = () => {
     // Check for specific traps
     const trapInUseCase = placedTokens.usecase.find(t => t.type === 'trap');
@@ -119,7 +134,7 @@ const Step1Extract = ({ onComplete }) => {
       </AnimatePresence>
 
       <div style={{ display: 'flex', gap: '24px', flexDirection: 'row', flexWrap: 'wrap' }}>
-        <div style={{ flex: '1 1 300px', background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e9ecef', lineHeight: '2' }}>
+        <div onDrop={handleDropToText} onDragOver={handleDragOver} style={{ flex: '1 1 300px', background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e9ecef', lineHeight: '2' }}>
           Thư viện trường học phục vụ hai đối tượng chính là {renderToken(tokensData[0])} và {renderToken(tokensData[1])}. Để sử dụng dịch vụ, họ đều phải {renderToken(tokensData[2])} vào hệ thống. Sau đó, họ có thể {renderToken(tokensData[3])} và {renderToken(tokensData[4])}. Tuy nhiên, nếu trước đó họ {renderToken(tokensData[5])}, hệ thống yêu cầu họ phải {renderToken(tokensData[6])} ngay lúc thực hiện giao dịch mới. Ngoài ra, chỉ có nhân viên {renderToken(tokensData[7])} mới có quyền {renderToken(tokensData[8])} vào kho. Mọi giao dịch mượn sách đều yêu cầu hệ thống {renderToken(tokensData[9])} {renderToken(tokensData[10])}.
         </div>
 
@@ -128,21 +143,21 @@ const Step1Extract = ({ onComplete }) => {
           <div onDrop={(e) => handleDrop(e, 'actor')} onDragOver={handleDragOver} style={{ flex: 1, background: '#e7f5ff', border: '2px dashed #339af0', borderRadius: '16px', padding: '16px' }}>
             <h4 style={{ color: '#1864ab', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><UserCircle size={20} /> Giỏ Actor</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {placedTokens.actor.map(t => <div key={t.id} style={{ background: '#339af0', color: 'white', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem' }}>{t.text}</div>)}
+              {placedTokens.actor.map(t => <div key={t.id} draggable onDragStart={(e) => handleDragStart(e, t)} style={{ background: '#339af0', color: 'white', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem', cursor: 'grab' }}>{t.text}</div>)}
             </div>
           </div>
           {/* Use Case */}
           <div onDrop={(e) => handleDrop(e, 'usecase')} onDragOver={handleDragOver} style={{ flex: 1, background: '#fff3bf', border: '2px dashed #fcc419', borderRadius: '16px', padding: '16px' }}>
             <h4 style={{ color: '#e67700', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><Hexagon size={20} /> Giỏ Use Case</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {placedTokens.usecase.map(t => <div key={t.id} style={{ background: '#fcc419', color: '#495057', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem' }}>{t.text}</div>)}
+              {placedTokens.usecase.map(t => <div key={t.id} draggable onDragStart={(e) => handleDragStart(e, t)} style={{ background: '#fcc419', color: '#495057', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem', cursor: 'grab' }}>{t.text}</div>)}
             </div>
           </div>
           {/* Trash */}
           <div onDrop={(e) => handleDrop(e, 'trash')} onDragOver={handleDragOver} style={{ flex: 1, background: '#f8f9fa', border: '2px dashed #adb5bd', borderRadius: '16px', padding: '16px' }}>
             <h4 style={{ color: '#495057', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><Trash2 size={20} /> Giỏ Thùng rác</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {placedTokens.trash.map(t => <div key={t.id} style={{ background: '#adb5bd', color: 'white', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem' }}>{t.text}</div>)}
+              {placedTokens.trash.map(t => <div key={t.id} draggable onDragStart={(e) => handleDragStart(e, t)} style={{ background: '#adb5bd', color: 'white', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem', cursor: 'grab' }}>{t.text}</div>)}
             </div>
           </div>
         </div>

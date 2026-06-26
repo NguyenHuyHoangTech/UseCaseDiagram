@@ -96,7 +96,9 @@ const Navbar = () => {
         </div>
 
         {/* Stars Badge */}
-        <div style={{ 
+        <div 
+          onClick={() => window.dispatchEvent(new Event('toggle-hidden-lessons'))}
+          style={{ 
           display: 'flex', 
           alignItems: 'center', 
           gap: '6px',
@@ -105,7 +107,8 @@ const Navbar = () => {
           background: animateStar ? '#fff9db' : 'transparent',
           transform: animateStar ? 'scale(1.15)' : 'scale(1)',
           transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          border: animateStar ? '1px solid #ffe066' : '1px solid transparent'
+          border: animateStar ? '1px solid #ffe066' : '1px solid transparent',
+          cursor: 'pointer'
         }}>
           <Star 
             size={20} 
