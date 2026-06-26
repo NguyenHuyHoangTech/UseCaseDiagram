@@ -49,13 +49,13 @@ const Step5Twist = ({ onComplete }) => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-        17.5 Cú Twist Phút Chót
+        17.5 Quản lý Sự thay đổi Yêu cầu (Requirement Changes)
       </h3>
       
       {!showChat && (
         <div style={{ textAlign: 'center', padding: '40px' }}>
           <CheckCircle size={64} color="var(--brand-color)" style={{ margin: '0 auto 20px' }} />
-          <h2>Tuyệt vời! Bạn đã hoàn thành sơ đồ ban đầu!</h2>
+          <h2>Hoàn thành phân tích sơ bộ ban đầu!</h2>
         </div>
       )}
 
@@ -63,7 +63,7 @@ const Step5Twist = ({ onComplete }) => {
         {showChat && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ background: '#f8f9fa', padding: '24px', borderRadius: '16px', border: '1px solid #dee2e6', marginBottom: '24px', position: 'relative' }}>
             <div style={{ position: 'absolute', top: '-16px', left: '24px', background: 'white', padding: '4px 12px', borderRadius: '100px', border: '1px solid #dee2e6', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, color: '#495057' }}>
-              <MessageCircle size={16} /> Tin nhắn từ Khách hàng
+              <MessageCircle size={16} /> Yêu cầu bổ sung từ Khách hàng
             </div>
             <p style={{ fontStyle: 'italic', color: '#1d2026', fontSize: '1.1rem', marginTop: '10px' }}>
               "À này, tôi muốn thêm tính năng: Nếu khách hàng rút tiền, họ có quyền Tùy chọn In biên lai. Hãy cập nhật sơ đồ giúp tôi nhé!"
@@ -128,7 +128,7 @@ const Step5Twist = ({ onComplete }) => {
       {completed && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: '#12b886', color: 'white', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', border: 'none', cursor: 'pointer' }}>
-            Xuất sắc! Bạn đã qua bàn <ArrowRight size={20} />
+            Hoàn thành Case Study <ArrowRight size={20} />
           </button>
         </motion.div>
       )}

@@ -115,10 +115,10 @@ const Step4MadLibs = ({ onComplete }) => {
 
     const blank = blanksData.find(b => b.id === blankId);
     if (blank.correctAnswer === choice.id) {
-      showFeedback('success', 'Ghép chuẩn xác!');
+      showFeedback('success', 'Xác định chính xác hành động cho bước này!');
       setAnswers(prev => ({ ...prev, [blankId]: choice }));
     } else {
-      showFeedback('error', 'Sai logic! Hành động này không diễn ra ở bước này hoặc thuộc về luồng khác.');
+      showFeedback('error', 'Phân tích sai: Hành động này không thuộc về vị trí hiện tại hoặc nằm ở luồng sự kiện khác.');
     }
   };
 
@@ -143,14 +143,14 @@ const Step4MadLibs = ({ onComplete }) => {
       if (isMatch) {
         const alreadyConnected = connections.some(c => c.from === isMatch.from && c.to === isMatch.to);
         if (!alreadyConnected) {
-          showFeedback('success', 'Nối điểm chính xác!');
+          showFeedback('success', 'Xác định đúng luồng rẽ nhánh/hợp lưu!');
           setConnections(prev => [...prev, isMatch]);
         }
       } else {
         if ((selectedBlockId === 'm4' && blankId === 'a2') || (selectedBlockId === 'a2' && blankId === 'm4')) {
-          showFeedback('error', 'Sai điểm tách luồng! Việc chọn in hay không in xảy ra NGAY TRƯỚC bước 4 (tức là ở Bước 3), chứ không phải từ bước 4 rẽ sang!');
+          showFeedback('error', 'Sai vị trí rẽ nhánh: Lựa chọn "in hay không in biên lai" xảy ra NGAY TRƯỚC bước 4 (tức là sau khi kết thúc bước 3), chứ không phải rẽ nhánh từ bước 4!');
         } else {
-          showFeedback('error', 'Sai logic! Luồng này không rẽ nhánh/nhập nhánh từ bước đó.');
+          showFeedback('error', 'Không hợp lệ: Luồng sự kiện không rẽ nhánh hoặc hợp lưu tại vị trí này.');
         }
       }
       setSelectedBlockId(null);
@@ -178,7 +178,7 @@ const Step4MadLibs = ({ onComplete }) => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
         <h3 style={{ fontSize: '1.4rem', color: 'var(--brand-color)' }}>
-          {phase === 'drag' ? '17.4 Lập trình Kịch bản Đặc tả' : '17.4 Nối Luồng (Rẽ nhánh & Hợp lưu)'}
+          {phase === 'drag' ? '17.4 Xây dựng Đặc tả Use Case (Flow of Events)' : '17.4 Xác định Luồng Sự kiện (Main/Alternative Flow)'}
         </h3>
         <button onClick={handleReset} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #ced4da', background: 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', color: '#495057', fontWeight: 600 }}>
           <RotateCcw size={16}/> Làm lại
@@ -187,8 +187,8 @@ const Step4MadLibs = ({ onComplete }) => {
       
       <p style={{ color: 'var(--text-muted)', marginBottom: '16px', fontSize: '1.1rem' }}>
         {phase === 'drag' 
-          ? 'Kéo thả các khối hành động từ cột bên phải vào Luồng chính và Ngoại lệ ở bên trái.' 
-          : <span><strong>Hãy click chọn 2 khối</strong> để tạo đường rẽ nhánh/hợp lưu. Còn cần nối: <strong style={{color: '#e03131'}}>{3 - connections.length} đường</strong>. Gợi ý: (1) B2 rẽ ra Ngoại lệ, (2) B3 rẽ ra Không in biên lai, (3) Không in biên lai hợp lưu về B5.</span>}
+          ? 'Kéo thả các khối hành động vào đúng thứ tự trong Luồng sự kiện chính và Luồng thay thế/Ngoại lệ.' 
+          : <span><strong>Thiết lập mối quan hệ:</strong> Hãy click chọn 2 khối để tạo đường rẽ nhánh hoặc hợp lưu. Số đường cần thiết lập: <strong style={{color: '#e03131'}}>{3 - connections.length} đường</strong>. Gợi ý: (1) Rẽ nhánh ngoại lệ từ Bước 2, (2) Rẽ nhánh tùy chọn từ Bước 3, (3) Hợp lưu kết thúc về Bước 5.</span>}
       </p>
 
       <div style={{ background: '#e6fcf5', border: '2px solid #20c997', padding: '16px 20px', borderRadius: '12px', marginBottom: '24px', color: '#099268', fontWeight: 500, fontStyle: 'italic', lineHeight: 1.6 }}>
@@ -306,8 +306,8 @@ const Step4MadLibs = ({ onComplete }) => {
         {/* Right Side: Inventory Area */}
         {phase === 'drag' && (
           <div style={{ flex: 1, background: '#e9ecef', padding: '24px', borderRadius: '16px', border: '1px solid #ced4da', position: 'sticky', top: '20px' }}>
-            <h4 style={{ color: '#495057', marginBottom: '16px', textAlign: 'center' }}>Kho Kịch bản</h4>
-            <p style={{ color: '#868e96', fontSize: '0.85rem', marginBottom: '24px', textAlign: 'center' }}>Hãy nắm kéo các khối dưới đây sang phần đặc tả bên trái.</p>
+            <h4 style={{ color: '#495057', marginBottom: '16px', textAlign: 'center' }}>Danh sách Hành động</h4>
+            <p style={{ color: '#868e96', fontSize: '0.85rem', marginBottom: '24px', textAlign: 'center' }}>Lựa chọn các bước phù hợp để điền vào đặc tả Use Case.</p>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {choicesData.map(choice => (
@@ -330,7 +330,7 @@ const Step4MadLibs = ({ onComplete }) => {
             {isAllPlaced && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: '32px' }}>
                 <button onClick={startConnectPhase} style={{ width: '100%', padding: '16px', borderRadius: '12px', background: 'var(--brand-color)', color: 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(18,184,134,0.3)' }}>
-                  <Link2 size={20} /> Hoàn thành xếp khối
+                  <Link2 size={20} /> Hoàn thành: Xác định Rẽ nhánh
                 </button>
               </motion.div>
             )}
@@ -352,7 +352,7 @@ const Step4MadLibs = ({ onComplete }) => {
               transition: 'all 0.3s'
             }}
           >
-            {isAllConnected ? 'Tuyệt vời! Giải mã cú lừa cuối cùng' : `Bạn cần vẽ đủ 3 đường nối (${connections.length}/3)`}
+            {isAllConnected ? 'Tiếp tục: Xử lý Thay đổi Yêu cầu' : `Cần hoàn thiện luồng sự kiện (${connections.length}/3)`}
             {isAllConnected && <ArrowRight size={24} />}
           </button>
         </motion.div>
