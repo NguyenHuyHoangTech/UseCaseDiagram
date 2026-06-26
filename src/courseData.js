@@ -66,18 +66,66 @@ export const courseData = [
     lessons: [
       {
         id: "lesson-10",
-        title: "Bài 10: Kỹ thuật trích xuất từ khóa",
-        content: "Dạy phương pháp gạch chân: Danh từ -> Actor, Cụm động từ -> Use Case. Cách loại bỏ các thông tin gây nhiễu."
+        title: "Bài 10: Kỹ thuật trích xuất từ khóa & Lọc nhiễu",
+        type: "highlighter",
+        content: "Hãy phân tích yêu cầu dưới đây. Trích xuất Actor (👤), Use Case (⚙️) và Lọc nhiễu chi tiết kỹ thuật (🚫) bằng cách tô màu thích hợp.",
+        raw_text: "Kế toán trưởng muốn đăng nhập vào hệ thống bằng tài khoản công ty để xuất báo cáo tài chính cuối tháng dưới dạng file PDF. Giao diện xuất báo cáo phải sử dụng font chữ Arial và dữ liệu được lấy từ database Oracle.",
+        segments: [
+          { text: "Kế toán trưởng", type: "actor" },
+          { text: " muốn đăng nhập vào hệ thống ", type: "usecase" },
+          { text: "bằng tài khoản công ty", type: "noise" },
+          { text: " để " },
+          { text: "xuất báo cáo tài chính", type: "usecase" },
+          { text: " cuối tháng " },
+          { text: "dưới dạng file PDF", type: "noise" },
+          { text: ". " },
+          { text: "Giao diện xuất báo cáo phải sử dụng font chữ Arial", type: "noise" },
+          { text: " và " },
+          { text: "dữ liệu được lấy từ database Oracle", type: "noise" },
+          { text: "." }
+        ]
       },
       {
         id: "lesson-11",
-        title: "Bài 11: Mức độ chi tiết (Granularity)",
-        content: "Giải thích quy tắc CRUD. Hướng dẫn khi nào nên gom thành 1 Use Case 'Quản lý', khi nào phải tách rời."
+        title: "Bài 11: Mức độ chi tiết (Granularity - CRUD)",
+        type: "decision-tree",
+        content: "Quyết định mức độ chi tiết (Granularity) khi gom nhóm hoặc tách biệt các tác vụ CRUD để đảm bảo bảo mật.",
+        scenario: "Hệ thống có 2 Actor: 'Khách hàng' và 'Admin'. Khách hàng được quyền [Xem thông tin cá nhân] của mình. Admin được quyền [Xem, Sửa, Xóa thông tin cá nhân của khách hàng].",
+        question: "Bạn nên thiết kế các Use Case này như thế nào trong sơ đồ?",
+        options: [
+          {
+            text: "Vẽ 1 Use Case 'Quản lý thông tin cá nhân' và nối cả Khách hàng lẫn Admin vào.",
+            correct: false,
+            feedback: "Sai rồi! Nếu vẽ như vậy, Khách hàng sẽ vô tình được cấp quyền Sửa/Xóa thông tin cá nhân giống như Admin (vì cả hai đều trỏ vào chung 1 Use Case lớn chứa tất cả hành động). Đây là lỗ hổng bảo mật CRUD cực kỳ nghiêm trọng!"
+          },
+          {
+            text: "Tách thành các Use Case riêng biệt: 'Xem thông tin' (cho cả hai), 'Sửa/Xóa thông tin' (chỉ nối với Admin).",
+            correct: true,
+            feedback: "Chính xác! Khi các Actor có quyền hạn khác nhau trên cùng một đối tượng dữ liệu, ta bắt buộc phải phân rã (tách biệt) các Use Case để đảm bảo tính an toàn thông tin và phân quyền chính xác."
+          }
+        ]
       },
       {
         id: "lesson-12",
-        title: "Bài 12: Các lỗi 'chết người' thường gặp (Anti-patterns)",
-        content: "Soạn một danh sách các biểu đồ vẽ sai bét và hướng dẫn cách sửa."
+        title: "Bài 12: Biến Use Case thành Flowchart (Anti-patterns)",
+        type: "decision-tree",
+        content: "Tìm kiếm và chỉ ra lỗi thiết kế sơ đồ Use Case thường gặp (Anti-pattern) bằng cách so sánh và chọn sơ đồ thiết kế đúng chuẩn UML bên dưới.",
+        scenario: "Bạn cần vẽ sơ đồ Use Case cho hai tính năng: 'Đăng nhập' và 'Xem số dư'. Nghiệp vụ yêu cầu người dùng bắt buộc phải đăng nhập thành công thì mới có thể xem được số dư tài khoản của mình.",
+        question: "Sơ đồ nào dưới đây mô tả đúng mối quan hệ nghiệp vụ giữa hai Use Case này mà không phạm phải lỗi trình tự (Anti-pattern)?",
+        options: [
+          {
+            text: "Thiết kế sơ đồ vẽ mũi tên chỉ hướng (mũi tên trình tự) nối trực tiếp từ Use Case 'Đăng nhập' sang 'Xem số dư'.",
+            image: "/anti_pattern_flowchart.png",
+            correct: false,
+            feedback: "Sai rồi! Biểu đồ Use Case chỉ mô tả hệ thống có những chức năng gì (What), tuyệt đối không được dùng để vẽ luồng quy trình thực hiện tuần tự (Workflow/Flowchart) giữa các Use Case bằng cách nối mũi tên chỉ hướng. Đây là lỗi biến Use Case thành Flowchart kinh điển!"
+          },
+          {
+            text: "Thiết kế sơ đồ vẽ hai Use Case độc lập trên sơ đồ (không nối mũi tên trình tự). Luồng tuần tự đăng nhập sẽ được đưa vào phần đặc tả 'Tiền điều kiện' (Pre-condition) của 'Xem số dư'.",
+            image: "/correct_pattern_flowchart.png",
+            correct: true,
+            feedback: "Xuất sắc! Các Use Case trên sơ đồ phải hoàn toàn độc lập về mặt quy trình. Thứ tự thực hiện trước sau (phải đăng nhập trước) sẽ được mô tả cụ thể trong tài liệu Đặc tả kịch bản (mục Tiền điều kiện) hoặc sử dụng biểu đồ Activity Diagram!"
+          }
+        ]
       }
     ]
   },
@@ -88,23 +136,45 @@ export const courseData = [
     lessons: [
       {
         id: "lesson-13",
-        title: "Bài 13: Cấu trúc một tài liệu Đặc tả Use Case",
-        content: "Cung cấp Template chuẩn. Soạn nội dung giải thích Tiền điều kiện và Hậu điều kiện."
+        title: "Bài 13: Cấu trúc Đặc tả Use Case (Pre/Post-conditions)",
+        type: "drag-and-drop",
+        content: "Phân biệt Tiền điều kiện và Hậu điều kiện của Use Case: Đăng nhập hệ thống.",
+        items: [
+          { text: "Người dùng truy cập trang login", category: "Pre-condition" },
+          { text: "Hệ thống hiển thị trạng thái Online", category: "Post-condition" },
+          { text: "Tài khoản người dùng đã được kích hoạt trước đó", category: "Pre-condition" },
+          { text: "Session đăng nhập được tạo thành công", category: "Post-condition" }
+        ]
       },
       {
         id: "lesson-14",
         title: "Bài 14: Luồng sự kiện chính (Happy Path)",
-        content: "Hướng dẫn cách viết kịch bản hội thoại chuẩn mực giữa Actor và Hệ thống khi mọi thứ diễn ra suôn sẻ."
+        type: "reorder",
+        content: "Sắp xếp kịch bản kịch bản hội thoại chuẩn giữa Actor và Hệ thống cho Use Case: Rút tiền ATM.",
+        steps: [
+          "1. Actor đưa thẻ vào máy và nhập PIN.",
+          "2. Hệ thống xác thực PIN thành công và hiển thị menu chức năng.",
+          "3. Actor chọn chức năng Rút tiền và nhập số tiền.",
+          "4. Hệ thống trừ tiền tài khoản, trả thẻ và nhả tiền."
+        ]
       },
       {
         id: "lesson-15",
         title: "Bài 15: Luồng ngoại lệ & Luồng thay thế",
-        content: "Hướng dẫn cách xử lý sự cố trong kịch bản (VD: Nhập sai mật khẩu 3 lần, rớt mạng)."
+        type: "multiple-choice",
+        question: "Trong Use Case 'Thanh toán hóa đơn', nếu khách hàng nhập sai mã OTP quá 3 lần, kịch bản này nên xử lý theo luồng nào?",
+        content: "Trong Use Case 'Thanh toán hóa đơn', nếu khách hàng nhập sai mã OTP quá 3 lần, kịch bản này nên xử lý theo luồng nào?",
+        options: [
+          { text: "Luồng chính (Happy Path)", correct: false },
+          { text: "Luồng thay thế (Alternative Flow) - Cho nhập lại OTP khác", correct: false },
+          { text: "Luồng ngoại lệ (Exception Flow) - Hủy giao dịch, khóa tạm thời tính năng nhận OTP và thông báo lỗi", correct: true }
+        ]
       },
       {
         id: "lesson-16",
         title: "Bài 16: Chuỗi bài tập Lặp lại ngắt quãng",
-        content: "Rải các bài tập ôn tập về <<include>> và <<extend>> vào cuối bài học để ép nhớ kiến thức."
+        type: "spaced-repetition-hub",
+        content: "Hệ thống ôn tập thông minh (Brain Injector) giúp bạn củng cố sâu sắc các mối quan hệ <<include>> và <<extend>> thông qua các bài tập lặp lại ngắt quãng."
       }
     ]
   },
