@@ -145,7 +145,7 @@ function LegacyRunDiagramScenario({ step, onResult }) {
         <section className="palette-panel">
           <h3>Nối actor</h3>
           {data.actors.filter((actor) => actors.includes(actor.id)).map((actor) => (
-            <button className={`actor-node ${selectedActor === actor.id ? "selected" : ""}`} key={actor.id} onClick={() => setSelectedActor(actor.id)}>
+            <button className={`actor-node ${selectedActor === actor.id ? "selected" : ""}`} key={actor.id} onClick={() => setSelectedActor(current => current === actor.id ? null : actor.id)}>
               {actor.label}
             </button>
           ))}

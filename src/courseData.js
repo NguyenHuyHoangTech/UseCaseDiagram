@@ -39,6 +39,13 @@ export const courseData = [
         content: "Tên tốt thường là động từ nghiệp vụ + đối tượng nghiệp vụ.",
         type: "interactive-engine",
         engineId: "naming"
+      },
+      {
+        id: "lesson-mini-project",
+        title: "Mini Project",
+        content: "Xây dựng sơ đồ Use Case đầu tiên cho Online Car Rental Management System.",
+        type: "interactive-engine",
+        engineId: "mini-project"
       }
     ]
   },

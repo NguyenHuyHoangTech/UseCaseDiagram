@@ -57,6 +57,31 @@ export const interactiveLessons: Lesson[] = [
         },
       },
       {
+        id: "intro-01b",
+        title: "Tương tác đầu tiên",
+        story: "Hãy làm quen với việc vẽ sơ đồ. Sơ đồ Use Case hoạt động khi Actor tương tác và kích hoạt Use Case.",
+        instruction: "Nối Sinh viên với mục tiêu Tìm được CLB phù hợp, sau đó bấm Run Diagram.",
+        type: "RUN_DIAGRAM_SCENARIO",
+        data: {
+          systemLabel: "Hệ thống FPTU",
+          actors: [{ id: "student", label: "Sinh viên", kind: "human" }],
+          useCases: [{ id: "find-club", label: "Tìm được CLB phù hợp", icon: "Mục tiêu" }],
+          correctConnections: [c("student", "find-club")],
+          scenarios: [
+            {
+              id: "run-01",
+              title: "Sinh viên đạt mục tiêu",
+              path: ["Sinh viên", "Tìm được CLB phù hợp"],
+              requiredActors: ["student"],
+              requiredUseCases: ["find-club"],
+              requiredConnections: [c("student", "find-club")],
+              feedback: "Chưa nối dây! Hãy kéo từ Sinh viên sang Tìm được CLB phù hợp để hoàn tất đường đi."
+            }
+          ],
+          successSimulation: "Bạn đã vẽ được đường thẳng giao tiếp đầu tiên! Actor Sinh viên giờ đây có thể đạt được mục tiêu."
+        }
+      },
+      {
         id: "intro-02",
         title: "Success Insight",
         type: "INSIGHT",
@@ -755,45 +780,73 @@ export const interactiveLessons: Lesson[] = [
   {
     id: "mini-project",
     title: "Mini Project: Build Your First Use Case Diagram",
-    description: "Xây sơ đồ Use Case đầu tiên cho FPTU Club Management System.",
+    description: "Xây sơ đồ Use Case đầu tiên cho Online Car Rental Management System.",
     steps: [
+      {
+        id: "project-00",
+        title: "Phân tích Requirement",
+        story: "[Business Context] Nhu cầu thuê xe ngắn hạn đang tăng nhưng quy trình truyền thống lại tốn thời gian. Giải pháp đề xuất là xây dựng Online Car Rental System. [Requirements] Khi Khách hàng muốn thuê xe, họ sử dụng hệ thống để Xem danh sách xe, Đặt thuê xe và Thanh toán cọc trực tuyến. Dữ liệu giao dịch được lưu tự động vào bảng Booking_Table. Khi có đơn mới, Nhân viên sẽ thực hiện Xác nhận đơn thuê và Kiểm tra xe khi hoàn trả. Quản trị viên (Admin) chịu trách nhiệm Quản lý tài khoản để hệ thống vận hành trơn tru.",
+        instruction: "Đọc đoạn yêu cầu trên và phân loại các từ khóa vào đúng vùng trước khi bắt tay vào vẽ sơ đồ.",
+        type: "SORT_BLOCKS",
+        data: {
+          zones: [
+            { id: "actor", label: "Actor" },
+            { id: "usecase", label: "Use Case" },
+            { id: "noise", label: "Chi tiết kỹ thuật (Không vẽ)" }
+          ],
+          blocks: [
+            { id: "customer", label: "Khách hàng", correctZoneId: "actor" },
+            { id: "browse", label: "Xem danh sách xe", correctZoneId: "usecase" },
+            { id: "book", label: "Đặt thuê xe", correctZoneId: "usecase" },
+            { id: "pay", label: "Thanh toán cọc", correctZoneId: "usecase" },
+            { id: "db", label: "Bảng Booking_Table", correctZoneId: "noise", feedback: "Table/Database là chi tiết lưu trữ kỹ thuật bên trong, ta sẽ không vẽ nó lên Use Case Diagram.", visualEffect: "backendRoom" },
+            { id: "staff", label: "Nhân viên", correctZoneId: "actor" },
+            { id: "confirm", label: "Xác nhận đơn thuê", correctZoneId: "usecase" },
+            { id: "inspect", label: "Kiểm tra xe", correctZoneId: "usecase" },
+            { id: "admin", label: "Quản trị viên (Admin)", correctZoneId: "actor" },
+            { id: "manage", label: "Quản lý tài khoản", correctZoneId: "usecase" }
+          ],
+          successSimulation: "Bạn đã bóc tách xong yêu cầu! Bây giờ hãy mang các viên gạch này sang bước tiếp theo để ráp thành sơ đồ.",
+          successVisualEffect: "successPath"
+        }
+      },
       {
         id: "project-01",
         title: "Run Diagram Scenario",
-        story: "Xây boundary, đặt actors, đặt use cases, nối actor với use case, rồi chạy 3 scenario.",
+        story: "Xây boundary, đặt actors, đặt use cases, nối actor với use case, rồi chạy 3 scenario kiểm thử.",
         instruction: "Chọn actor, use case và nối các cặp cần thiết. Có thể cố tình nối sai rồi Run để thấy hệ thống dừng ở lỗi.",
         type: "RUN_DIAGRAM_SCENARIO",
         data: {
-          systemLabel: "FPTU Club Management System",
+          systemLabel: "Online Car Rental System",
           actors: [
-            { id: "student", label: "Sinh viên", kind: "human" },
-            { id: "member", label: "Thành viên CLB", kind: "human" },
-            { id: "lead", label: "Ban chủ nhiệm", kind: "human" },
+            { id: "customer", label: "Khách hàng", kind: "human" },
+            { id: "staff", label: "Nhân viên", kind: "human" },
             { id: "admin", label: "Admin", kind: "human" },
-            { id: "time", label: "7:00 mỗi ngày", kind: "time" },
-            { id: "email", label: "Cổng email", kind: "system" },
+            { id: "gateway", label: "Cổng thanh toán", kind: "system" },
           ],
           useCases: [
-            { id: "list", label: "Xem danh sách CLB" },
-            { id: "search", label: "Tìm kiếm thông tin CLB" },
-            { id: "detail", label: "Xem chi tiết CLB" },
-            { id: "internal", label: "Xem hoạt động nội bộ" },
-            { id: "event", label: "Tạo sự kiện" },
-            { id: "approve", label: "Duyệt thông tin CLB" },
-            { id: "send", label: "Gửi email nhắc lịch họp" },
+            { id: "browse", label: "Xem danh sách xe" },
+            { id: "book", label: "Đặt thuê xe" },
+            { id: "pay", label: "Thanh toán cọc" },
+            { id: "confirm", label: "Xác nhận đơn thuê" },
+            { id: "inspect", label: "Kiểm tra xe" },
+            { id: "manage", label: "Quản lý tài khoản" },
           ],
-          distractors: [
-            { id: "table", label: "Club Table" },
-            { id: "controller", label: "SearchClubController" },
-            { id: "button", label: "Button Search" },
+          correctConnections: [
+            c("customer", "browse"), 
+            c("customer", "book"), 
+            c("customer", "pay"), 
+            c("gateway", "pay"),
+            c("staff", "confirm"),
+            c("staff", "inspect"),
+            c("admin", "manage")
           ],
-          correctConnections: [c("student", "list"), c("student", "search"), c("student", "detail"), c("member", "internal"), c("lead", "event"), c("admin", "approve"), c("time", "send"), c("email", "send")],
           scenarios: [
-            { id: "find", title: "Sinh viên tìm CLB", path: ["Sinh viên", "Xem danh sách CLB", "Tìm kiếm thông tin CLB", "Xem chi tiết CLB"], requiredActors: ["student"], requiredUseCases: ["list", "search", "detail"], requiredConnections: [c("student", "list"), c("student", "search"), c("student", "detail")], feedback: "Thiếu luồng Sinh viên xem danh sách, tìm kiếm hoặc xem chi tiết CLB." },
-            { id: "event", title: "Ban chủ nhiệm tạo sự kiện", path: ["Ban chủ nhiệm", "Tạo sự kiện"], requiredActors: ["lead"], requiredUseCases: ["event"], requiredConnections: [c("lead", "event")], feedback: "Ban chủ nhiệm phải được nối với Tạo sự kiện." },
-            { id: "reminder", title: "Tự động gửi nhắc lịch", path: ["7:00 mỗi ngày", "Gửi email nhắc lịch họp", "Cổng email"], requiredActors: ["time", "email"], requiredUseCases: ["send"], requiredConnections: [c("time", "send"), c("email", "send")], feedback: "Scenario tự động cần Time Actor và Cổng email cùng nối với use case gửi email." },
+            { id: "booking", title: "Khách hàng đặt xe", path: ["Khách hàng", "Xem danh sách xe", "Đặt thuê xe", "Thanh toán cọc", "Cổng thanh toán"], requiredActors: ["customer", "gateway"], requiredUseCases: ["browse", "book", "pay"], requiredConnections: [c("customer", "browse"), c("customer", "book"), c("customer", "pay"), c("gateway", "pay")], feedback: "Khách hàng cần xem xe, đặt xe, thanh toán. Nhớ nối Cổng thanh toán vào Use Case thanh toán!" },
+            { id: "staff_duty", title: "Nhân viên làm nhiệm vụ", path: ["Nhân viên", "Xác nhận đơn thuê", "Kiểm tra xe"], requiredActors: ["staff"], requiredUseCases: ["confirm", "inspect"], requiredConnections: [c("staff", "confirm"), c("staff", "inspect")], feedback: "Nhân viên phải được nối với Xác nhận đơn thuê và Kiểm tra xe." },
+            { id: "admin_duty", title: "Admin quản trị", path: ["Admin", "Quản lý tài khoản"], requiredActors: ["admin"], requiredUseCases: ["manage"], requiredConnections: [c("admin", "manage")], feedback: "Admin phải được nối với use case Quản lý tài khoản." },
           ],
-          successSimulation: "Cả 3 scenario chạy thành công. Sơ đồ đầu tiên đã mô tả đúng actor, boundary, use case và association.",
+          successSimulation: "Cả 3 scenario chạy thành công. Sơ đồ đầu tiên đã mô tả chuẩn xác hệ thống Car Rental!",
         },
       },
     ],
