@@ -16,14 +16,14 @@ const JourneyMap = () => {
   useEffect(() => {
     const handleToggle = () => setShowHiddenLessons(prev => !prev);
     const handleProgressUpdate = () => setCompletedLessons(getCompletedLessons());
-    
+
     // Initial load
     setCompletedLessons(getCompletedLessons());
-    
+
     window.addEventListener('toggle-hidden-lessons', handleToggle);
     window.addEventListener('progress-updated', handleProgressUpdate);
     window.addEventListener('storage', handleProgressUpdate);
-    
+
     return () => {
       window.removeEventListener('toggle-hidden-lessons', handleToggle);
       window.removeEventListener('progress-updated', handleProgressUpdate);
@@ -32,8 +32,8 @@ const JourneyMap = () => {
   }, []);
 
   const handleStageClick = (stageId) => {
-    setExpandedStages(prev => 
-      prev.includes(stageId) 
+    setExpandedStages(prev =>
+      prev.includes(stageId)
         ? prev.filter(id => id !== stageId)
         : [...prev, stageId]
     );
@@ -52,11 +52,11 @@ const JourneyMap = () => {
     }}>
       {courseData.map((stage, index) => {
         const isExpanded = expandedStages.includes(stage.id);
-        
+
         // Stage is completed if all its non-hidden lessons are completed
         const visibleLessons = stage.lessons.filter(l => !['lesson-18', 'lesson-19', 'lesson-20'].includes(l.id));
         const isCompleted = visibleLessons.length > 0 && visibleLessons.every(l => completedLessons.includes(l.id));
-        
+
         const isLocked = false; // User requested everything unlocked
         const isCurrent = stage.id === 1 && !isCompleted;
 
@@ -71,7 +71,7 @@ const JourneyMap = () => {
               width: '100%',
               maxWidth: '450px'
             }}>
-              <motion.div 
+              <motion.div
                 whileHover={!isLocked ? { scale: 1.05 } : {}}
                 onClick={() => !isLocked && handleStageClick(stage.id)}
                 style={{
@@ -100,21 +100,21 @@ const JourneyMap = () => {
                     borderRadius: '50%'
                   }} />
                 )}
-                {isCompleted ? <Check color="white" size={32} /> : 
-                 isLocked ? <Lock color="var(--locked-icon)" size={32} /> : 
-                 <div style={{ fontSize: '2rem' }}>🔀</div>}
+                {isCompleted ? <Check color="white" size={32} /> :
+                  isLocked ? <Lock color="var(--locked-icon)" size={32} /> :
+                    <div style={{ fontSize: '2rem' }}>🔀</div>}
               </motion.div>
-              
+
               <div style={{ paddingLeft: '24px', flex: 1 }}>
-                <h3 style={{ 
-                  fontSize: '1.1rem', 
+                <h3 style={{
+                  fontSize: '1.1rem',
                   marginBottom: '4px',
                   color: isLocked ? 'var(--locked-icon)' : 'var(--text-main)'
                 }}>
                   {stage.title}
                 </h3>
-                <p style={{ 
-                  fontSize: '0.9rem', 
+                <p style={{
+                  fontSize: '0.9rem',
                   color: isLocked ? 'var(--locked-icon)' : 'var(--text-muted)'
                 }}>
                   {stage.description}
@@ -135,7 +135,7 @@ const JourneyMap = () => {
                     {stage.lessons.map((lesson, idx) => {
                       const isHiddenLesson = ['lesson-18', 'lesson-19', 'lesson-20'].includes(lesson.id);
                       if (isHiddenLesson && !showHiddenLessons) return null;
-                      
+
                       const isLessonCompleted = completedLessons.includes(lesson.id);
 
                       return (
@@ -153,17 +153,17 @@ const JourneyMap = () => {
                         >
                           {/* Mini vertical connector for lessons */}
                           {idx !== stage.lessons.length - 1 && (
-                             <div style={{
-                               position: 'absolute',
-                               left: '11px',
-                               top: '24px',
-                               bottom: '-36px',
-                               width: '2px',
-                               background: 'var(--connector-color)',
-                               zIndex: 1
-                             }} />
+                            <div style={{
+                              position: 'absolute',
+                              left: '11px',
+                              top: '24px',
+                              bottom: '-36px',
+                              width: '2px',
+                              background: 'var(--connector-color)',
+                              zIndex: 1
+                            }} />
                           )}
-                          
+
                           <div style={{
                             width: '24px',
                             height: '24px',
@@ -181,7 +181,7 @@ const JourneyMap = () => {
                               <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--brand-color)' }} />
                             )}
                           </div>
-                          
+
                           <div style={{ flex: 1, background: 'white', padding: '12px 16px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', border: isLessonCompleted ? '1px solid #b2f2bb' : '1px solid #eee' }}>
                             <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: isLessonCompleted ? 'var(--brand-color)' : 'var(--brand-hover)', marginBottom: '4px' }}>
                               {lesson.title}

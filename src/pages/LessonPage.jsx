@@ -69,7 +69,7 @@ const LessonPage = () => {
     // If it's a standard static lesson, it starts as solved.
     const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
     setMainSolved((lesson.type || isHardcodedInteractive) ? false : true);
-    
+
     // If there is a Spaced Repetition card injected, it starts as unsolved.
     // If not, it starts as solved.
     setSrSolved(srData ? false : true);
@@ -98,9 +98,9 @@ const LessonPage = () => {
     if (interactiveLessonData) {
       return (
         <>
-          <LessonPlayer 
-            lesson={interactiveLessonData} 
-            onBack={() => navigate('/')} 
+          <LessonPlayer
+            lesson={interactiveLessonData}
+            onBack={() => navigate('/')}
             onNextLesson={() => {
               const isNew = markLessonCompleted(lesson.id, 15, 2);
               if (isNew) {
@@ -108,10 +108,10 @@ const LessonPage = () => {
               } else {
                 isLastLesson ? navigate('/') : handleNext();
               }
-            }} 
-            hasNextLesson={!isLastLesson} 
+            }}
+            hasNextLesson={!isLastLesson}
           />
-          <LessonCompleteModal 
+          <LessonCompleteModal
             show={showModal}
             starsGained={15}
             zapsGained={2}
@@ -147,13 +147,13 @@ const LessonPage = () => {
       default:
         // Default text-only lesson fallback
         const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
-        
+
         return (
           <div>
             <p style={{ fontSize: '1.1rem', color: '#495057', lineHeight: 1.8, marginBottom: '30px' }}>
               {lesson.content}
             </p>
-            
+
             {lesson.id === 'lesson-17' && <Lesson17Interactive onFinish={() => setMainSolved(true)} />}
             {lesson.id === 'lesson-18' && <Lesson18Interactive onFinish={() => setMainSolved(true)} />}
             {lesson.id === 'lesson-19' && <Lesson19Interactive onFinish={() => setMainSolved(true)} />}
@@ -193,30 +193,30 @@ const LessonPage = () => {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-color)' }}>
       <Navbar />
-      
+
       {/* Progress Bar Header */}
       <div style={{ width: '100%', height: '4px', background: '#e9ecef', position: 'sticky', top: '72px', zIndex: 90 }}>
-        <div style={{ 
-          width: `${((currentIndex + 1) / allLessons.length) * 100}%`, 
-          height: '100%', 
+        <div style={{
+          width: `${((currentIndex + 1) / allLessons.length) * 100}%`,
+          height: '100%',
           background: 'linear-gradient(90deg, var(--brand-color) 0%, var(--brand-hover) 100%)',
           transition: 'width 0.5s ease-in-out'
         }} />
       </div>
 
-      <main style={{ 
-        flex: 1, 
-        maxWidth: ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id) ? '1200px' : '850px', 
-        width: '100%', 
-        margin: '0 auto', 
+      <main style={{
+        flex: 1,
+        maxWidth: ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id) ? '1200px' : '850px',
+        width: '100%',
+        margin: '0 auto',
         padding: '30px 20px 80px',
         display: 'flex',
         flexDirection: 'column'
       }}>
         {/* Breadcrumb / Stage Info */}
-        <div style={{ 
-          color: 'var(--brand-color)', 
-          fontWeight: 700, 
+        <div style={{
+          color: 'var(--brand-color)',
+          fontWeight: 700,
           fontSize: '0.85rem',
           textTransform: 'uppercase',
           letterSpacing: '1px',
@@ -231,9 +231,9 @@ const LessonPage = () => {
         </div>
 
         {/* Lesson Title */}
-        <h1 style={{ 
-          fontSize: '2rem', 
-          fontWeight: 800, 
+        <h1 style={{
+          fontSize: '2rem',
+          fontWeight: 800,
           color: 'var(--text-main)',
           marginBottom: '24px',
           lineHeight: 1.25,
@@ -268,16 +268,16 @@ const LessonPage = () => {
         )}
 
         {/* Bottom Navigation */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
           marginTop: '20px',
           paddingTop: '20px',
           borderTop: '1px solid #e9ecef'
         }}>
           {/* Back Button */}
-          <button 
+          <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
             style={{
@@ -302,7 +302,7 @@ const LessonPage = () => {
           </button>
 
           {/* Continue / Lock Button */}
-          <button 
+          <button
             onClick={() => {
               if (isFullySolved) {
                 const isNew = markLessonCompleted(lesson.id, 10, 1);
@@ -347,8 +347,8 @@ const LessonPage = () => {
             {isFullySolved && !isLastLesson && <ChevronRight size={20} />}
           </button>
         </div>
-        
-        <LessonCompleteModal 
+
+        <LessonCompleteModal
           show={showModal}
           starsGained={10}
           zapsGained={1}

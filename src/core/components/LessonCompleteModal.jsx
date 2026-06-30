@@ -17,7 +17,7 @@ const LessonCompleteModal = ({ show, starsGained = 10, zapsGained = 1, onContinu
         zIndex: 9999,
         backdropFilter: 'blur(4px)'
       }}>
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.8, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0 }}
@@ -36,26 +36,26 @@ const LessonCompleteModal = ({ show, starsGained = 10, zapsGained = 1, onContinu
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', delay: 0.2 }}
-            style={{ 
-              width: '80px', height: '80px', 
-              background: '#d3f9d8', 
-              borderRadius: '50%', 
+            style={{
+              width: '80px', height: '80px',
+              background: '#d3f9d8',
+              borderRadius: '50%',
               margin: '0 auto 24px',
-              display: 'flex', alignItems: 'center', justifyContent: 'center' 
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}
           >
             <CheckCircle2 size={48} color="#2b8a3e" />
           </motion.div>
-          
+
           <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#2b2254', marginBottom: '8px' }}>
             Bài học hoàn tất!
           </h2>
           <p style={{ color: '#495057', marginBottom: '32px' }}>
             Bạn đã hoàn thành xuất sắc bài học. Dưới đây là phần thưởng của bạn:
           </p>
-          
+
           <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '32px' }}>
-            <motion.div 
+            <motion.div
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
@@ -66,8 +66,8 @@ const LessonCompleteModal = ({ show, starsGained = 10, zapsGained = 1, onContinu
               </div>
               <span style={{ fontWeight: 700, fontSize: '1.2rem', color: '#e67700' }}>+{starsGained}</span>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}
@@ -79,8 +79,8 @@ const LessonCompleteModal = ({ show, starsGained = 10, zapsGained = 1, onContinu
               <span style={{ fontWeight: 700, fontSize: '1.2rem', color: '#f59f00' }}>+{zapsGained}</span>
             </motion.div>
           </div>
-          
-          <button 
+
+          <button
             onClick={onContinue}
             style={{
               width: '100%',
