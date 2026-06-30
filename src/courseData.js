@@ -35,26 +35,31 @@ export const courseData = [
       {
         id: "lesson-5",
         title: "Bài 5: Quan hệ giao tiếp (Association)",
+        type: "usecase-widget",
         content: "Quy tắc nối đường thẳng cơ bản giữa Actor và Use Case. Nguyên tắc: Hai Actor không giao tiếp với nhau trong biểu đồ này."
       },
       {
         id: "lesson-6",
         title: "Bài 6: Quan hệ bắt buộc (<<include>>)",
+        type: "usecase-widget",
         content: "Định nghĩa, cách vẽ mũi tên (chĩa vào Use Case được gọi). Lấy ví dụ minh họa (VD: 'Rút tiền' bắt buộc phải có 'Kiểm tra mã PIN')."
       },
       {
         id: "lesson-7",
         title: "Bài 7: Quan hệ tùy chọn (<<extend>> & Extension Point)",
+        type: "usecase-widget",
         content: "Định nghĩa điều kiện rẽ nhánh, cách vẽ mũi tên (chĩa ngược lại Use Case gốc). Lấy ví dụ minh họa (VD: 'Mua hàng' có tùy chọn 'Áp mã giảm giá')."
       },
       {
         id: "lesson-8",
         title: "Bài 8: Phân biệt <<include>> và <<extend>>",
+        type: "usecase-widget",
         content: "Tổng hợp bảng so sánh điểm khác biệt và soạn 10 tình huống trắc nghiệm để người học tự phân biệt."
       },
       {
         id: "lesson-9",
         title: "Bài 9: Quan hệ kế thừa (Generalization)",
+        type: "usecase-widget",
         content: "Hướng dẫn cách gom nhóm các Actor có chung quyền hạn hoặc các Use Case có chung bản chất."
       }
     ]

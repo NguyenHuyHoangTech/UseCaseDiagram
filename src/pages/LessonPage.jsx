@@ -16,6 +16,7 @@ import BrainGymDashboard from '../components/widgets/BrainGymDashboard';
 import HighlighterWidget from '../components/widgets/HighlighterWidget';
 import DecisionTreeWidget from '../components/widgets/DecisionTreeWidget';
 import SpotErrorWidget from '../components/widgets/SpotErrorWidget';
+import UseCaseWidget from '../components/widgets/UseCaseWidget';
 
 // Import helper
 import { injectSpacedRepetitionQuestion } from '../utils/spacedRepetition';
@@ -90,6 +91,8 @@ const LessonPage = () => {
   // Render the appropriate work area based on lesson type
   const renderWorkspace = () => {
     switch (lesson.type) {
+      case 'usecase-widget':
+        return <UseCaseWidget lesson={lesson} onSolved={setMainSolved} />;
       case 'highlighter':
         return <HighlighterWidget lesson={lesson} onSolved={setMainSolved} />;
       case 'decision-tree':
