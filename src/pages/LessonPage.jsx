@@ -1,27 +1,29 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, CheckCircle2, Lock, HelpCircle } from 'lucide-react';
-import { courseData } from '../courseData';
-import Navbar from '../components/Navbar';
-import Lesson17Interactive from '../components/Lesson17Interactive';
-import Lesson18Interactive from '../components/Lesson18Interactive';
-import Lesson19Interactive from '../components/Lesson19Interactive';
-import LessonPlayer from '../components/lesson/LessonPlayer';
-import { interactiveLessons } from '../components/lessonEngine/lessonData';
+import { courseData } from '../core/courseData';
+import Navbar from '../core/components/Navbar';
+import Lesson17Interactive from '../stages/stage5/Lesson17Interactive';
+import Lesson18Interactive from '../stages/stage5/Lesson18Interactive';
+import Lesson19Interactive from '../stages/stage5/Lesson19Interactive';
+import LessonPlayer from '../stages/stage1/components/LessonPlayer';
+import { interactiveLessons } from '../stages/stage1/engine/lessonData';
+import LessonCompleteModal from '../core/components/LessonCompleteModal';
 
 // Import widgets
-import DragDropWidget from '../components/widgets/DragDropWidget';
-import ReorderWidget from '../components/widgets/ReorderWidget';
-import MultipleChoiceWidget from '../components/widgets/MultipleChoiceWidget';
-import SpacedRepetitionCard from '../components/widgets/SpacedRepetitionCard';
-import BrainGymDashboard from '../components/widgets/BrainGymDashboard';
-import HighlighterWidget from '../components/widgets/HighlighterWidget';
-import DecisionTreeWidget from '../components/widgets/DecisionTreeWidget';
-import SpotErrorWidget from '../components/widgets/SpotErrorWidget';
-import Level1AssociationWidget from '../components/widgets/Level1AssociationWidget';
+import DragDropWidget from '../stages/stage4/DragDropWidget';
+import ReorderWidget from '../stages/stage4/ReorderWidget';
+import MultipleChoiceWidget from '../stages/stage4/MultipleChoiceWidget';
+import SpacedRepetitionCard from '../stages/stage4/SpacedRepetitionCard';
+import BrainGymDashboard from '../stages/stage4/BrainGymDashboard';
+import HighlighterWidget from '../stages/stage3/HighlighterWidget';
+import DecisionTreeWidget from '../stages/stage3/DecisionTreeWidget';
+import SpotErrorWidget from '../stages/stage3/SpotErrorWidget';
+import Level1AssociationWidget from '../stages/stage2/Level1AssociationWidget';
 
 // Import helper
-import { injectSpacedRepetitionQuestion } from '../utils/spacedRepetition';
+import { injectSpacedRepetitionQuestion } from '../core/utils/spacedRepetition';
+import { markLessonCompleted } from '../core/utils/progress';
 
 const LessonPage = () => {
   const { id } = useParams();
@@ -59,6 +61,7 @@ const LessonPage = () => {
   // Solved states
   const [mainSolved, setMainSolved] = useState(false);
   const [srSolved, setSrSolved] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   // Reset solved states when the lesson ID changes
   useEffect(() => {
@@ -94,12 +97,30 @@ const LessonPage = () => {
     const interactiveLessonData = interactiveLessons.find(l => l.id === lesson.engineId);
     if (interactiveLessonData) {
       return (
-        <LessonPlayer 
-          lesson={interactiveLessonData} 
-          onBack={() => navigate('/')} 
-          onNextLesson={isLastLesson ? () => navigate('/') : handleNext} 
-          hasNextLesson={!isLastLesson} 
-        />
+        <>
+          <LessonPlayer 
+            lesson={interactiveLessonData} 
+            onBack={() => navigate('/')} 
+            onNextLesson={() => {
+              const isNew = markLessonCompleted(lesson.id, 15, 2);
+              if (isNew) {
+                setShowModal(true);
+              } else {
+                isLastLesson ? navigate('/') : handleNext();
+              }
+            }} 
+            hasNextLesson={!isLastLesson} 
+          />
+          <LessonCompleteModal 
+            show={showModal}
+            starsGained={15}
+            zapsGained={2}
+            onContinue={() => {
+              setShowModal(false);
+              isLastLesson ? navigate('/') : handleNext();
+            }}
+          />
+        </>
       );
     }
   }
@@ -282,7 +303,16 @@ const LessonPage = () => {
 
           {/* Continue / Lock Button */}
           <button 
-            onClick={isLastLesson ? () => navigate('/') : handleNext}
+            onClick={() => {
+              if (isFullySolved) {
+                const isNew = markLessonCompleted(lesson.id, 10, 1);
+                if (isNew) {
+                  setShowModal(true);
+                } else {
+                  isLastLesson ? navigate('/') : handleNext();
+                }
+              }
+            }}
             disabled={!isFullySolved}
             style={{
               padding: '14px 36px',
@@ -317,6 +347,16 @@ const LessonPage = () => {
             {isFullySolved && !isLastLesson && <ChevronRight size={20} />}
           </button>
         </div>
+        
+        <LessonCompleteModal 
+          show={showModal}
+          starsGained={10}
+          zapsGained={1}
+          onContinue={() => {
+            setShowModal(false);
+            isLastLesson ? navigate('/') : handleNext();
+          }}
+        />
       </main>
     </div>
   );

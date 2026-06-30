@@ -1,6 +1,36 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { courseData } from '../courseData';
+import { getCompletedLessons } from '../utils/progress';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleContinue = () => {
+    const completed = getCompletedLessons();
+    
+    // Flatten all lessons
+    const allLessons = [];
+    courseData.forEach(stage => {
+      stage.lessons.forEach(lesson => {
+        // Skip hidden lessons
+        if (!['lesson-18', 'lesson-19', 'lesson-20'].includes(lesson.id)) {
+          allLessons.push(lesson);
+        }
+      });
+    });
+
+    // Find first uncompleted
+    const nextLesson = allLessons.find(l => !completed.includes(l.id));
+    
+    if (nextLesson) {
+      navigate(`/lesson/${nextLesson.id}`);
+    } else if (allLessons.length > 0) {
+      // If all completed, just go to first lesson
+      navigate(`/lesson/${allLessons[0].id}`);
+    }
+  };
+
   return (
     <header style={{
       textAlign: 'center',
@@ -21,7 +51,9 @@ const Hero = () => {
       }}>
         Học cách phân tích hệ thống như một kỹ sư thực thụ thông qua các thử thách tương tác trực quan.
       </p>
-      <button style={{
+      <button 
+        onClick={handleContinue}
+        style={{
         backgroundColor: 'var(--brand-color)',
         color: 'white',
         border: 'none',
@@ -44,7 +76,7 @@ const Hero = () => {
         e.currentTarget.style.boxShadow = '0 4px 12px rgba(18, 184, 134, 0.3)';
       }}
       >
-        Tiếp tục • Chặng 1
+        Tiếp tục học
       </button>
     </header>
   );

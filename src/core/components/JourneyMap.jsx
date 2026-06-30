@@ -3,18 +3,32 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Lock, ChevronDown, PlayCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { courseData } from '../courseData';
+import { getCompletedLessons } from '../utils/progress';
 
 const JourneyMap = () => {
   // Keep track of which stages are expanded. 
   // By default, expand all stages so the user can see all lessons.
   const [expandedStages, setExpandedStages] = useState(courseData.map(s => s.id));
   const [showHiddenLessons, setShowHiddenLessons] = useState(false);
+  const [completedLessons, setCompletedLessons] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleToggle = () => setShowHiddenLessons(prev => !prev);
+    const handleProgressUpdate = () => setCompletedLessons(getCompletedLessons());
+    
+    // Initial load
+    setCompletedLessons(getCompletedLessons());
+    
     window.addEventListener('toggle-hidden-lessons', handleToggle);
-    return () => window.removeEventListener('toggle-hidden-lessons', handleToggle);
+    window.addEventListener('progress-updated', handleProgressUpdate);
+    window.addEventListener('storage', handleProgressUpdate);
+    
+    return () => {
+      window.removeEventListener('toggle-hidden-lessons', handleToggle);
+      window.removeEventListener('progress-updated', handleProgressUpdate);
+      window.removeEventListener('storage', handleProgressUpdate);
+    };
   }, []);
 
   const handleStageClick = (stageId) => {
@@ -38,9 +52,13 @@ const JourneyMap = () => {
     }}>
       {courseData.map((stage, index) => {
         const isExpanded = expandedStages.includes(stage.id);
-        const isCompleted = stage.id < 1; // Logic placeholder
-        const isLocked = stage.id > 5; // Logic placeholder
-        const isCurrent = stage.id === 1;
+        
+        // Stage is completed if all its non-hidden lessons are completed
+        const visibleLessons = stage.lessons.filter(l => !['lesson-18', 'lesson-19', 'lesson-20'].includes(l.id));
+        const isCompleted = visibleLessons.length > 0 && visibleLessons.every(l => completedLessons.includes(l.id));
+        
+        const isLocked = false; // User requested everything unlocked
+        const isCurrent = stage.id === 1 && !isCompleted;
 
         return (
           <React.Fragment key={stage.id}>
@@ -117,6 +135,8 @@ const JourneyMap = () => {
                     {stage.lessons.map((lesson, idx) => {
                       const isHiddenLesson = ['lesson-18', 'lesson-19', 'lesson-20'].includes(lesson.id);
                       if (isHiddenLesson && !showHiddenLessons) return null;
+                      
+                      const isLessonCompleted = completedLessons.includes(lesson.id);
 
                       return (
                         <motion.div
@@ -148,18 +168,22 @@ const JourneyMap = () => {
                             width: '24px',
                             height: '24px',
                             borderRadius: '50%',
-                            background: 'white',
+                            background: isLessonCompleted ? 'var(--brand-color)' : 'white',
                             border: '2px solid var(--brand-color)',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
                             zIndex: 2
                           }}>
-                            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--brand-color)' }} />
+                            {isLessonCompleted ? (
+                              <Check size={14} color="white" strokeWidth={3} />
+                            ) : (
+                              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--brand-color)' }} />
+                            )}
                           </div>
                           
-                          <div style={{ flex: 1, background: 'white', padding: '12px 16px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', border: '1px solid #eee' }}>
-                            <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--brand-hover)', marginBottom: '4px' }}>
+                          <div style={{ flex: 1, background: 'white', padding: '12px 16px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)', border: isLessonCompleted ? '1px solid #b2f2bb' : '1px solid #eee' }}>
+                            <h4 style={{ fontSize: '0.95rem', fontWeight: 600, color: isLessonCompleted ? 'var(--brand-color)' : 'var(--brand-hover)', marginBottom: '4px' }}>
                               {lesson.title}
                             </h4>
                             <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>

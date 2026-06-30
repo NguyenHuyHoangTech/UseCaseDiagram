@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Award, ShieldCheck, Flame, Star, Zap, CheckCircle, RefreshCw, Sparkles, HelpCircle } from 'lucide-react';
-import { injectSpacedRepetitionQuestion } from '../../utils/spacedRepetition';
+import { injectSpacedRepetitionQuestion } from '../../core/utils/spacedRepetition';
 
 const BrainGymDashboard = ({ onSolved }) => {
   // Collect all three Spaced Repetition questions
