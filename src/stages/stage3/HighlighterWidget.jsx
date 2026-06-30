@@ -66,9 +66,9 @@ const HighlighterWidget = ({ lesson, onSolved }) => {
 
   // Styling maps
   const modes = [
-    { id: 'actor', label: 'Actor (Tác nhân)', color: '#228be6', bg: '#e7f5ff', icon: <User size={16} /> },
-    { id: 'usecase', label: 'Use Case (Chức năng)', color: '#40c057', bg: '#ebfbee', icon: <Settings size={16} /> },
-    { id: 'noise', label: 'Lọc Nhiễu (Chi tiết kỹ thuật)', color: '#fd7e14', bg: '#fff4e6', icon: <EyeOff size={16} /> }
+    { id: 'actor', label: 'Actor', color: '#228be6', bg: '#e7f5ff', icon: <User size={16} /> },
+    { id: 'usecase', label: 'Use Case', color: '#40c057', bg: '#ebfbee', icon: <Settings size={16} /> },
+    { id: 'noise', label: 'Noise (Technical Detail)', color: '#fd7e14', bg: '#fff4e6', icon: <EyeOff size={16} /> }
   ];
 
   const getHighlightStyle = (type) => {
@@ -90,7 +90,7 @@ const HighlighterWidget = ({ lesson, onSolved }) => {
       {/* Interactive Toolbar Brush Selectors */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-          🖌️ Chọn cọ tô màu phân tích:
+          🖌️ Select highlight brush:
         </span>
         
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -173,7 +173,7 @@ const HighlighterWidget = ({ lesson, onSolved }) => {
               transition: 'all 0.2s ease'
             }}
           >
-            Làm lại
+            Retry
           </button>
         )}
         
@@ -192,7 +192,7 @@ const HighlighterWidget = ({ lesson, onSolved }) => {
               transition: 'all 0.2s'
             }}
           >
-            Kiểm tra kết quả
+            Check result
           </button>
         )}
       </div>
@@ -226,23 +226,23 @@ const HighlighterWidget = ({ lesson, onSolved }) => {
                   marginBottom: '8px'
                 }}>
                   {isCorrect 
-                    ? 'Xuất sắc! Bạn đã trích xuất từ khóa cực kỳ chính xác! 🌟 (+5 Stars, +2 Zaps)' 
-                    : 'Phân tích chưa hoàn toàn chính xác rồi!'}
+                    ? 'Excellent! You extracted the keywords perfectly! 🌟 (+5 Stars, +2 Zaps)' 
+                    : 'The analysis is not quite right!'}
                 </h4>
                 
                 <p style={{ color: '#495057', fontSize: '0.95rem', lineHeight: 1.6 }}>
                   {isCorrect ? (
                     <>
-                      Bạn đã gạch chân đúng các yếu tố cốt lõi:
+                      You have correctly highlighted the core elements:
                       <ul style={{ paddingLeft: '20px', margin: '8px 0', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <li>• <strong>Actor (Xanh dương):</strong> <code>Kế toán trưởng</code> (Ai tương tác với hệ thống?).</li>
-                        <li>• <strong>Use Case (Xanh lá):</strong> <code>xuất báo cáo tài chính</code> (Mục tiêu nghiệp vụ của Actor là gì?).</li>
-                        <li>• <strong>Nhiễu/Chi tiết kỹ thuật (Cam):</strong> Các thông tin như <code>bằng tài khoản công ty</code> (chi tiết bảo mật), <code>dưới dạng file PDF</code> (định dạng đầu ra), <code>Arial font</code> (giao diện), và <code>Oracle database</code> (công nghệ lưu trữ).</li>
+                        <li>• <strong>Actor (Blue):</strong> <code>Chief Accountant</code> (Who interacts with the system?).</li>
+                        <li>• <strong>Use Case (Green):</strong> <code>export financial reports</code> (What is the Actor's business goal?).</li>
+                        <li>• <strong>Noise/Technical Details (Orange):</strong> Information like <code>using company account</code> (security detail), <code>as a PDF file</code> (output format), <code>Arial font</code> (UI), and <code>Oracle database</code> (storage technology).</li>
                       </ul>
-                      <strong>Bài học rút ra:</strong> Biểu đồ Use Case chỉ mô tả <strong>Hệ thống làm ĐƯỢC gì (What)</strong> từ góc nhìn nghiệp vụ của người dùng. Hãy lọc bỏ hoàn toàn các ràng buộc phi chức năng, công nghệ, hoặc giao diện cụ thể vì chúng thuộc về khâu thiết kế chi tiết (How)!
+                      <strong>Lesson learned:</strong> A Use Case diagram only describes <strong>WHAT the system can do</strong> from a user's business perspective. Filter out non-functional requirements, technology, or specific UI details, as they belong to the detailed design phase (HOW)!
                     </>
                   ) : (
-                    'Gợi ý: Hãy xem lại các vùng màu cam (nhiễu). Nhớ rằng font chữ (Arial), định dạng file (PDF), loại cơ sở dữ liệu (Oracle) hay phương thức đăng nhập (bằng tài khoản công ty) đều là chi tiết triển khai công nghệ (How) chứ không phải chức năng nghiệp vụ của hệ thống (What). Hãy tô màu lại và kiểm tra!'
+                    'Hint: Review the orange (noise) areas. Remember that font (Arial), file format (PDF), database type (Oracle), or login method (company account) are technical implementation details (HOW) and not the system\'s business features (WHAT). Re-highlight and check again!'
                   )}
                 </p>
               </div>

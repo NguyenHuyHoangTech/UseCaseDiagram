@@ -19,63 +19,63 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
 
   const levelData = {
     1: {
-      heading: 'Khách hàng tương tác',
-      desc: 'Hệ thống cần người kích hoạt. Hãy chọn đường nối đúng.',
+      heading: 'Interacting Customer',
+      desc: 'The system needs someone to trigger it. Please choose the correct connection line.',
       flows: [
         {
           id: 'f1',
           nodes: [
-            { id: 'n1', type: 'Actor', text: 'Khách Hàng', icon: <User size={40} color="#a78bfa" /> },
-            { id: 'n2', type: 'Use Case', text: 'Xem Menu', icon: <Search size={24} color="#93c5fd" /> }
+            { id: 'n1', type: 'Actor', text: 'Customer', icon: <User size={40} color="#a78bfa" /> },
+            { id: 'n2', type: 'Use Case', text: 'View Menu', icon: <Search size={24} color="#93c5fd" /> }
           ],
           zones: { z1: { correct: 'association', lineStyle: 'solid', arrowDir: 'none' } }
         }
       ],
-      defaultWhy: 'Chưa đúng! Tương tác cơ bản giữa Người (Actor) và Chức năng (Use Case) phải dùng Giao tiếp (Association)!',
-      successText: 'Chính xác! Actor và Use Case tương tác trực tiếp luôn được nối bằng đường nét liền.'
+      defaultWhy: 'Incorrect! Basic interaction between a Person (Actor) and a Feature (Use Case) must use Association!',
+      successText: 'Exactly! Actors and Use Cases interacting directly are always connected by a solid line.'
     },
     2: {
-      heading: 'Rút tiền ở cây ATM',
-      desc: 'Để rút được tiền, hệ thống BẮT BUỘC phải kiểm tra mã PIN.',
+      heading: 'Withdrawing Money at ATM',
+      desc: 'To withdraw money, the system MUST check the PIN.',
       flows: [
         {
           id: 'f1',
           nodes: [
-            { id: 'n1', type: 'Use Case', text: 'Rút Tiền', icon: <CreditCard size={24} color="#93c5fd" /> },
-            { id: 'n2', type: 'Use Case', text: 'Kiểm Tra Mã PIN', icon: <Key size={24} color="#f87171" /> }
+            { id: 'n1', type: 'Use Case', text: 'Withdraw Money', icon: <CreditCard size={24} color="#93c5fd" /> },
+            { id: 'n2', type: 'Use Case', text: 'Check PIN', icon: <Key size={24} color="#f87171" /> }
           ],
           zones: { z1: { correct: 'include', lineStyle: 'dashed', arrowDir: 'right' } }
         }
       ],
-      defaultWhy: 'Khoan đã! Nếu không nhập đúng PIN thì sao máy nhả tiền được? Phải dùng <<include>> (Bắt buộc).',
-      successText: 'Tuyệt vời! Lệnh <<include>> chĩa vào "Kiểm tra mã PIN" báo hiệu hành động này là bắt buộc!'
+      defaultWhy: 'Wait! How can the machine dispense money without a correct PIN? You must use <<include>> (Mandatory).',
+      successText: 'Great! The <<include>> pointing to "Check PIN" signals that this action is mandatory!'
     },
     3: {
-      heading: 'Mua hàng & Áp mã giảm giá',
-      desc: 'Hệ thống có tính năng "Áp mã giảm giá" nhưng đây là tùy chọn.',
+      heading: 'Buy & Apply Discount Code',
+      desc: 'The system has an "Apply Discount" feature, but it is optional.',
       flows: [
         {
           id: 'f1',
           nodes: [
-            { id: 'n1', type: 'Use Case', text: 'Mua Hàng', icon: <ShoppingCart size={24} color="#93c5fd" /> },
-            { id: 'n2', type: 'Use Case', text: 'Áp Mã Giảm Giá', icon: <Ticket size={24} color="#fcd34d" /> }
+            { id: 'n1', type: 'Use Case', text: 'Buy Items', icon: <ShoppingCart size={24} color="#93c5fd" /> },
+            { id: 'n2', type: 'Use Case', text: 'Apply Discount', icon: <Ticket size={24} color="#fcd34d" /> }
           ],
           zones: { z1: { correct: 'extend', lineStyle: 'dashed', arrowDir: 'left' } }
         }
       ],
-      defaultWhy: 'Không chính xác! "Áp mã" chỉ là phần mở rộng. Phải dùng <<extend>> (Tùy chọn) đâm ngược về chức năng gốc!',
-      successText: 'Chuẩn không cần chỉnh! Lệnh <<extend>> chĩa mũi tên NGƯỢC về chức năng gốc chính là quy tắc ăn điểm!'
+      defaultWhy: 'Incorrect! "Apply Discount" is just an extension. You must use <<extend>> (Optional) pointing back to the base feature!',
+      successText: 'Spot on! The <<extend>> arrow pointing BACK to the base feature is the key rule here!'
     },
     4: {
-      heading: 'So sánh luồng Đặt xe Grab',
-      desc: 'Phân biệt rõ cái nào bắt buộc, cái nào tùy chọn bằng cách lấp đầy 4 khoảng trống.',
+      heading: 'Comparing Grab Booking Flows',
+      desc: 'Clearly distinguish what is mandatory and what is optional by filling in the 4 gaps.',
       flows: [
         {
           id: 'flow1',
           nodes: [
-            { id: 'n1', type: 'Actor', text: 'Khách Hàng', icon: <User size={40} color="#a78bfa" /> },
-            { id: 'n2', type: 'Use Case', text: 'Đặt Xe', icon: <Car size={24} color="#93c5fd" /> },
-            { id: 'n3', type: 'Use Case', text: 'Chọn Điểm Đến', icon: <MapPin size={24} color="#f87171" /> }
+            { id: 'n1', type: 'Actor', text: 'Customer', icon: <User size={40} color="#a78bfa" /> },
+            { id: 'n2', type: 'Use Case', text: 'Book Ride', icon: <Car size={24} color="#93c5fd" /> },
+            { id: 'n3', type: 'Use Case', text: 'Choose Destination', icon: <MapPin size={24} color="#f87171" /> }
           ],
           zones: {
             z1: { correct: 'association', lineStyle: 'solid', arrowDir: 'none' },
@@ -85,9 +85,9 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
         {
           id: 'flow2',
           nodes: [
-            { id: 'n4', type: 'Actor', text: 'Khách Hàng', icon: <User size={40} color="#a78bfa" /> },
-            { id: 'n5', type: 'Use Case', text: 'Đánh Giá', icon: <Star size={24} color="#93c5fd" /> },
-            { id: 'n6', type: 'Use Case', text: 'Gửi Tiền Tip', icon: <Heart size={24} color="#fcd34d" /> }
+            { id: 'n4', type: 'Actor', text: 'Customer', icon: <User size={40} color="#a78bfa" /> },
+            { id: 'n5', type: 'Use Case', text: 'Rate Trip', icon: <Star size={24} color="#93c5fd" /> },
+            { id: 'n6', type: 'Use Case', text: 'Send Tip', icon: <Heart size={24} color="#fcd34d" /> }
           ],
           zones: {
             z3: { correct: 'association', lineStyle: 'solid', arrowDir: 'none' },
@@ -95,33 +95,33 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
           }
         }
       ],
-      defaultWhy: 'Lệnh kéo vào chưa hợp lý! Hãy so sánh kỹ tính bắt buộc/tùy chọn nhé.',
+      defaultWhy: 'Invalid connection! Please compare mandatory vs optional closely.',
       customErrors: {
-        z1: { 'include': 'Actor không thể dùng include!', 'extend': 'Actor không dùng extend!', 'generalization': 'Sai rồi! Khách hàng và Đặt xe không cùng loại.' },
-        z2: { 'association': 'Hai Use Case gọi nhau phải dùng nét đứt!', 'extend': 'Đặt xe mà không có điểm đến thì xe chạy đi đâu? Đây là bắt buộc!', 'generalization': 'Sai rồi! Đặt xe không phải là Kế thừa của Chọn điểm đến.' },
-        z3: { 'include': 'Actor không thể dùng include!', 'extend': 'Actor không dùng extend!', 'generalization': 'Sai rồi! Khách hàng và Đánh giá không cùng loại.' },
-        z4: { 'association': 'Hai Use Case gọi nhau phải dùng nét đứt!', 'include': 'Tip tiền là tùy tâm, không bắt buộc! Phải dùng <<extend>>.', 'generalization': 'Sai rồi! Gửi tiền tip không kế thừa Đánh giá.' }
+        z1: { 'include': 'Actors cannot use include!', 'extend': 'Actors do not use extend!', 'generalization': 'Wrong! Customer and Book Ride are not the same type.' },
+        z2: { 'association': 'Two Use Cases calling each other must use dashed lines!', 'extend': 'If you book a ride without a destination, where will it go? This is mandatory!', 'generalization': 'Wrong! Book Ride does not inherit from Choose Destination.' },
+        z3: { 'include': 'Actors cannot use include!', 'extend': 'Actors do not use extend!', 'generalization': 'Wrong! Customer and Rating are not the same type.' },
+        z4: { 'association': 'Two Use Cases calling each other must use dashed lines!', 'include': 'Tipping is optional! You must use <<extend>>.', 'generalization': 'Wrong! Send Tip does not inherit from Rating.' }
       },
-      successText: 'Quá đỉnh! Nhìn vào sơ đồ, bạn đã tự phân biệt được ngay sự khác nhau cốt lõi giữa Include và Extend rồi đấy!'
+      successText: 'Awesome! Looking at the diagram, you can easily distinguish the core difference between Include and Extend!'
     },
     5: {
-      heading: 'Gom nhóm đối tượng',
-      desc: 'Khách hàng VIP bản chất vẫn là một Khách hàng. Hãy dùng lệnh Kế thừa để gom nhóm chúng lại.',
+      heading: 'Grouping Objects',
+      desc: 'A VIP Customer is still fundamentally a Customer. Use Generalization to group them.',
       flows: [
         {
           id: 'f1',
           nodes: [
-            { id: 'n1', type: 'Actor', text: 'Khách Hàng VIP', icon: <Crown size={40} color="#fcd34d" /> },
-            { id: 'n2', type: 'Actor', text: 'Khách Hàng', icon: <User size={40} color="#a78bfa" /> }
+            { id: 'n1', type: 'Actor', text: 'VIP Customer', icon: <Crown size={40} color="#fcd34d" /> },
+            { id: 'n2', type: 'Actor', text: 'Customer', icon: <User size={40} color="#a78bfa" /> }
           ],
           zones: { z1: { correct: 'generalization', lineStyle: 'solid', arrowDir: 'right' } }
         }
       ],
-      defaultWhy: 'Sai rồi! Hai Actor (người dùng) có chung tính chất thì phải dùng quan hệ Kế thừa (Generalization) đâm mũi tên về đối tượng gốc nhé!',
+      defaultWhy: 'Wrong! If two Actors have common traits, use Generalization pointing towards the base object!',
       customErrors: {
-        z1: { 'association': 'Đường thẳng chỉ dùng nối Người với Chức năng. Đây là 2 người mà!', 'include': 'Include không dùng cho Actor!', 'extend': 'Extend không dùng cho Actor!' }
+        z1: { 'association': 'Solid lines only connect People to Features. These are 2 people!', 'include': 'Include is not for Actors!', 'extend': 'Extend is not for Actors!' }
       },
-      successText: 'Hoàn hảo! Mũi tên Kế thừa (Hollow Triangle) đâm vào "Khách Hàng" có nghĩa là: VIP được hưởng toàn bộ quyền lợi của Khách hàng thường!'
+      successText: 'Perfect! The Generalization arrow (Hollow Triangle) pointing to "Customer" means: VIP gets all privileges of a regular Customer!'
     }
   };
 
@@ -185,7 +185,7 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
         
         <div style={{ position: 'absolute', top: '10px', right: '0', display: 'flex', gap: '10px' }}>
           <button onClick={resetLevel} style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 12px', backgroundColor: '#1f293d', color: '#9ca3af', border: '1px solid #374151', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
-            <RotateCcw size={16} /> Làm lại
+            <RotateCcw size={16} /> Retry
           </button>
         </div>
       </div>
@@ -229,7 +229,7 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
                               onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, zoneId)}
                               style={{ width: '100%', height: '100%', border: errorZone === zoneId ? '2px dashed #ef4444' : '2px dashed #374151', borderRadius: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center', color: errorZone === zoneId ? '#ef4444' : '#6b7280', backgroundColor: '#1f293d', transform: errorZone === zoneId ? 'translateX(5px)' : 'none', transition: 'all 0.2s', animation: errorZone === zoneId ? 'shake 0.4s' : 'none', fontSize: '13px' }}
                             >
-                              {errorZone === zoneId ? 'Sai lệnh!' : 'Thả lệnh vào đây'}
+                              {errorZone === zoneId ? 'Wrong connection!' : 'Drop connection here'}
                             </div>
                           ) : (
                             <motion.div initial={{ width: 0, opacity: 0 }} animate={{ width: '100%', opacity: 1 }} transition={{ duration: 0.5, ease: "easeOut" }} style={{ width: '100%', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottom: zoneConfig.lineStyle === 'solid' ? '4px solid #10b981' : '3px dashed #10b981' }}>
@@ -274,12 +274,12 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
       <div style={{ maxWidth: '900px', margin: '60px auto 0 auto', display: 'flex', gap: '30px' }}>
         
         <div style={{ flex: 1.2 }}>
-          <h3 style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '15px' }}>Kho lệnh (Kéo thả vào sơ đồ):</h3>
+          <h3 style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '15px' }}>Connections (Drag and drop into diagram):</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
             
             <div draggable onDragStart={(e) => handleDragStart(e, 'association')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', display: 'flex', flexDirection: 'column', gap: '5px' }}>
               <div style={{ width: '40px', height: '3px', backgroundColor: '#cbd5e1' }}></div>
-              <span style={{ fontWeight: 'bold', color: '#f8fafc', fontSize: '13px' }}>Giao tiếp</span>
+              <span style={{ fontWeight: 'bold', color: '#f8fafc', fontSize: '13px' }}>Association</span>
             </div>
             
             <div draggable onDragStart={(e) => handleDragStart(e, 'include')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', display: 'flex', flexDirection: 'column', gap: '5px' }}>
@@ -303,7 +303,7 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
                 <div style={{ width: '30px', height: '2px', backgroundColor: '#fcd34d' }}></div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#1f293d" stroke="#fcd34d" strokeWidth="2" style={{ marginLeft: '-2px' }}><polygon points="6 5 18 12 6 19" /></svg>
               </div>
-              <span style={{ fontWeight: 'bold', color: '#fcd34d', fontSize: '13px' }}>Kế thừa</span>
+              <span style={{ fontWeight: 'bold', color: '#fcd34d', fontSize: '13px' }}>Generalization</span>
             </div>
           </div>
         </div>
@@ -313,13 +313,13 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
              {showWhy && !isSuccess && (
                <motion.div key="error" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, scale: 0.9 }} style={{ padding: '20px', backgroundColor: '#312e81', border: '1px solid #4338ca', borderRadius: '12px', display: 'flex', gap: '15px' }}>
                  <HelpCircle size={30} color="#818cf8" style={{ flexShrink: 0 }} />
-                 <div><h4 style={{ margin: '0 0 5px 0', color: '#c7d2fe' }}>Koji Bot nói:</h4><p style={{ margin: 0, color: '#e0e7ff', fontSize: '14px', lineHeight: '1.5' }}>{whyText}</p></div>
+                 <div><h4 style={{ margin: '0 0 5px 0', color: '#c7d2fe' }}>Koji Bot says:</h4><p style={{ margin: 0, color: '#e0e7ff', fontSize: '14px', lineHeight: '1.5' }}>{whyText}</p></div>
                </motion.div>
              )}
              {isSuccess && (
                <motion.div key="success" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, scale: 0.9 }} style={{ padding: '20px', backgroundColor: '#064e3b', border: '1px solid #059669', borderRadius: '12px', display: 'flex', gap: '15px' }}>
                  <CheckCircle size={30} color="#34d399" style={{ flexShrink: 0 }} />
-                 <div><h4 style={{ margin: '0 0 5px 0', color: '#a7f3d0' }}>Bài học rút ra:</h4><p style={{ margin: 0, color: '#d1fae5', fontSize: '14px', lineHeight: '1.5' }}>{current.successText}</p></div>
+                 <div><h4 style={{ margin: '0 0 5px 0', color: '#a7f3d0' }}>Lesson learned:</h4><p style={{ margin: 0, color: '#d1fae5', fontSize: '14px', lineHeight: '1.5' }}>{current.successText}</p></div>
                </motion.div>
              )}
            </AnimatePresence>

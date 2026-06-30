@@ -94,8 +94,8 @@ const BrainGymDashboard = ({ onSolved }) => {
             <Flame size={24} color="#f76707" fill="#f76707" />
           </div>
           <div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Chuỗi học tập</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#f76707' }}>{streak} Ngày</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Study Streak</div>
+            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#f76707' }}>{streak} Days</div>
           </div>
         </div>
 
@@ -105,7 +105,7 @@ const BrainGymDashboard = ({ onSolved }) => {
             <Star size={24} color="#fcc419" fill="#fcc419" />
           </div>
           <div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Sao tích lũy</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Total Stars</div>
             <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#e67700' }}>{totalStars} ⭐</div>
           </div>
         </div>
@@ -116,7 +116,7 @@ const BrainGymDashboard = ({ onSolved }) => {
             <Zap size={24} color="#339af0" fill="#339af0" />
           </div>
           <div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Năng lượng</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Energy</div>
             <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1c7ed6' }}>{totalZaps} Zaps</div>
           </div>
         </div>
@@ -229,7 +229,7 @@ const BrainGymDashboard = ({ onSolved }) => {
                       marginBottom: '24px'
                     }}>
                       <h5 style={{ fontWeight: 800, color: isCorrect ? '#2b8a3e' : '#c92a2a', fontSize: '0.95rem', marginBottom: '6px' }}>
-                        {isCorrect ? 'Chính xác! Củng cố kiến thức tốt.' : 'Sai mất rồi! Hãy xem lời giải thích bên dưới.'}
+                        {isCorrect ? 'Correct! Good knowledge reinforcement.' : 'Incorrect! Please check the explanation below.'}
                       </h5>
                       <p style={{ fontSize: '0.9rem', color: '#495057', lineHeight: 1.5 }}>
                         {reviewQuestions[currentIdx].explanation}
@@ -252,7 +252,7 @@ const BrainGymDashboard = ({ onSolved }) => {
                         float: 'right'
                       }}
                     >
-                      {currentIdx === reviewQuestions.length - 1 ? 'Hoàn tất ôn tập' : 'Câu tiếp theo'}
+                      {currentIdx === reviewQuestions.length - 1 ? 'Finish Review' : 'Next Question'}
                       <Sparkles size={16} />
                     </button>
                   </motion.div>
@@ -287,12 +287,12 @@ const BrainGymDashboard = ({ onSolved }) => {
               </div>
 
               <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#2b2254', marginBottom: '12px' }}>
-                Chúc mừng! Bạn đã hoàn thành Brain Gym! 🏆
+                Congratulations! You have completed the Brain Gym! 🏆
               </h2>
               
               <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '500px', marginBottom: '24px', lineHeight: 1.6 }}>
-                Bạn đã hoàn thành xuất sắc chuỗi bài tập lặp lại ngắt quãng củng cố quan hệ <strong>&lt;&lt;include&gt;&gt;</strong> và <strong>&lt;&lt;extend&gt;&gt;</strong>. <br/>
-                Hiệu suất của bạn: <strong>{score}/{reviewQuestions.length} ({Math.round((score/reviewQuestions.length)*100)}%)</strong>.
+                You have successfully completed the spaced repetition exercise series reinforcing <strong>&lt;&lt;include&gt;&gt;</strong> and <strong>&lt;&lt;extend&gt;&gt;</strong> relationships. <br/>
+                Your performance: <strong>{score}/{reviewQuestions.length} ({Math.round((score/reviewQuestions.length)*100)}%)</strong>.
               </p>
 
               <div style={{
@@ -309,7 +309,7 @@ const BrainGymDashboard = ({ onSolved }) => {
                 marginBottom: '32px'
               }}>
                 <CheckCircle size={20} />
-                Đã nhận phần thưởng Mastery: +10 Stars & +5 Zaps!
+                Received Mastery reward: +10 Stars & +5 Zaps!
               </div>
 
               <div style={{ display: 'flex', gap: '16px' }}>
@@ -328,7 +328,7 @@ const BrainGymDashboard = ({ onSolved }) => {
                   }}
                 >
                   <RefreshCw size={16} />
-                  Luyện tập lại
+                  Practice Again
                 </button>
               </div>
             </motion.div>

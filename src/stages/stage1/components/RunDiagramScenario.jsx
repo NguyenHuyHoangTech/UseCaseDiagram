@@ -45,9 +45,9 @@ function LegacyRunDiagramScenario({ step, onResult }) {
       const firstBadItem = data.distractors?.find((item) => badItems.includes(item.id));
       onResult({
         tone: "error",
-        title: "Diagram chứa chi tiết kỹ thuật",
-        message: firstBadItem?.feedback || "Database, controller hoặc UI detail không thuộc Use Case Diagram.",
-        simulation: firstBadItem?.simulation || "Run dừng ngay ở bước build diagram.",
+        title: "Diagram contains technical details",
+        message: firstBadItem?.feedback || "Database, controller or UI detail do not belong to Use Case Diagram.",
+        simulation: firstBadItem?.simulation || "Run stopped right at the diagram build step.",
         visualEffect: firstBadItem?.visualEffect,
         visualState: buildVisualState(firstBadItem?.visualEffect, {
           block: firstBadItem,
@@ -65,18 +65,18 @@ function LegacyRunDiagramScenario({ step, onResult }) {
       if (missingActors.length || missingUseCases.length || missing.length) {
         onResult({
           tone: "error",
-          title: `Scenario dừng: ${scenario.title}`,
+          title: `Scenario stopped: ${scenario.title}`,
           message: typeof scenario.feedback === "object" ? scenario.feedback.feedback : scenario.feedback,
-          simulation: typeof scenario.feedback === "object" ? scenario.feedback.simulation : `Đường chạy mong đợi: ${scenario.path.join(" -> ")}`,
+          simulation: typeof scenario.feedback === "object" ? scenario.feedback.simulation : `Expected path: ${scenario.path.join(" -> ")}`,
           visualEffect: typeof scenario.feedback === "object" ? scenario.feedback.visualEffect : undefined,
           visualState: buildVisualState(typeof scenario.feedback === "object" ? scenario.feedback.visualEffect : "stopAtNode", {
             message: typeof scenario.feedback === "object" ? scenario.feedback.simulation : scenario.feedback,
             checkpoints: checkpointStateForScenario(scenario, missingActors, missingUseCases, missing),
           }),
           details: [
-            ...missingActors.map((id) => `Thiếu Actor: ${labelActor(data, id)}`),
-            ...missingUseCases.map((id) => `Thiếu Use Case: ${labelUseCase(data, id)}`),
-            ...missing.map((item) => `Thiếu nối: ${labelActor(data, item.actorId)} -> ${labelUseCase(data, item.useCaseId)}`),
+            ...missingActors.map((id) => `Missing Actor: ${labelActor(data, id)}`),
+            ...missingUseCases.map((id) => `Missing Use Case: ${labelUseCase(data, id)}`),
+            ...missing.map((item) => `Missing connection: ${labelActor(data, item.actorId)} -> ${labelUseCase(data, item.useCaseId)}`),
           ].slice(0, 3),
         });
         return;
@@ -87,11 +87,11 @@ function LegacyRunDiagramScenario({ step, onResult }) {
     if (extra.length > 0) {
       onResult({
         tone: "mixed",
-        title: "Có đường nối đáng ngờ",
-        message: "Các scenario chính chạy được, nhưng sơ đồ có association thừa.",
-        simulation: "Đường nối thừa có thể làm người đọc hiểu sai quyền hoặc trigger.",
+        title: "Suspicious connection present",
+        message: "Main scenarios run fine, but the diagram has extra associations.",
+        simulation: "Extra connections might mislead readers about permissions or triggers.",
         visualState: buildVisualState("wrongActor", {
-          message: "Một đường nối thừa đang kéo Actor sang mục tiêu không phù hợp.",
+          message: "An extra connection is pulling the Actor to an inappropriate goal.",
         }),
         details: extra.slice(0, 3).map((item) => `${labelActor(data, item.actorId)} -> ${labelUseCase(data, item.useCaseId)}`),
       });
@@ -100,8 +100,8 @@ function LegacyRunDiagramScenario({ step, onResult }) {
 
     onResult({
       tone: "success",
-      title: "Run Diagram thành công",
-      message: "Boundary, actor, use case và connection đủ để chạy các scenario.",
+      title: "Diagram Run successful",
+      message: "Boundary, actor, use case and connection are sufficient to run scenarios.",
       simulation: data.successSimulation,
       visualEffect: data.successVisualEffect,
       visualState: buildVisualState(data.successVisualEffect || "ticketSuccess", {
@@ -115,7 +115,7 @@ function LegacyRunDiagramScenario({ step, onResult }) {
     <div className="interaction-stack">
       <div className="diagram-builder">
         <section className="palette-panel">
-          <h3>Actors ngoài boundary</h3>
+          <h3>Actors outside boundary</h3>
           {data.actors.map((actor) => (
             <button className={`choice-block ${actors.includes(actor.id) ? "selected" : ""}`} key={actor.id} onClick={() => toggle(actor.id, setActors)}>
               {actor.label}
@@ -123,7 +123,7 @@ function LegacyRunDiagramScenario({ step, onResult }) {
           ))}
           {Boolean(data.distractors?.length) && (
             <>
-              <h3>Không nên đưa vào</h3>
+              <h3>Should not include</h3>
               {data.distractors.map((item) => (
                 <button className={`choice-block danger-choice ${badItems.includes(item.id) ? "selected" : ""}`} key={item.id} onClick={() => toggle(item.id, setBadItems)}>
                   {item.label}
@@ -143,13 +143,13 @@ function LegacyRunDiagramScenario({ step, onResult }) {
           </div>
         </section>
         <section className="palette-panel">
-          <h3>Nối actor</h3>
+          <h3>Connect Actor</h3>
           {data.actors.filter((actor) => actors.includes(actor.id)).map((actor) => (
             <button className={`actor-node ${selectedActor === actor.id ? "selected" : ""}`} key={actor.id} onClick={() => setSelectedActor(actor.id)}>
               {actor.label}
             </button>
           ))}
-          <p className="hint-text">Chọn actor, rồi bấm use case đã chọn để nối hoặc bỏ nối.</p>
+          <p className="hint-text">Select an actor, then click a selected use case to connect or disconnect.</p>
           {connections.map((item) => (
             <div className="connection-pill" key={connectionKey(item.actorId, item.useCaseId)}>
               {labelActor(data, item.actorId)} {"->"} {labelUseCase(data, item.useCaseId)}

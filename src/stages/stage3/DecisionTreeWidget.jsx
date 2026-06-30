@@ -45,7 +45,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
       }}>
         <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--brand-hover)', marginBottom: '8px', display: 'flex', gap: '8px', alignItems: 'center' }}>
           <ShieldAlert size={18} />
-          Bối cảnh thiết kế phân quyền (CRUD)
+          Role-Based Access Control Design Scenario (CRUD)
         </h4>
         <p style={{ margin: 0, fontSize: '0.98rem', color: '#495057', lineHeight: 1.6 }}>
           {lesson.scenario}
@@ -114,7 +114,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                 fontWeight: 800,
                 textTransform: 'uppercase'
               }}>
-                Phương án {idx + 1}
+                Option {idx + 1}
               </div>
 
               {/* Option Diagram Preview */}
@@ -135,7 +135,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                   <>
                     <img
                       src={option.image}
-                      alt="Sơ đồ lựa chọn"
+                      alt="Choice Diagram"
                       style={{
                         maxWidth: '100%',
                         maxHeight: '100%',
@@ -179,7 +179,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', zIndex: 2 }}>
                           <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
                             <User size={12} color="#1c7ed6" />
-                            <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Khách hàng</span>
+                            <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Customer</span>
                           </div>
                           <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
                             <Users size={12} color="#495057" />
@@ -202,7 +202,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                           textAlign: 'center',
                           boxShadow: '0 4px 8px rgba(0,0,0,0.02)'
                         }}>
-                          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#495057' }}>Quản lý thông tin</span>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#495057' }}>Manage Information</span>
                         </div>
 
                         {/* Security Leak Indicator (Only show after selection checked) */}
@@ -231,7 +231,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center', zIndex: 2 }}>
                           <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
                             <User size={12} color="#1c7ed6" />
-                            <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Khách hàng</span>
+                            <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>Customer</span>
                           </div>
                           <div style={{ display: 'flex', gap: '4px', alignItems: 'center', background: 'white', padding: '6px 10px', borderRadius: '8px', border: '1px solid #dee2e6' }}>
                             <Users size={12} color="#495057" />
@@ -257,7 +257,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                             borderRadius: '50px',
                             textAlign: 'center'
                           }}>
-                            <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#495057' }}>Xem thông tin</span>
+                            <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#495057' }}>View Information</span>
                           </div>
                           <div style={{
                             background: 'white',
@@ -266,7 +266,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                             borderRadius: '50px',
                             textAlign: 'center'
                           }}>
-                            <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#495057' }}>Sửa/Xóa thông tin</span>
+                            <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#495057' }}>Edit/Delete Information</span>
                           </div>
                         </div>
 
@@ -327,7 +327,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
                   color: isCorrect ? '#2b8a3e' : '#c92a2a',
                   marginBottom: '8px'
                 }}>
-                  {isCorrect ? 'Tuyệt vời! Giải pháp hoàn toàn tối ưu. 🛡️ (+5 Stars, +2 Zaps)' : 'Nguy hiểm! Thiết kế này có lỗi nghiêm trọng!'}
+                  {isCorrect ? 'Excellent! A perfectly optimized solution. 🛡️ (+5 Stars, +2 Zaps)' : 'Danger! This design has a serious flaw!'}
                 </h4>
                 
                 <p style={{ color: '#495057', fontSize: '0.95rem', lineHeight: 1.6 }}>

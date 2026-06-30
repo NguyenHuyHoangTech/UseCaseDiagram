@@ -49,8 +49,8 @@ const LessonPage = () => {
   if (!lesson) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: 'var(--bg-color)' }}>
-        <h2 style={{ marginBottom: '16px' }}>Bài học không tồn tại!</h2>
-        <button onClick={() => navigate('/')} style={{ padding: '12px 24px', background: 'var(--brand-color)', color: 'white', borderRadius: '100px', fontWeight: 600 }}>Quay lại Trang chủ</button>
+        <h2 style={{ marginBottom: '16px' }}>Lesson not found!</h2>
+        <button onClick={() => navigate('/')} style={{ padding: '12px 24px', background: 'var(--brand-color)', color: 'white', borderRadius: '100px', fontWeight: 600 }}>Back to Home</button>
       </div>
     );
   }
@@ -164,8 +164,8 @@ const LessonPage = () => {
                   <CheckCircle2 size={24} color="#2b8a3e" />
                 </div>
                 <div>
-                  <h4 style={{ color: '#2b8a3e', marginBottom: '4px' }}>Mục tiêu bài học</h4>
-                  <p style={{ color: '#495057', fontSize: '0.95rem' }}>Bằng việc hoàn thành bài học này, bạn đã tiến thêm một bước trong hành trình chinh phục Use Case Diagram.</p>
+                  <h4 style={{ color: '#2b8a3e', marginBottom: '4px' }}>Lesson Objective</h4>
+                  <p style={{ color: '#495057', fontSize: '0.95rem' }}>By completing this lesson, you have taken another step in your journey to master Use Case Diagrams.</p>
                 </div>
               </div>
             ) : (
@@ -178,10 +178,10 @@ const LessonPage = () => {
               }}>
                 <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-hover)', marginBottom: '8px', fontWeight: 700 }}>
                   <CheckCircle2 size={20} />
-                  Hướng dẫn lý thuyết
+                  Theoretical Guide
                 </h4>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                  Đọc kỹ lý thuyết trên để chuẩn bị cho các bài tập thực hành tương tác ở các bài tiếp theo trong chặng này. Hãy nhấn Tiếp tục để đi tiếp!
+                  Read the theory above carefully to prepare for the interactive exercises in the upcoming lessons of this stage. Click Continue to proceed!
                 </p>
               </div>
             )}
@@ -225,7 +225,7 @@ const LessonPage = () => {
           alignItems: 'center',
           gap: '8px'
         }}>
-          <span style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Hành trình</span>
+          <span style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Journey</span>
           <span>/</span>
           <span>{lesson.stageTitle}</span>
         </div>
@@ -255,7 +255,7 @@ const LessonPage = () => {
           {/* Subtitle / Prompt for interactive lessons */}
           {lesson.type && lesson.type !== 'spaced-repetition-hub' && (
             <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '28px', borderBottom: '1px solid #f1f3f5', paddingBottom: '16px' }}>
-              🎯 <strong>Thử thách thực hành:</strong> {lesson.content}
+              🎯 <strong>Practice Challenge:</strong> {lesson.content}
             </p>
           )}
 
@@ -298,7 +298,7 @@ const LessonPage = () => {
             onMouseOut={(e) => currentIndex > 0 && (e.currentTarget.style.borderColor = '#e9ecef')}
           >
             <ChevronLeft size={20} />
-            Bài trước
+            Previous
           </button>
 
           {/* Continue / Lock Button */}
@@ -343,7 +343,7 @@ const LessonPage = () => {
             }}
           >
             {!isFullySolved && <Lock size={18} />}
-            {isLastLesson ? 'Hoàn thành khóa học' : 'Tiếp tục'}
+            {isLastLesson ? 'Complete Course' : 'Continue'}
             {isFullySolved && !isLastLesson && <ChevronRight size={20} />}
           </button>
         </div>

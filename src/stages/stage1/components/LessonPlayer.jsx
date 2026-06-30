@@ -58,7 +58,7 @@ export default function LessonPlayer({ lesson, onBack, onNextLesson, hasNextLess
       <section className="lesson-topbar">
         <button className="icon-text-button" onClick={onBack}>
           <ArrowLeft size={18} />
-          Hành trình
+          Journey
         </button>
         <div className="lesson-progress">
           <span>{progress}%</span>
@@ -109,7 +109,7 @@ export default function LessonPlayer({ lesson, onBack, onNextLesson, hasNextLess
       {lessonDone && (
         <section className="lesson-recap">
           <strong>Recap</strong>
-          <span>{lesson.title} hoàn thành. Bạn đã chạy thử đủ các tình huống và tự rút ra quy tắc chính.</span>
+          <span>{lesson.title} completed. You have run through all scenarios and derived the main rule yourself.</span>
         </section>
       )}
 

@@ -3,17 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { UserCircle, Hexagon, Trash2, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
 
 const tokensData = [
-  { id: 'a1', text: 'Sinh viên', type: 'actor' },
-  { id: 'a2', text: 'Giảng viên', type: 'actor' },
-  { id: 'u1', text: 'Đăng nhập', type: 'usecase' },
-  { id: 'u2', text: 'Tìm kiếm sách', type: 'usecase' },
-  { id: 'u3', text: 'Mượn sách', type: 'usecase' },
-  { id: 't1', text: 'mượn quá hạn', type: 'trap', msg: '"Mượn quá hạn" là một điều kiện/trạng thái, không phải là chức năng. Chức năng thực sự ở đây là "Nộp phạt trễ hạn".' },
-  { id: 'u4', text: 'Nộp phạt trễ hạn', type: 'usecase' },
-  { id: 'a3', text: 'Thủ thư', type: 'actor' },
-  { id: 'u5', text: 'Thêm sách mới', type: 'usecase' },
-  { id: 't2', text: 'tự động ngầm', type: 'trap', msg: '"Tự động ngầm" chỉ tính chất của hệ thống, không phải Actor hay Use Case.' },
-  { id: 'u6', text: 'Kiểm tra tình trạng thẻ', type: 'usecase' },
+  { id: 'a1', text: 'Student', type: 'actor' },
+  { id: 'a2', text: 'Lecturer', type: 'actor' },
+  { id: 'u1', text: 'Login', type: 'usecase' },
+  { id: 'u2', text: 'Search Book', type: 'usecase' },
+  { id: 'u3', text: 'Borrow Book', type: 'usecase' },
+  { id: 't1', text: 'overdue borrowing', type: 'trap', msg: '"Overdue borrowing" is a condition/status, not a function. The actual function here is "Pay late fee".' },
+  { id: 'u4', text: 'Pay late fee', type: 'usecase' },
+  { id: 'a3', text: 'Librarian', type: 'actor' },
+  { id: 'u5', text: 'Add new book', type: 'usecase' },
+  { id: 't2', text: 'automatically in background', type: 'trap', msg: '"Automatically in background" only indicates the system\'s nature, not an Actor or Use Case.' },
+  { id: 'u6', text: 'Check card status', type: 'usecase' },
 ];
 
 const Step1Extract = ({ onComplete }) => {
@@ -81,9 +81,9 @@ const Step1Extract = ({ onComplete }) => {
     }
 
     if (!allCorrect) {
-      showFeedback('error', 'Có một số thẻ chưa được đặt đúng giỏ! Hãy kiểm tra lại.');
+      showFeedback('error', 'Some cards are not in the right bucket! Please check again.');
     } else {
-      showFeedback('success', 'Xuất sắc! Bạn đã lọc chính xác toàn bộ yêu cầu.');
+      showFeedback('success', 'Excellent! You have accurately filtered all requirements.');
       setSuccess(true);
     }
   };
@@ -118,10 +118,10 @@ const Step1Extract = ({ onComplete }) => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-        18.1 Thử thách Bóc tách Yêu cầu
+        18.1 Requirement Extraction Challenge
       </h3>
       <p style={{ marginBottom: '16px', color: 'var(--text-muted)' }}>
-        Kéo thẻ vào 3 giỏ. Sau khi kéo hết, hãy bấm "Kiểm tra phân loại".
+        Drag cards into 3 buckets. After dragging all of them, click "Check categorization".
       </p>
       
       <AnimatePresence>
@@ -135,27 +135,27 @@ const Step1Extract = ({ onComplete }) => {
 
       <div style={{ display: 'flex', gap: '24px', flexDirection: 'row', flexWrap: 'wrap' }}>
         <div onDrop={handleDropToText} onDragOver={handleDragOver} style={{ flex: '1 1 300px', background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e9ecef', lineHeight: '2' }}>
-          Thư viện trường học phục vụ hai đối tượng chính là {renderToken(tokensData[0])} và {renderToken(tokensData[1])}. Để sử dụng dịch vụ, họ đều phải {renderToken(tokensData[2])} vào hệ thống. Sau đó, họ có thể {renderToken(tokensData[3])} và {renderToken(tokensData[4])}. Tuy nhiên, nếu trước đó họ {renderToken(tokensData[5])}, hệ thống yêu cầu họ phải {renderToken(tokensData[6])} ngay lúc thực hiện giao dịch mới. Ngoài ra, chỉ có nhân viên {renderToken(tokensData[7])} mới có quyền {renderToken(tokensData[8])} vào kho. Mọi giao dịch mượn sách đều yêu cầu hệ thống {renderToken(tokensData[9])} {renderToken(tokensData[10])}.
+          The school library serves two main audiences: {renderToken(tokensData[0])} and {renderToken(tokensData[1])}. To use the service, they both must {renderToken(tokensData[2])} to the system. After that, they can {renderToken(tokensData[3])} and {renderToken(tokensData[4])}. However, if they have previously {renderToken(tokensData[5])}, the system requires them to {renderToken(tokensData[6])} right at the time of making a new transaction. Besides, only the {renderToken(tokensData[7])} staff has the right to {renderToken(tokensData[8])} to the inventory. Every book borrowing transaction requires the system to {renderToken(tokensData[9])} {renderToken(tokensData[10])}.
         </div>
 
         <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {/* Actor */}
           <div onDrop={(e) => handleDrop(e, 'actor')} onDragOver={handleDragOver} style={{ flex: 1, background: '#e7f5ff', border: '2px dashed #339af0', borderRadius: '16px', padding: '16px' }}>
-            <h4 style={{ color: '#1864ab', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><UserCircle size={20} /> Giỏ Actor</h4>
+            <h4 style={{ color: '#1864ab', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><UserCircle size={20} /> Actor Bucket</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {placedTokens.actor.map(t => <div key={t.id} draggable onDragStart={(e) => handleDragStart(e, t)} style={{ background: '#339af0', color: 'white', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem', cursor: 'grab' }}>{t.text}</div>)}
             </div>
           </div>
           {/* Use Case */}
           <div onDrop={(e) => handleDrop(e, 'usecase')} onDragOver={handleDragOver} style={{ flex: 1, background: '#fff3bf', border: '2px dashed #fcc419', borderRadius: '16px', padding: '16px' }}>
-            <h4 style={{ color: '#e67700', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><Hexagon size={20} /> Giỏ Use Case</h4>
+            <h4 style={{ color: '#e67700', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><Hexagon size={20} /> Use Case Bucket</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {placedTokens.usecase.map(t => <div key={t.id} draggable onDragStart={(e) => handleDragStart(e, t)} style={{ background: '#fcc419', color: '#495057', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem', cursor: 'grab' }}>{t.text}</div>)}
             </div>
           </div>
           {/* Trash */}
           <div onDrop={(e) => handleDrop(e, 'trash')} onDragOver={handleDragOver} style={{ flex: 1, background: '#f8f9fa', border: '2px dashed #adb5bd', borderRadius: '16px', padding: '16px' }}>
-            <h4 style={{ color: '#495057', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><Trash2 size={20} /> Giỏ Thùng rác</h4>
+            <h4 style={{ color: '#495057', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><Trash2 size={20} /> Trash Bucket</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {placedTokens.trash.map(t => <div key={t.id} draggable onDragStart={(e) => handleDragStart(e, t)} style={{ background: '#adb5bd', color: 'white', padding: '4px 12px', borderRadius: '100px', fontSize: '0.85rem', cursor: 'grab' }}>{t.text}</div>)}
             </div>
@@ -166,11 +166,11 @@ const Step1Extract = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
         {!success ? (
           <button onClick={handleCheck} disabled={!allPlaced} style={{ padding: '12px 32px', borderRadius: '100px', background: allPlaced ? 'var(--text-main)' : '#dee2e6', color: 'white', fontWeight: 600, border: 'none', cursor: allPlaced ? 'pointer' : 'not-allowed', transition: 'all 0.2s' }}>
-            Kiểm tra phân loại
+            Check categorization
           </button>
         ) : (
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Hoàn hảo! Tiếp tục <ArrowRight size={20} />
+            Perfect! Continue <ArrowRight size={20} />
           </button>
         )}
       </div>

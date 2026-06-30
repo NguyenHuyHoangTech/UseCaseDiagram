@@ -3,18 +3,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Package, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
 
 const tokensData = [
-  { id: 'u1', text: 'Quẹt thẻ ra vào', target: 'pkg1' },
-  { id: 'u2', text: 'Quét biển số', target: 'pkg1' },
-  { id: 'u3', text: 'Tính phí gửi xe', target: 'pkg2', trapPkg: 'pkg1', trapMsg: 'Sai ranh giới nghiệp vụ: Chức năng "Tính phí gửi xe" liên quan đến dòng tiền, nó phải nằm ở [Quản lý Tài chính]. Cổng ra vào chỉ quan tâm đến việc mở barrier, việc tính tiền hãy giao cho kế toán lo!' },
-  { id: 'u4', text: 'Thanh toán QR Code', target: 'pkg2', trapPkg: 'pkg1', trapMsg: 'Thanh toán QR cũng liên quan đến dòng tiền, nó không thuộc quyền quản lý của barrier cổng!' },
-  { id: 'u5', text: 'Xem báo cáo doanh thu', target: 'pkg2' },
-  { id: 'u6', text: 'Thêm thẻ cư dân mới', target: 'pkg3' },
+  { id: 'u1', text: 'Swipe access card', target: 'pkg1' },
+  { id: 'u2', text: 'Scan license plate', target: 'pkg1' },
+  { id: 'u3', text: 'Calculate parking fee', target: 'pkg2', trapPkg: 'pkg1', trapMsg: 'Business boundary error: The "Calculate parking fee" function involves cash flow, it must be in [Financial Management]. The entrance gate only cares about opening the barrier, let accounting handle the money!' },
+  { id: 'u4', text: 'QR Code Payment', target: 'pkg2', trapPkg: 'pkg1', trapMsg: 'QR payment also involves cash flow, it is not managed by the gate barrier!' },
+  { id: 'u5', text: 'View revenue report', target: 'pkg2' },
+  { id: 'u6', text: 'Add new resident card', target: 'pkg3' },
 ];
 
 const packages = [
-  { id: 'pkg1', name: 'Kiểm soát Ra/Vào', color: '#e7f5ff', border: '#339af0' },
-  { id: 'pkg2', name: 'Quản lý Tài chính', color: '#fff3bf', border: '#fcc419' },
-  { id: 'pkg3', name: 'Quản lý Cư dân', color: '#f4fce3', border: '#94d82d' }
+  { id: 'pkg1', name: 'Access Control', color: '#e7f5ff', border: '#339af0' },
+  { id: 'pkg2', name: 'Financial Management', color: '#fff3bf', border: '#fcc419' },
+  { id: 'pkg3', name: 'Resident Management', color: '#f4fce3', border: '#94d82d' }
 ];
 
 const Step1Packages = ({ onComplete }) => {
@@ -38,7 +38,7 @@ const Step1Packages = ({ onComplete }) => {
     }
 
     if (token.target !== pkgId) {
-      showFeedback('error', `Chức năng "${token.text}" không thuộc phân hệ này!`);
+      showFeedback('error', `The function "${token.text}" does not belong to this subsystem!`);
       return;
     }
 
@@ -58,11 +58,11 @@ const Step1Packages = ({ onComplete }) => {
   const handleCheck = () => {
     let placedCount = placedTokens.pkg1.length + placedTokens.pkg2.length + placedTokens.pkg3.length;
     if (placedCount < tokensData.length) {
-      showFeedback('error', 'Vui lòng phân loại tất cả các chức năng vào các Phân hệ.');
+      showFeedback('error', 'Please categorize all functions into Subsystems.');
       return;
     }
 
-    showFeedback('success', 'Tuyệt vời! Bạn đã chia để trị thành công.');
+    showFeedback('success', 'Great! You have successfully applied divide and conquer.');
     setSuccess(true);
   };
 
@@ -82,10 +82,10 @@ const Step1Packages = ({ onComplete }) => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-        19.1 Kỹ năng "Chia để trị" (Package Diagram)
+        19.1 "Divide and Conquer" Skill (Package Diagram)
       </h3>
       <p style={{ marginBottom: '16px', color: 'var(--text-muted)' }}>
-        Tòa nhà cần một hệ thống quản lý bãi xe phức tạp. Hãy giúp tôi nhóm các chức năng phân tán bên dưới vào đúng 3 Phân hệ (Package) lõi. Coi chừng nhầm lẫn ranh giới nghiệp vụ!
+        The building needs a complex parking management system. Help me group the distributed functions below into the correct 3 core Subsystems (Packages). Beware of confusing business boundaries!
       </p>
       
       <AnimatePresence>
@@ -114,7 +114,7 @@ const Step1Packages = ({ onComplete }) => {
                   {t.text}
                 </div>
               ))}
-              {placedTokens[pkg.id].length === 0 && <span style={{ color: '#868e96', fontStyle: 'italic', fontSize: '0.85rem' }}>Thả vào đây...</span>}
+              {placedTokens[pkg.id].length === 0 && <span style={{ color: '#868e96', fontStyle: 'italic', fontSize: '0.85rem' }}>Drop here...</span>}
             </div>
           </div>
         ))}
@@ -133,18 +133,18 @@ const Step1Packages = ({ onComplete }) => {
               </motion.div>
             )
           })}
-          {allPlaced && <span style={{ color: '#868e96', fontStyle: 'italic', padding: '8px' }}>Kho rỗng</span>}
+          {allPlaced && <span style={{ color: '#868e96', fontStyle: 'italic', padding: '8px' }}>Empty inventory</span>}
         </div>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
         {!success ? (
           <button onClick={handleCheck} disabled={!allPlaced} style={{ padding: '12px 32px', borderRadius: '100px', background: allPlaced ? 'var(--text-main)' : '#dee2e6', color: 'white', fontWeight: 600, border: 'none', cursor: allPlaced ? 'pointer' : 'not-allowed', transition: 'all 0.2s' }}>
-            Phân rã Hệ thống
+            Decompose System
           </button>
         ) : (
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Zoom vào Phân hệ Ra/Vào <ArrowRight size={20} />
+            Zoom into Access Control Subsystem <ArrowRight size={20} />
           </button>
         )}
       </div>

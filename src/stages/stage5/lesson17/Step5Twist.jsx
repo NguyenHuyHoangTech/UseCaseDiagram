@@ -42,20 +42,19 @@ const Step5Twist = ({ onComplete }) => {
       setCompleted(true);
       confetti({ particleCount: 150, spread: 180, origin: { y: 0.6 } });
     } else {
-      alert('Chưa chính xác! Việc in biên lai có BẮT BUỘC xảy ra khi rút tiền không?');
+      alert('Incorrect! Is printing a receipt MANDATORY when withdrawing cash?');
     }
   };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-        17.5 Quản lý Sự thay đổi Yêu cầu (Requirement Changes)
+        17.5 Requirement Changes Management
       </h3>
       
       {!showChat && (
         <div style={{ textAlign: 'center', padding: '40px' }}>
-          <CheckCircle size={64} color="var(--brand-color)" style={{ margin: '0 auto 20px' }} />
-          <h2>Hoàn thành phân tích sơ bộ ban đầu!</h2>
+          <h2>Initial preliminary analysis complete!</h2>
         </div>
       )}
 
@@ -63,10 +62,10 @@ const Step5Twist = ({ onComplete }) => {
         {showChat && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ background: '#f8f9fa', padding: '24px', borderRadius: '16px', border: '1px solid #dee2e6', marginBottom: '24px', position: 'relative' }}>
             <div style={{ position: 'absolute', top: '-16px', left: '24px', background: 'white', padding: '4px 12px', borderRadius: '100px', border: '1px solid #dee2e6', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, color: '#495057' }}>
-              <MessageCircle size={16} /> Yêu cầu bổ sung từ Khách hàng
+              <MessageCircle size={16} /> Additional requirement from Customer
             </div>
             <p style={{ fontStyle: 'italic', color: '#1d2026', fontSize: '1.1rem', marginTop: '10px' }}>
-              "À này, tôi muốn thêm tính năng: Nếu khách hàng rút tiền, họ có quyền Tùy chọn In biên lai. Hãy cập nhật sơ đồ giúp tôi nhé!"
+              "By the way, I want to add a feature: If the customer withdraws cash, they have the option to Print receipt. Please update the diagram for me!"
             </p>
           </motion.div>
         )}
@@ -74,8 +73,8 @@ const Step5Twist = ({ onComplete }) => {
 
       {showChat && !addedUseCase && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', justifyContent: 'center' }}>
-          <button onClick={handleAddUseCase} style={{ padding: '12px 24px', borderRadius: '8px', background: 'white', border: '2px dashed var(--brand-color)', color: 'var(--brand-color)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-            <Plus size={20} /> Thêm Use Case "In biên lai"
+          <button onClick={handleAddUseCase} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Plus size={20} /> Add "Print Receipt" Use Case
           </button>
         </motion.div>
       )}
@@ -83,11 +82,11 @@ const Step5Twist = ({ onComplete }) => {
       {/* Sơ đồ cập nhật */}
       {addedUseCase && (
         <div style={{ border: '3px solid var(--text-main)', borderRadius: '8px', padding: '32px', position: 'relative', marginTop: '20px' }}>
-           <div style={{ background: 'var(--text-main)', color: 'white', padding: '4px 12px', borderRadius: '0 0 8px 8px', position: 'absolute', top: 0, left: '20px', fontWeight: 600 }}>
-              Hệ thống ATM
+            <div style={{ background: 'var(--text-main)', color: 'white', padding: '4px 12px', borderRadius: '0 0 8px 8px', position: 'absolute', top: 0, left: '20px', fontWeight: 600 }}>
+              ATM System
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '40px', marginTop: '30px' }}>
-              <div style={{ background: '#fcc419', padding: '8px 24px', borderRadius: '100px', fontWeight: 600 }}>Rút tiền</div>
+              <div style={{ background: '#fcc419', padding: '8px 24px', borderRadius: '100px', fontWeight: 600 }}>Withdraw Cash</div>
               
               {!completed ? (
                 <div style={{ width: '100px', borderBottom: '2px dashed #adb5bd', position: 'relative' }}>
@@ -100,7 +99,7 @@ const Step5Twist = ({ onComplete }) => {
                 </div>
               )}
 
-              <div style={{ background: '#fcc419', padding: '8px 24px', borderRadius: '100px', fontWeight: 600 }}>In biên lai</div>
+              <div style={{ background: '#fcc419', padding: '8px 24px', borderRadius: '100px', fontWeight: 600 }}>Print Receipt</div>
             </div>
         </div>
       )}
@@ -109,15 +108,15 @@ const Step5Twist = ({ onComplete }) => {
         {activeQuiz && (
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100 }}>
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} style={{ background: 'white', padding: '32px', borderRadius: '16px', maxWidth: '400px', width: '100%' }}>
-              <h4 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>Mối quan hệ là gì?</h4>
-              <p style={{ marginBottom: '24px', color: 'var(--text-muted)' }}>"Tùy chọn in biên lai" khi rút tiền thuộc loại quan hệ nào?</p>
+              <h4 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>What is the relationship?</h4>
+              <p style={{ marginBottom: '24px', color: 'var(--text-muted)' }}>"Optionally print receipt" when withdrawing cash belongs to which relationship type?</p>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <button onClick={() => handleQuizAnswer('include')} style={{ padding: '12px', background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: '8px', cursor: 'pointer', textAlign: 'left' }}>
                   <strong>&lt;&lt;include&gt;&gt;</strong>
                 </button>
                 <button onClick={() => handleQuizAnswer('extend')} style={{ padding: '12px', background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: '8px', cursor: 'pointer', textAlign: 'left' }}>
-                  <strong>&lt;&lt;extend&gt;&gt;</strong>, chĩa ngược về Rút tiền
+                  <strong>&lt;&lt;extend&gt;&gt;</strong>, pointing back to Withdraw Cash
                 </button>
               </div>
             </motion.div>
@@ -127,8 +126,8 @@ const Step5Twist = ({ onComplete }) => {
 
       {completed && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
-          <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: '#12b886', color: 'white', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', border: 'none', cursor: 'pointer' }}>
-            Hoàn thành Case Study <ArrowRight size={20} />
+          <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            Complete Case Study <ArrowRight size={20} />
           </button>
         </motion.div>
       )}

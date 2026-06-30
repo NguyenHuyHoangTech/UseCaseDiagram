@@ -2,41 +2,41 @@
 export const courseData = [
   {
     id: 1,
-    title: "Chặng 1: Nền tảng & Các thành phần cốt lõi",
-    description: "Giúp người học biết ngay Use Case dùng để làm gì và gọi tên đúng các thành phần.",
+    title: "Stage 1: Fundamentals & Core Components",
+    description: "Helps learners immediately understand what a Use Case is used for and correctly name its components.",
     lessons: [
       {
         id: "lesson-0",
-        title: "Bài 0: Hệ thống tạo ra giá trị cho ai?",
-        content: "Trước khi học Use Case, hãy nhìn hệ thống từ bên ngoài: một người hoặc tác nhân tương tác với hệ thống để đạt được một kết quả có ích.",
+        title: "Lesson 0: Who does the system create value for?",
+        content: "Before learning Use Cases, look at the system from the outside: a person or actor interacts with the system to achieve a useful result.",
         type: "interactive-engine",
         engineId: "intro-machine"
       },
       {
         id: "lesson-1",
-        title: "Bài 1: Use Case là gì?",
-        content: "Cinema Booking System: nhìn Use Case như mục tiêu và giá trị mà Actor muốn đạt được, không phải UI, database, API hay xử lý kỹ thuật.",
+        title: "Lesson 1: What is a Use Case?",
+        content: "Cinema Booking System: see a Use Case as the goal and value the Actor wants to achieve, not UI, database, API, or technical processing.",
         type: "interactive-engine",
         engineId: "what-not-how"
       },
       {
         id: "lesson-2",
-        title: "Bài 2: Ranh giới hệ thống (System Boundary)",
-        content: "Use Case nằm trong boundary; Actor và external system đứng ngoài.",
+        title: "Lesson 2: System Boundary",
+        content: "Use Cases lie within the boundary; Actors and external systems stand outside.",
         type: "interactive-engine",
         engineId: "system-boundary"
       },
       {
         id: "lesson-3",
-        title: "Bài 3: Tác nhân (Actor không chỉ là con người)",
-        content: "Actor là vai trò, external system hoặc thời gian kích hoạt hệ thống.",
+        title: "Lesson 3: Actor (Not just human)",
+        content: "An Actor is a role, an external system, or time triggering the system.",
         type: "interactive-engine",
         engineId: "actor"
       },
       {
         id: "lesson-4",
-        title: "Bài 4: Quy tắc đặt tên Use Case",
-        content: "Tên tốt thường là động từ nghiệp vụ + đối tượng nghiệp vụ.",
+        title: "Lesson 4: Naming Rules for Use Cases",
+        content: "A good name is usually a business verb + a business object.",
         type: "interactive-engine",
         engineId: "naming"
       }
@@ -44,111 +44,111 @@ export const courseData = [
   },
   {
     id: 2,
-    title: "Chặng 2: Ngữ pháp sơ đồ & Các mối quan hệ",
-    description: "Dạy cách nối các mũi tên. Đây là phần khó nhất, thật dễ hiểu và có nhiều ví dụ so sánh.",
+    title: "Stage 2: Diagram Grammar & Relationships",
+    description: "Teach how to connect arrows. This is the hardest part, made easy to understand with many comparative examples.",
     lessons: [
       {
         id: "lesson-5",
-        title: "Bài 5: Quan hệ giao tiếp (Association)",
+        title: "Lesson 5: Association Relationship",
         type: "level1-association",
         levelIndex: 1,
-        content: "Hệ thống cần người kích hoạt. Hãy chọn đường nối đúng."
+        content: "The system needs someone to trigger it. Choose the correct connection line."
       },
       {
         id: "lesson-6",
-        title: "Bài 6: Quan hệ bắt buộc (<<include>>)",
+        title: "Lesson 6: Mandatory Relationship (<<include>>)",
         type: "level1-association",
         levelIndex: 2,
-        content: "Để rút được tiền, hệ thống BẮT BUỘC phải kiểm tra mã PIN."
+        content: "To withdraw money, the system MUST check the PIN code."
       },
       {
         id: "lesson-7",
-        title: "Bài 7: Quan hệ tùy chọn (<<extend>> & Extension Point)",
+        title: "Lesson 7: Optional Relationship (<<extend>> & Extension Point)",
         type: "level1-association",
         levelIndex: 3,
-        content: "Hệ thống có tính năng \"Áp mã giảm giá\" nhưng đây là tùy chọn."
+        content: "The system has an \"Apply discount code\" feature, but this is optional."
       },
       {
         id: "lesson-8",
-        title: "Bài 8: Phân biệt <<include>> và <<extend>>",
+        title: "Lesson 8: Distinguish <<include>> and <<extend>>",
         type: "level1-association",
         levelIndex: 4,
-        content: "Phân biệt rõ cái nào bắt buộc, cái nào tùy chọn bằng cách lấp đầy 4 khoảng trống."
+        content: "Clearly distinguish what is mandatory and what is optional by filling in 4 blanks."
       },
       {
         id: "lesson-9",
-        title: "Bài 9: Quan hệ kế thừa (Generalization)",
+        title: "Lesson 9: Generalization Relationship",
         type: "level1-association",
         levelIndex: 5,
-        content: "Khách hàng VIP bản chất vẫn là một Khách hàng. Hãy dùng lệnh Kế thừa để gom nhóm chúng lại."
+        content: "A VIP Customer is fundamentally still a Customer. Use Generalization to group them together."
       }
     ]
   },
   {
     id: 3,
-    title: "Chặng 3: Kỹ năng phân tích Requirement",
-    description: "Dạy người học cách đọc một đoạn văn bản yêu cầu và nhặt ra đúng các thành phần.",
+    title: "Stage 3: Requirement Analysis Skills",
+    description: "Teach learners how to read a requirements document and pick out the right components.",
     lessons: [
       {
         id: "lesson-10",
-        title: "Bài 10: Kỹ thuật trích xuất từ khóa & Lọc nhiễu",
+        title: "Lesson 10: Keyword Extraction & Noise Filtering",
         type: "highlighter",
-        content: "Hãy phân tích yêu cầu dưới đây. Trích xuất Actor (👤), Use Case (⚙️) và Lọc nhiễu chi tiết kỹ thuật (🚫) bằng cách tô màu thích hợp.",
-        raw_text: "Kế toán trưởng muốn đăng nhập vào hệ thống bằng tài khoản công ty để xuất báo cáo tài chính cuối tháng dưới dạng file PDF. Giao diện xuất báo cáo phải sử dụng font chữ Arial và dữ liệu được lấy từ database Oracle.",
+        content: "Analyze the requirement below. Extract the Actor (👤), Use Case (⚙️), and filter out Technical Noise (🚫) by highlighting with appropriate colors.",
+        raw_text: "The Chief Accountant wants to log into the system using a company account to export the monthly financial report as a PDF file. The export interface must use Arial font and data is fetched from the Oracle database.",
         segments: [
-          { text: "Kế toán trưởng", type: "actor" },
-          { text: " muốn đăng nhập vào hệ thống ", type: "usecase" },
-          { text: "bằng tài khoản công ty", type: "noise" },
-          { text: " để " },
-          { text: "xuất báo cáo tài chính", type: "usecase" },
-          { text: " cuối tháng " },
-          { text: "dưới dạng file PDF", type: "noise" },
+          { text: "The Chief Accountant", type: "actor" },
+          { text: " wants to log into the system ", type: "usecase" },
+          { text: "using a company account", type: "noise" },
+          { text: " to " },
+          { text: "export the monthly financial report", type: "usecase" },
+          { text: " " },
+          { text: "as a PDF file", type: "noise" },
           { text: ". " },
-          { text: "Giao diện xuất báo cáo phải sử dụng font chữ Arial", type: "noise" },
-          { text: " và " },
-          { text: "dữ liệu được lấy từ database Oracle", type: "noise" },
+          { text: "The export interface must use Arial font", type: "noise" },
+          { text: " and " },
+          { text: "data is fetched from the Oracle database", type: "noise" },
           { text: "." }
         ]
       },
       {
         id: "lesson-11",
-        title: "Bài 11: Mức độ chi tiết (Granularity - CRUD)",
+        title: "Lesson 11: Level of Detail (Granularity - CRUD)",
         type: "decision-tree",
-        content: "Quyết định mức độ chi tiết (Granularity) khi gom nhóm hoặc tách biệt các tác vụ CRUD để đảm bảo bảo mật.",
-        scenario: "Hệ thống có 2 Actor: 'Khách hàng' và 'Admin'. Khách hàng được quyền [Xem thông tin cá nhân] của mình. Admin được quyền [Xem, Sửa, Xóa thông tin cá nhân của khách hàng].",
-        question: "Bạn nên thiết kế các Use Case này như thế nào trong sơ đồ?",
+        content: "Decide the level of detail (Granularity) when grouping or separating CRUD tasks to ensure security.",
+        scenario: "The system has 2 Actors: 'Customer' and 'Admin'. A Customer has the right to [View their personal info]. An Admin has the right to [View, Edit, Delete customer info].",
+        question: "How should you design these Use Cases in the diagram?",
         options: [
           {
-            text: "Vẽ 1 Use Case 'Quản lý thông tin cá nhân' và nối cả Khách hàng lẫn Admin vào.",
+            text: "Draw 1 Use Case 'Manage personal info' and connect both Customer and Admin to it.",
             correct: false,
-            feedback: "Sai rồi! Nếu vẽ như vậy, Khách hàng sẽ vô tình được cấp quyền Sửa/Xóa thông tin cá nhân giống như Admin (vì cả hai đều trỏ vào chung 1 Use Case lớn chứa tất cả hành động). Đây là lỗ hổng bảo mật CRUD cực kỳ nghiêm trọng!"
+            feedback: "Incorrect! If drawn this way, the Customer would accidentally be granted Edit/Delete permissions similar to Admin (since both point to 1 big Use Case containing all actions). This is a severe CRUD security flaw!"
           },
           {
-            text: "Tách thành các Use Case riêng biệt: 'Xem thông tin' (cho cả hai), 'Sửa/Xóa thông tin' (chỉ nối với Admin).",
+            text: "Separate them into individual Use Cases: 'View info' (for both), 'Edit/Delete info' (connected only to Admin).",
             correct: true,
-            feedback: "Chính xác! Khi các Actor có quyền hạn khác nhau trên cùng một đối tượng dữ liệu, ta bắt buộc phải phân rã (tách biệt) các Use Case để đảm bảo tính an toàn thông tin và phân quyền chính xác."
+            feedback: "Exactly! When Actors have different permissions on the same data object, we must decompose (separate) the Use Cases to ensure information safety and correct authorization."
           }
         ]
       },
       {
         id: "lesson-12",
-        title: "Bài 12: Biến Use Case thành Flowchart (Anti-patterns)",
+        title: "Lesson 12: Turning Use Cases into Flowcharts (Anti-patterns)",
         type: "decision-tree",
-        content: "Tìm kiếm và chỉ ra lỗi thiết kế sơ đồ Use Case thường gặp (Anti-pattern) bằng cách so sánh và chọn sơ đồ thiết kế đúng chuẩn UML bên dưới.",
-        scenario: "Bạn cần vẽ sơ đồ Use Case cho hai tính năng: 'Đăng nhập' và 'Xem số dư'. Nghiệp vụ yêu cầu người dùng bắt buộc phải đăng nhập thành công thì mới có thể xem được số dư tài khoản của mình.",
-        question: "Sơ đồ nào dưới đây mô tả đúng mối quan hệ nghiệp vụ giữa hai Use Case này mà không phạm phải lỗi trình tự (Anti-pattern)?",
+        content: "Find and point out common Use Case design errors (Anti-patterns) by comparing and choosing the correct UML design diagram below.",
+        scenario: "You need to draw a Use Case diagram for two features: 'Login' and 'View Balance'. Business rules require the user to successfully log in before they can view their account balance.",
+        question: "Which diagram below correctly describes the business relationship between these two Use Cases without making a sequential error (Anti-pattern)?",
         options: [
           {
-            text: "Thiết kế sơ đồ vẽ mũi tên chỉ hướng (mũi tên trình tự) nối trực tiếp từ Use Case 'Đăng nhập' sang 'Xem số dư'.",
+            text: "Design a diagram with a directional arrow (sequence arrow) pointing directly from the 'Login' Use Case to 'View Balance'.",
             image: "/anti_pattern_flowchart.png",
             correct: false,
-            feedback: "Sai rồi! Biểu đồ Use Case chỉ mô tả hệ thống có những chức năng gì (What), tuyệt đối không được dùng để vẽ luồng quy trình thực hiện tuần tự (Workflow/Flowchart) giữa các Use Case bằng cách nối mũi tên chỉ hướng. Đây là lỗi biến Use Case thành Flowchart kinh điển!"
+            feedback: "Incorrect! A Use Case diagram only describes what functions the system has (What), it must never be used to draw a sequential workflow (Workflow/Flowchart) between Use Cases by connecting directional arrows. This is the classic mistake of turning a Use Case into a Flowchart!"
           },
           {
-            text: "Thiết kế sơ đồ vẽ hai Use Case độc lập trên sơ đồ (không nối mũi tên trình tự). Luồng tuần tự đăng nhập sẽ được đưa vào phần đặc tả 'Tiền điều kiện' (Pre-condition) của 'Xem số dư'.",
+            text: "Design a diagram drawing two independent Use Cases (no sequence arrows). The login sequence flow will be put into the 'Pre-condition' specification of 'View Balance'.",
             image: "/correct_pattern_flowchart.png",
             correct: true,
-            feedback: "Xuất sắc! Các Use Case trên sơ đồ phải hoàn toàn độc lập về mặt quy trình. Thứ tự thực hiện trước sau (phải đăng nhập trước) sẽ được mô tả cụ thể trong tài liệu Đặc tả kịch bản (mục Tiền điều kiện) hoặc sử dụng biểu đồ Activity Diagram!"
+            feedback: "Excellent! Use Cases on the diagram must be completely independent in terms of process. The sequential order (must log in first) will be specifically described in the Scenario Specification document (Pre-condition section) or by using an Activity Diagram!"
           }
         ]
       }
@@ -156,77 +156,77 @@ export const courseData = [
   },
   {
     id: 4,
-    title: "Chặng 4: Đặc tả kịch bản (Specification)",
-    description: "Hướng dẫn viết kịch bản chi tiết cho Use Case và hệ thống bài tập củng cố kiến thức.",
+    title: "Stage 4: Scenario Specification",
+    description: "Guide how to write detailed scenarios for Use Cases and provide a system of exercises to reinforce knowledge.",
     lessons: [
       {
         id: "lesson-13",
-        title: "Bài 13: Cấu trúc Đặc tả Use Case (Pre/Post-conditions)",
+        title: "Lesson 13: Structure of Use Case Specification (Pre/Post-conditions)",
         type: "drag-and-drop",
-        content: "Phân biệt Tiền điều kiện và Hậu điều kiện của Use Case: Đăng nhập hệ thống.",
+        content: "Distinguish between Pre-conditions and Post-conditions of a Use Case: System Login.",
         items: [
-          { text: "Người dùng truy cập trang login", category: "Pre-condition" },
-          { text: "Hệ thống hiển thị trạng thái Online", category: "Post-condition" },
-          { text: "Tài khoản người dùng đã được kích hoạt trước đó", category: "Pre-condition" },
-          { text: "Session đăng nhập được tạo thành công", category: "Post-condition" }
+          { text: "The user accesses the login page", category: "Pre-condition" },
+          { text: "The system displays Online status", category: "Post-condition" },
+          { text: "The user account was previously activated", category: "Pre-condition" },
+          { text: "A login session is successfully created", category: "Post-condition" }
         ]
       },
       {
         id: "lesson-14",
-        title: "Bài 14: Luồng sự kiện chính (Happy Path)",
+        title: "Lesson 14: Main Success Scenario (Happy Path)",
         type: "reorder",
-        content: "Sắp xếp kịch bản kịch bản hội thoại chuẩn giữa Actor và Hệ thống cho Use Case: Rút tiền ATM.",
+        content: "Order the standard conversation scenario between the Actor and System for Use Case: ATM Cash Withdrawal.",
         steps: [
-          "1. Actor đưa thẻ vào máy và nhập PIN.",
-          "2. Hệ thống xác thực PIN thành công và hiển thị menu chức năng.",
-          "3. Actor chọn chức năng Rút tiền và nhập số tiền.",
-          "4. Hệ thống trừ tiền tài khoản, trả thẻ và nhả tiền."
+          "1. Actor inserts card into machine and enters PIN.",
+          "2. System successfully authenticates PIN and displays function menu.",
+          "3. Actor selects Withdraw Cash and enters amount.",
+          "4. System deducts account balance, returns card, and dispenses cash."
         ]
       },
       {
         id: "lesson-15",
-        title: "Bài 15: Luồng ngoại lệ & Luồng thay thế",
+        title: "Lesson 15: Exception Flow & Alternative Flow",
         type: "multiple-choice",
-        question: "Trong Use Case 'Thanh toán hóa đơn', nếu khách hàng nhập sai mã OTP quá 3 lần, kịch bản này nên xử lý theo luồng nào?",
-        content: "Trong Use Case 'Thanh toán hóa đơn', nếu khách hàng nhập sai mã OTP quá 3 lần, kịch bản này nên xử lý theo luồng nào?",
+        question: "In the 'Pay Bill' Use Case, if a customer enters the wrong OTP code more than 3 times, how should this scenario be handled?",
+        content: "In the 'Pay Bill' Use Case, if a customer enters the wrong OTP code more than 3 times, how should this scenario be handled?",
         options: [
-          { text: "Luồng chính (Happy Path)", correct: false },
-          { text: "Luồng thay thế (Alternative Flow) - Cho nhập lại OTP khác", correct: false },
-          { text: "Luồng ngoại lệ (Exception Flow) - Hủy giao dịch, khóa tạm thời tính năng nhận OTP và thông báo lỗi", correct: true }
+          { text: "Main Success Scenario (Happy Path)", correct: false },
+          { text: "Alternative Flow - Allow entering a different OTP", correct: false },
+          { text: "Exception Flow - Cancel transaction, temporarily lock OTP feature and show error message", correct: true }
         ]
       },
       {
         id: "lesson-16",
-        title: "Bài 16: Chuỗi bài tập Lặp lại ngắt quãng",
+        title: "Lesson 16: Spaced Repetition Exercise Series",
         type: "spaced-repetition-hub",
-        content: "Hệ thống ôn tập thông minh (Brain Injector) giúp bạn củng cố sâu sắc các mối quan hệ <<include>> và <<extend>> thông qua các bài tập lặp lại ngắt quãng."
+        content: "The intelligent review system (Brain Injector) helps you deeply reinforce <<include>> and <<extend>> relationships through spaced repetition exercises."
       }
     ]
   },
   {
     id: 5,
-    title: "Chặng 5: Case Study Thực chiến & Ngân hàng đề",
-    description: "Tập trung soạn thảo các dự án mẫu từ đoạn văn mô tả hệ thống cho đến sơ đồ đáp án.",
+    title: "Stage 5: Practical Case Studies & Question Bank",
+    description: "Focus on composing sample projects from system description text to final solution diagrams.",
     lessons: [
       {
         id: "lesson-17",
-        title: "Bài 17: Case Study Level 1 (Hệ thống nhỏ)",
-        content: "Cung cấp đề bài và đáp án chi tiết: Máy rút tiền ATM, Ứng dụng đặt đồ ăn nhanh."
+        title: "Lesson 17: Level 1 Case Study (Small System)",
+        content: "Provides problem descriptions and detailed solutions: ATM Machine, Fast Food Ordering App."
       },
       {
         id: "lesson-18",
-        title: "Bài 18: Case Study Level 2 (Hệ thống nhiều phân quyền)",
-        content: "Cung cấp đề bài và đáp án: Quản lý thư viện trường học, Đăng ký tín chỉ đại học."
+        title: "Lesson 18: Level 2 Case Study (Multi-role System)",
+        content: "Provides problem descriptions and solutions: School Library Management, University Course Registration."
       },
       {
         id: "lesson-19",
-        title: "Bài 19: Case Study Level 3 (Dự án lớn)",
-        content: "Soạn một đề án cực khó (Sàn TMĐT hoặc Đặt vé máy bay). Hướng dẫn phân rã hệ thống."
+        title: "Lesson 19: Level 3 Case Study (Large Project)",
+        content: "Compose an extremely difficult project (E-commerce Platform or Flight Booking). Guide to system decomposition."
       },
       {
         id: "lesson-20",
-        title: "Bài 20: Ngân hàng Requirement mở rộng",
-        content: "Tự động sinh ra thêm khoảng 20-30 đề bài Requirement ở nhiều lĩnh vực khác nhau để thực hành."
+        title: "Lesson 20: Expanded Requirement Bank",
+        content: "Automatically generate about 20-30 more Requirement problems in various fields for practice."
       }
     ]
   }

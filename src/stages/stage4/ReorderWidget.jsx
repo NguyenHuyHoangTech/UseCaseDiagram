@@ -98,7 +98,7 @@ const ReorderWidget = ({ lesson, onSolved }) => {
       {/* Reorder list */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '4px' }}>
-          Sắp xếp thứ tự các bước từ đầu đến cuối:
+          Arrange the order of steps from beginning to end:
         </h3>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -230,7 +230,7 @@ const ReorderWidget = ({ lesson, onSolved }) => {
           onMouseOut={(e) => e.currentTarget.style.background = '#e9ecef'}
         >
           <RefreshCw size={18} />
-          Xáo trộn lại
+          Shuffle
         </button>
 
         <button 
@@ -261,7 +261,7 @@ const ReorderWidget = ({ lesson, onSolved }) => {
             }
           }}
         >
-          Kiểm tra thứ tự
+          Check Order
         </button>
       </div>
 
@@ -294,23 +294,23 @@ const ReorderWidget = ({ lesson, onSolved }) => {
                   color: isCorrect ? '#2b8a3e' : '#c92a2a',
                   marginBottom: '8px'
                 }}>
-                  {isCorrect ? 'Xuất sắc! Thứ tự Happy Path chuẩn xác. 🏧 (+5 Stars, +2 Zaps)' : 'Thứ tự chưa đúng rồi! Hãy suy nghĩ về kịch bản hội thoại.'}
+                  {isCorrect ? 'Excellent! The Happy Path order is accurate. 🏧 (+5 Stars, +2 Zaps)' : 'The order is not quite right! Think about the conversational scenario.'}
                 </h4>
                 
                 <p style={{ color: '#495057', fontSize: '0.95rem', lineHeight: 1.6 }}>
                   {isCorrect ? (
                     <>
-                      Đây là kịch bản hội thoại chuẩn của <strong>Luồng sự kiện chính (Happy Path)</strong> cho Use Case Rút tiền ATM. <br/>
-                      Mỗi bước đều tuân theo nguyên tắc <strong>Tương tác hai chiều (Actor - Hệ thống)</strong>:
+                      This is the standard conversational scenario of the <strong>Happy Path</strong> for the ATM Withdrawal Use Case. <br/>
+                      Each step follows the principle of <strong>Two-way Interaction (Actor - System)</strong>:
                       <ul style={{ paddingLeft: '20px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <li>1. Actor bắt đầu hành động gửi thông tin (Nhập thẻ & PIN).</li>
-                        <li>2. Hệ thống xử lý, phản hồi kết quả và mở ra danh sách dịch vụ.</li>
-                        <li>3. Actor chọn hành động tiếp theo (Rút tiền & Nhập số tiền).</li>
-                        <li>4. Hệ thống hoàn tất giao dịch (Trừ tiền, trả thẻ, nhả tiền mặt).</li>
+                        <li>1. Actor starts the action by sending info (Insert card & PIN).</li>
+                        <li>2. System processes, returns result, and opens the service list.</li>
+                        <li>3. Actor selects next action (Withdraw & Enter amount).</li>
+                        <li>4. System completes the transaction (Deduct money, return card, dispense cash).</li>
                       </ul>
                     </>
                   ) : (
-                    'Gợi ý: Luồng đi luôn tuân theo kịch bản: Actor gửi yêu cầu -> Hệ thống phản hồi -> Actor tương tác tiếp -> Hệ thống hoàn tất giao dịch. Hãy thử hoán đổi vị trí các bước bị sai và kiểm tra lại!'
+                    'Hint: The flow always follows the scenario: Actor sends request -> System responds -> Actor interacts further -> System completes transaction. Try swapping the incorrect steps and check again!'
                   )}
                 </p>
               </div>

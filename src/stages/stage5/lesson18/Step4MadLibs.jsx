@@ -4,14 +4,14 @@ import { AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 const blanksData = [
-  { id: 'b1', label: 'Điểm mở rộng (Extension Point)', correctAnswer: 'c1' },
-  { id: 'b2', label: 'Luồng ngoại lệ (Exception Flow)', correctAnswer: 'c2' }
+  { id: 'b1', label: 'Extension Point', correctAnswer: 'c1' },
+  { id: 'b2', label: 'Exception Flow', correctAnswer: 'c2' }
 ];
 
 const choicesData = [
-  { id: 'c1', text: 'Tại Bước 2, nếu hệ thống phát hiện thẻ đang bị đánh dấu mượn quá hạn ➔ Kích hoạt Use Case Nộp Phạt.' },
-  { id: 'c2', text: 'Tại Bước 1, nếu thẻ bị khóa hoặc hết hạn ➔ Thông báo từ chối mượn sách và kết thúc Use Case.' },
-  { id: 'c3', text: 'Tại Bước 1, nếu thủ thư đi vắng ➔ Khách hàng tự lấy sách đi về.' } // trap
+  { id: 'c1', text: 'At Step 2, if the system detects the card is marked with overdue borrowing ➔ Trigger Pay Late Fee Use Case.' },
+  { id: 'c2', text: 'At Step 1, if the card is locked or expired ➔ Notify rejection of borrowing and end the Use Case.' },
+  { id: 'c3', text: 'At Step 1, if the librarian is absent ➔ Customer takes the book and leaves.' } // trap
 ];
 
 const Step4MadLibs = ({ onComplete }) => {
@@ -36,16 +36,16 @@ const Step4MadLibs = ({ onComplete }) => {
 
   const handleCheck = () => {
     if (!answers.b1 || !answers.b2) {
-      showFeedback('error', 'Bạn phải điền đầy đủ cả 2 chỗ trống.');
+      showFeedback('error', 'You must fill in both blanks.');
       return;
     }
     
     if (answers.b1.id !== blanksData[0].correctAnswer || answers.b2.id !== blanksData[1].correctAnswer) {
-      showFeedback('error', 'Ghép chưa đúng! Hãy nhớ lại: Ngoại lệ (Exception) sẽ làm Use Case thất bại/kết thúc. Còn Điểm mở rộng (Extension Point) là điểm bẻ lái sang một Use Case khác (như Nộp phạt).');
+      showFeedback('error', 'Incorrect match! Remember: An Exception will cause the Use Case to fail/end. An Extension Point is a branching point to another Use Case (like Paying a fine).');
       return;
     }
 
-    showFeedback('success', 'Chính xác hoàn toàn!');
+    showFeedback('success', 'Absolutely correct!');
     setSuccess(true);
     confetti({ particleCount: 150, spread: 180, origin: { y: 0.6 } });
   };
@@ -60,10 +60,10 @@ const Step4MadLibs = ({ onComplete }) => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-        18.4 Viết Đặc tả - Bẫy Ngoại lệ (Specification)
+        18.4 Write Specification - Exception Traps (Specification)
       </h3>
       <p style={{ marginBottom: '16px', color: 'var(--text-muted)' }}>
-        Kéo các khối kịch bản bên dưới thả vào khoảng trống để hoàn thiện Đặc tả Use Case "Mượn sách".
+        Drag the scenario blocks below into the blanks to complete the "Borrow Book" Use Case Specification.
       </p>
 
       <AnimatePresence>
@@ -76,17 +76,17 @@ const Step4MadLibs = ({ onComplete }) => {
       </AnimatePresence>
 
       <div style={{ background: 'white', padding: '32px', borderRadius: '16px', border: '1px solid #dee2e6', marginBottom: '24px' }}>
-        <h4 style={{ borderBottom: '2px solid #f1f3f5', paddingBottom: '12px', marginBottom: '20px' }}>Đặc tả Use Case: Mượn sách</h4>
+        <h4 style={{ borderBottom: '2px solid #f1f3f5', paddingBottom: '12px', marginBottom: '20px' }}>Use Case Specification: Borrow Book</h4>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '0.95rem' }}>
-          <div><strong>Actor:</strong> Bạn đọc</div>
-          <div><strong>Tiền điều kiện:</strong> Bạn đọc đã đăng nhập hệ thống.</div>
+          <div><strong>Actor:</strong> Reader</div>
+          <div><strong>Precondition:</strong> Reader has logged into the system.</div>
           <div>
-            <strong>Luồng cơ bản (Basic Flow):</strong>
+            <strong>Basic Flow:</strong>
             <ol style={{ paddingLeft: '20px', marginTop: '8px' }}>
-              <li>Hệ thống ngầm tự động <em>&lt;&lt;include&gt;&gt;</em> Kiểm tra tình trạng thẻ.</li>
-              <li>Bạn đọc chọn sách muốn mượn.</li>
-              <li>Hệ thống ghi nhận giao dịch mượn sách.</li>
+              <li>The system implicitly automatically <em>&lt;&lt;include&gt;&gt;</em> Check card status.</li>
+              <li>Reader selects the book to borrow.</li>
+              <li>The system records the book borrowing transaction.</li>
             </ol>
           </div>
 
@@ -108,7 +108,7 @@ const Step4MadLibs = ({ onComplete }) => {
                   fontWeight: answers[blank.id] ? 500 : 400
                 }}
               >
-                {answers[blank.id] ? answers[blank.id].text : 'Kéo thả kịch bản vào đây...'}
+                {answers[blank.id] ? answers[blank.id].text : 'Drag and drop scenario here...'}
               </div>
             </div>
           ))}
@@ -140,11 +140,11 @@ const Step4MadLibs = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
         {!success ? (
           <button onClick={handleCheck} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--text-main)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer' }}>
-            Ký duyệt Đặc tả
+            Approve Specification
           </button>
         ) : (
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: '#12b886', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Xuất sắc! Xem thành quả <ArrowRight size={20} />
+            Excellent! See results <ArrowRight size={20} />
           </button>
         )}
       </div>

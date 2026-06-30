@@ -3,17 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, CheckCircle, ArrowRight, MousePointer2, MoveUpRight, MoveRight, Minus, Eraser, User, RotateCcw } from 'lucide-react';
 
 const initialItems = [
-  { id: 'a1', text: 'Khách vãng lai', type: 'actor' },
-  { id: 'a2', text: 'Cư dân', type: 'actor' },
-  { id: 'a3', text: 'Bảo vệ', type: 'actor' },
-  { id: 'a4', text: 'Camera AI', type: 'actor' },
+  { id: 'a1', text: 'Guest', type: 'actor' },
+  { id: 'a2', text: 'Resident', type: 'actor' },
+  { id: 'a3', text: 'Security Guard', type: 'actor' },
+  { id: 'a4', text: 'AI Camera', type: 'actor' },
   { id: 'a5', text: 'VNPay', type: 'actor' },
-  { id: 'u1', text: 'Quẹt thẻ ra cổng', type: 'usecase' },
-  { id: 'u2', text: 'Kiểm tra biển số', type: 'usecase' },
-  { id: 'u3', text: 'Tính phí gửi xe', type: 'usecase' },
-  { id: 'u4', text: 'Thanh toán QR', type: 'usecase' },
-  { id: 'u5', text: 'Xử lý mất thẻ', type: 'usecase' },
-  { id: 'a6', text: 'Người lái xe', type: 'actor_hidden' }
+  { id: 'u1', text: 'Swipe card to exit', type: 'usecase' },
+  { id: 'u2', text: 'Check license plate', type: 'usecase' },
+  { id: 'u3', text: 'Calculate parking fee', type: 'usecase' },
+  { id: 'u4', text: 'QR Payment', type: 'usecase' },
+  { id: 'u5', text: 'Handle lost card', type: 'usecase' },
+  { id: 'a6', text: 'Driver', type: 'actor_hidden' }
 ];
 
 const fixedPositions = {
@@ -68,24 +68,24 @@ const Step2Canvas = ({ onComplete }) => {
 
   const handleCheckPhase1 = () => {
     if (items.filter(i => i.id !== 'a6').some(i => i.placed === false)) {
-      showFeedback('error', 'Vui lòng bố trí hết tất cả các thẻ vào vị trí trước khi kiểm tra.');
+      showFeedback('error', 'Please place all cards in their positions before checking.');
       return;
     }
 
     const vnpayInside = items.find(i => i.id === 'a5' && i.placed === 'inside');
     const cameraInside = items.find(i => i.id === 'a4' && i.placed === 'inside');
     if (vnpayInside || cameraInside) {
-      showFeedback('error', 'Lỗi Ranh giới: Tòa nhà của chúng ta không tự code ra VNPay hay lõi nhận diện Camera AI! Chúng ta gọi API của họ. Hãy kéo các Hệ Thống Bên Ngoài này RA KHỎI chiếc hộp Hệ thống.');
+      showFeedback('error', 'Boundary Error: Our building does not code VNPay or the AI Camera recognition core! We call their APIs. Please drag these External Systems OUT OF the System box.');
       return;
     }
 
     const useCaseOutside = items.find(i => i.type === 'usecase' && i.placed === 'outside');
     if (useCaseOutside) {
-      showFeedback('error', `Lỗi Ranh giới: Chức năng "${useCaseOutside.text}" phải nằm bên TRONG Hệ thống.`);
+      showFeedback('error', `Boundary Error: Function "${useCaseOutside.text}" must be INSIDE the System.`);
       return;
     }
 
-    showFeedback('success', 'Bố trí chuẩn xác! Chuyển sang Giai đoạn nối dây (Phase 2).');
+    showFeedback('success', 'Perfect arrangement! Moving to Wiring Phase (Phase 2).');
     setPhase(2);
   };
 
@@ -112,31 +112,31 @@ const Step2Canvas = ({ onComplete }) => {
     const gen1 = edges.find(e => e.type === 'generalization' && e.from === 'a1' && e.to === 'a6');
     const gen2 = edges.find(e => e.type === 'generalization' && e.from === 'a2' && e.to === 'a6');
     if (!gen1 || !gen2) {
-      showFeedback('error', 'Bạn chưa gom chung Cư dân và Khách vãng lai thành Actor "Người lái xe" bằng mũi tên Kế thừa!');
+      showFeedback('error', 'You haven\'t grouped Resident and Guest into the "Driver" Actor using the Generalization arrow!');
       return;
     }
 
     const qrEdge = edges.find(e => (e.from === 'u3' && e.to === 'u4') || (e.from === 'u4' && e.to === 'u3'));
     if (!qrEdge) {
-      showFeedback('error', 'Cần kết nối "Tính phí gửi xe" với "Thanh toán QR".');
+      showFeedback('error', 'Need to connect "Calculate parking fee" with "QR Payment".');
       return;
     }
     if (qrEdge.type === 'include') {
-      showFeedback('error', 'Lỗi Bắt buộc/Tùy chọn: Nếu bạn dùng Include, khách hàng nào cũng BẮT BUỘC phải quẹt QR VNPay? Thanh toán QR chỉ là một <<extend>> của quá trình tính phí!');
+      showFeedback('error', 'Mandatory/Optional Error: If you use Include, MUST every customer scan VNPay QR? QR payment is just an <<extend>> of the fee calculation process!');
       return;
     }
     if (qrEdge.type === 'extend' && qrEdge.from === 'u3') {
-      showFeedback('error', 'Sai Hướng: Mũi tên <<extend>> phải chĩa VỀ chức năng gốc (Từ QR chĩa ngược về Tính phí).');
+      showFeedback('error', 'Direction Error: The <<extend>> arrow must point BACK TO the base function (From QR pointing back to Calculate fee).');
       return;
     }
 
     const aiEdge = edges.find(e => e.type === 'association' && ((e.from === 'a4' && e.to === 'u2') || (e.from === 'u2' && e.to === 'a4')));
     if (!aiEdge) {
-      showFeedback('error', 'Camera AI cần giao tiếp với chức năng Kiểm tra biển số.');
+      showFeedback('error', 'AI Camera needs to communicate with the Check license plate function.');
       return;
     }
 
-    showFeedback('success', 'Kỹ năng vẽ đồ thị của bạn thật sự đẳng cấp! Bản vẽ đã qua kiểm duyệt.');
+    showFeedback('success', 'Your graph drawing skills are truly top-notch! The diagram has passed inspection.');
     setSuccess(true);
   };
 
@@ -175,16 +175,16 @@ const Step2Canvas = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div>
           <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-            19.2 Đấu trường Logic tại Cổng Ra
+            19.2 Exit Gate Logic Arena
           </h3>
           <p style={{ color: 'var(--text-muted)' }}>
             {phase === 1 
-              ? 'PHA 1: Kéo thả các thành phần vào BÊN TRONG hoặc BÊN NGOÀI chiếc hộp Ranh giới Hệ thống. Cẩn thận với các "Hệ thống ngoài"!'
-              : 'PHA 2: Dùng thanh công cụ nối sơ đồ. Đừng quên gom Khách và Cư dân lại nhé!'}
+              ? 'PHASE 1: Drag and drop components INSIDE or OUTSIDE the System Boundary box. Be careful with "External Systems"!'
+              : 'PHASE 2: Use the toolbar to connect the diagram. Don\'t forget to group Guest and Resident!'}
           </p>
         </div>
         <button onClick={handleReset} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #ced4da', background: 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', color: '#495057', fontWeight: 600 }}>
-          <RotateCcw size={16}/> Làm lại
+          <RotateCcw size={16}/> Retry
         </button>
       </div>
 
@@ -203,7 +203,7 @@ const Step2Canvas = ({ onComplete }) => {
             onDrop={(e) => handleDrop(e, 'outside')} onDragOver={handleDragOver}
             style={{ width: '100%', height: '550px', background: '#f8f9fa', border: '2px solid #adb5bd', borderRadius: '16px', position: 'relative', overflow: 'hidden', backgroundImage: 'radial-gradient(#dee2e6 2px, transparent 2px)', backgroundSize: '30px 30px' }}
           >
-            <div style={{ position: 'absolute', top: '16px', left: '16px', color: '#868e96', fontWeight: 600, fontSize: '1.1rem' }}>Môi trường bên ngoài</div>
+            <div style={{ position: 'absolute', top: '16px', left: '16px', color: '#868e96', fontWeight: 600, fontSize: '1.1rem' }}>External Environment</div>
             
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', padding: '60px 40px 20px 40px', alignItems: 'flex-start' }}>
               {items.filter(i => i.placed === 'outside' && i.id !== 'a6').map(i => renderItem(i, true))}
@@ -213,7 +213,7 @@ const Step2Canvas = ({ onComplete }) => {
               onDrop={(e) => handleDrop(e, 'inside')} onDragOver={handleDragOver}
               style={{ margin: '0 40px 40px 40px', background: 'rgba(255, 255, 255, 0.8)', border: '3px solid var(--text-main)', borderRadius: '8px', minHeight: '250px', display: 'flex', flexDirection: 'column', gap: '20px', position: 'relative', padding: '40px 20px 20px 20px' }}
             >
-              <div style={{ background: 'var(--text-main)', color: 'white', padding: '4px 16px', borderRadius: '0 0 8px 8px', position: 'absolute', top: 0, left: '20px', fontWeight: 600 }}>Hệ thống Kiểm soát Ra/Vào</div>
+              <div style={{ background: 'var(--text-main)', color: 'white', padding: '4px 16px', borderRadius: '0 0 8px 8px', position: 'absolute', top: 0, left: '20px', fontWeight: 600 }}>Access Control System</div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
                 {items.filter(i => i.placed === 'inside' && i.id !== 'a6').map(i => renderItem(i, true))}
               </div>
@@ -221,9 +221,9 @@ const Step2Canvas = ({ onComplete }) => {
           </div>
 
           <div style={{ width: '100%', background: '#e9ecef', borderRadius: '16px', padding: '20px', display: 'flex', gap: '12px', border: '1px solid #ced4da', alignItems: 'center', flexWrap: 'wrap' }}>
-            <h4 style={{ color: '#495057', margin: 0, marginRight: '16px' }}>Kho vật liệu:</h4>
+            <h4 style={{ color: '#495057', margin: 0, marginRight: '16px' }}>Material inventory:</h4>
             {items.filter(i => !i.placed && i.id !== 'a6').map(i => renderItem(i, true))}
-            {items.filter(i => !i.placed && i.id !== 'a6').length === 0 && <span style={{ color: '#868e96', fontStyle: 'italic' }}>Đã dọn sạch!</span>}
+            {items.filter(i => !i.placed && i.id !== 'a6').length === 0 && <span style={{ color: '#868e96', fontStyle: 'italic' }}>Cleared out!</span>}
           </div>
         </div>
       )}
@@ -231,18 +231,18 @@ const Step2Canvas = ({ onComplete }) => {
       {phase === 2 && (
         <>
           <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
-            <button onClick={() => { setTool('select'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'select' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'select' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><MousePointer2 size={16}/> Chọn</button>
-            <button onClick={() => { setTool('association'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'association' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'association' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><Minus size={16}/> Nối (Association)</button>
-            <button onClick={() => { setTool('generalization'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'generalization' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'generalization' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><MoveUpRight size={16}/> Kế thừa (Gen)</button>
+            <button onClick={() => { setTool('select'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'select' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'select' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><MousePointer2 size={16}/> Select</button>
+            <button onClick={() => { setTool('association'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'association' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'association' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><Minus size={16}/> Connect (Association)</button>
+            <button onClick={() => { setTool('generalization'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'generalization' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'generalization' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><MoveUpRight size={16}/> Gen (Generalization)</button>
             <button onClick={() => { setTool('include'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'include' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'include' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><MoveRight size={16}/> &lt;&lt;include&gt;&gt;</button>
             <button onClick={() => { setTool('extend'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'extend' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'extend' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><MoveRight size={16}/> &lt;&lt;extend&gt;&gt;</button>
-            <button onClick={() => { setTool('eraser'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'eraser' ? '2px solid #fa5252' : '1px solid #ced4da', background: tool === 'eraser' ? '#ffe3e3' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><Eraser size={16} color={tool === 'eraser' ? '#fa5252' : 'black'}/> Xóa dây</button>
+            <button onClick={() => { setTool('eraser'); setSelectedNodeId(null); }} style={{ padding: '8px 12px', borderRadius: '8px', border: tool === 'eraser' ? '2px solid #fa5252' : '1px solid #ced4da', background: tool === 'eraser' ? '#ffe3e3' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}><Eraser size={16} color={tool === 'eraser' ? '#fa5252' : 'black'}/> Erase line</button>
           </div>
 
           <div style={{ position: 'relative', width: '100%', height: '650px', background: '#f8f9fa', borderRadius: '16px', border: '2px solid #adb5bd', overflow: 'hidden', backgroundImage: 'radial-gradient(#dee2e6 2px, transparent 2px)', backgroundSize: '30px 30px' }}>
             {/* System Boundary UI */}
             <div style={{ position: 'absolute', top: '50px', left: '300px', width: '450px', height: '450px', border: '3px solid var(--text-main)', borderRadius: '8px', background: 'rgba(255, 255, 255, 0.6)' }}></div>
-            <div style={{ position: 'absolute', top: '50px', left: '320px', background: 'var(--text-main)', color: 'white', padding: '4px 16px', borderRadius: '0 0 8px 8px', fontWeight: 600 }}>Hệ thống Kiểm soát Ra/Vào</div>
+            <div style={{ position: 'absolute', top: '50px', left: '320px', background: 'var(--text-main)', color: 'white', padding: '4px 16px', borderRadius: '0 0 8px 8px', fontWeight: 600 }}>Access Control System</div>
 
             <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
               <defs>
@@ -330,15 +330,15 @@ const Step2Canvas = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
         {phase === 1 ? (
           <button onClick={handleCheckPhase1} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--text-main)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer' }}>
-            Nộp bản vẽ Ranh giới
+            Submit Boundary Diagram
           </button>
         ) : !success ? (
           <button onClick={handleCheckPhase2} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--text-main)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer' }}>
-            Đưa sơ đồ vào máy quét
+            Put diagram into scanner
           </button>
         ) : (
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Tuyệt đỉnh! Sang chướng ngại vật cuối <ArrowRight size={20} />
+            Incredible! Onto the final obstacle <ArrowRight size={20} />
           </button>
         )}
       </div>

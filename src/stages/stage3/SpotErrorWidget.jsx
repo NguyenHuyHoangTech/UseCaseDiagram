@@ -71,7 +71,7 @@ const SpotErrorWidget = ({ lesson, onSolved }) => {
         border: '1px solid #d0ebff'
       }}>
         <Target size={18} />
-        Nhiệm vụ: Hãy tìm kiếm lỗi mũi tên trong sơ đồ bên dưới và nhấp chuột trực tiếp vào đó!
+        Task: Find the arrow error in the diagram below and click directly on it!
       </div>
 
       {/* Diagram Hotspot Canvas Container */}
@@ -97,7 +97,7 @@ const SpotErrorWidget = ({ lesson, onSolved }) => {
       >
         <img
           src={lesson.image_reference}
-          alt="Sơ đồ lỗi"
+          alt="Error Diagram"
           style={{
             maxWidth: '100%',
             height: 'auto',
@@ -178,17 +178,17 @@ const SpotErrorWidget = ({ lesson, onSolved }) => {
                   color: isCorrect ? '#2b8a3e' : '#c92a2a',
                   marginBottom: '8px'
                 }}>
-                  {isCorrect ? 'Tuyệt vời! Bạn đã phát hiện ra lỗi thiết kế! 🎯 (+5 Stars, +2 Zaps)' : 'Chưa đúng rồi!'}
+                  {isCorrect ? 'Excellent! You spotted the design error! 🎯 (+5 Stars, +2 Zaps)' : 'Not quite right!'}
                 </h4>
                 
                 <p style={{ color: '#495057', fontSize: '0.95rem', lineHeight: 1.6 }}>
                   {isCorrect ? (
                     <>
-                      <strong>Lỗi phát hiện: {target.error_type}</strong> <br/>
+                      <strong>Error detected: {target.error_type}</strong> <br/>
                       {target.explanation}
                     </>
                   ) : (
-                    'Gợi ý: Hãy quan sát kỹ phần mũi tên nối giữa các Use Case. Sơ đồ Use Case không phải là sơ đồ tuần trình tự (flowchart). Hãy tìm xem có mũi tên nào đang chỉ thứ tự trước sau giữa "Đăng nhập" và "Xem số dư" hay không và nhấp vào nó!'
+                    'Hint: Look closely at the arrow connecting the Use Cases. A Use Case diagram is not a flowchart. Find if there is any arrow indicating a sequential order between "Login" and "View Balance" and click on it!'
                   )}
                 </p>
               </div>

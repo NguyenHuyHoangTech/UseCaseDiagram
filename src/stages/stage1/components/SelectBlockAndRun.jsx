@@ -7,7 +7,7 @@ export default function SelectBlockAndRun({ step, onResult }) {
 
   const run = () => {
     if (!selectedId) {
-      onResult({ tone: "error", title: "Chưa chọn block", message: "Hãy đặt một tên vào oval rồi chạy thử." });
+      onResult({ tone: "error", title: "No block selected", message: "Please put a name in the oval and then run." });
       return;
     }
 
@@ -16,8 +16,8 @@ export default function SelectBlockAndRun({ step, onResult }) {
     const isCorrect = selectedId === data.correctId;
     onResult({
       tone: isCorrect ? "success" : "error",
-      title: isCorrect ? "Luồng chạy thành công" : "Luồng bị hỏng",
-      message: feedback?.feedback || (isCorrect ? "Chọn đúng." : "Chưa đúng."),
+      title: isCorrect ? "Flow successful" : "Flow broken",
+      message: feedback?.feedback || (isCorrect ? "Correct." : "Incorrect."),
       simulation: feedback?.simulation || data.successSimulation,
       visualEffect: feedback?.visualEffect,
       visualState: buildVisualState(feedback?.visualEffect || (isCorrect ? data.successVisualEffect : undefined), {
@@ -25,7 +25,7 @@ export default function SelectBlockAndRun({ step, onResult }) {
         message: feedback?.simulation || data.successSimulation,
         ...feedback?.visualPayload,
       }),
-      details: item ? [`Bạn chọn: ${item.label}`] : [],
+      details: item ? [`You selected: ${item.label}`] : [],
     });
   };
 

@@ -43,13 +43,13 @@ const Hero = () => {
         marginBottom: '12px',
         fontWeight: 800,
         letterSpacing: '-1px'
-      }}>Làm chủ Use Case Diagram</h1>
+      }}>Master Use Case Diagram</h1>
       <p style={{
         color: 'var(--text-muted)',
         fontSize: '1.1rem',
         marginBottom: '30px'
       }}>
-        Học cách phân tích hệ thống như một kỹ sư thực thụ thông qua các thử thách tương tác trực quan.
+        Learn how to analyze systems like a true engineer through interactive visual challenges.
       </p>
       <button 
         onClick={handleContinue}
@@ -76,7 +76,7 @@ const Hero = () => {
         e.currentTarget.style.boxShadow = '0 4px 12px rgba(18, 184, 134, 0.3)';
       }}
       >
-        Tiếp tục học
+        Continue Learning
       </button>
     </header>
   );

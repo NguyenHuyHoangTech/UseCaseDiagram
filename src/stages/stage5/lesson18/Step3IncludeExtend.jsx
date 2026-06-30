@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, CheckCircle, ArrowRight, Eraser, MoveRight, RotateCcw } from 'lucide-react';
 
 const nodes = [
-  { id: 'u1', text: 'Mượn sách', x: 200, y: 200 },
-  { id: 'u2', text: 'Kiểm tra thẻ', x: 200, y: 350 },
-  { id: 'u3', text: 'Nộp phạt trễ hạn', x: 200, y: 50 }
+  { id: 'u1', text: 'Borrow Book', x: 200, y: 200 },
+  { id: 'u2', text: 'Check Card', x: 200, y: 350 },
+  { id: 'u3', text: 'Pay Late Fee', x: 200, y: 50 }
 ];
 
 const Step3IncludeExtend = ({ onComplete }) => {
@@ -47,41 +47,41 @@ const Step3IncludeExtend = ({ onComplete }) => {
 
   const handleCheck = () => {
     if (edges.length < 2) {
-      showFeedback('error', 'Bạn cần vẽ ít nhất 2 mũi tên nối 3 chức năng này.');
+      showFeedback('error', 'You need to draw at least 2 arrows connecting these 3 functions.');
       return;
     }
 
     const edgeCheckCard = edges.find(e => (e.from === 'u1' && e.to === 'u2') || (e.from === 'u2' && e.to === 'u1'));
     if (!edgeCheckCard) {
-      showFeedback('error', 'Thiếu mối liên hệ giữa Mượn sách và Kiểm tra thẻ.');
+      showFeedback('error', 'Missing relationship between Borrow Book and Check Card.');
       return;
     }
     
     if (edgeCheckCard.type === 'extend') {
-      showFeedback('error', 'Sai Logic: Việc kiểm tra thẻ là BẮT BUỘC để tránh mượn trộm sách. Đã bắt buộc thì phải dùng <<include>>.');
+      showFeedback('error', 'Logic Error: Checking the card is MANDATORY to prevent book theft. Since it is mandatory, you must use <<include>>.');
       return;
     }
     if (edgeCheckCard.from === 'u2') {
-      showFeedback('error', 'Sai Hướng: Mũi tên <<include>> phải chĩa TỪ chức năng gốc (Mượn sách) SANG chức năng phụ (Kiểm tra thẻ).');
+      showFeedback('error', 'Direction Error: The <<include>> arrow must point FROM the base function (Borrow Book) TO the included function (Check Card).');
       return;
     }
 
     const edgeFine = edges.find(e => (e.from === 'u1' && e.to === 'u3') || (e.from === 'u3' && e.to === 'u1'));
     if (!edgeFine) {
-      showFeedback('error', 'Thiếu mối liên hệ giữa Mượn sách và Nộp phạt trễ hạn.');
+      showFeedback('error', 'Missing relationship between Borrow Book and Pay Late Fee.');
       return;
     }
 
     if (edgeFine.type === 'include') {
-      showFeedback('error', 'Sai Logic: Nếu dùng <<include>>, nghĩa là ai đến mượn sách cũng BỊ PHẠT tiền! Nộp phạt chỉ xảy ra tùy điều kiện, nên nó là <<extend>>.');
+      showFeedback('error', 'Logic Error: If you use <<include>>, it means everyone who borrows a book will be FINED! Paying a fine only happens conditionally, so it should be <<extend>>.');
       return;
     }
     if (edgeFine.from === 'u1') {
-      showFeedback('error', 'Sai Hướng: Mũi tên <<extend>> phải chĩa VỀ chức năng gốc. Tức là từ Nộp phạt chĩa NGƯỢC VỀ Mượn sách.');
+      showFeedback('error', 'Direction Error: The <<extend>> arrow must point BACK TO the base function. Meaning from Pay Late Fee pointing BACK TO Borrow Book.');
       return;
     }
 
-    showFeedback('success', 'Chính xác! Bạn đã hiểu rất rõ bản chất của Include và Extend.');
+    showFeedback('success', 'Exactly! You clearly understand the nature of Include and Extend.');
     setSuccess(true);
   };
 
@@ -95,14 +95,14 @@ const Step3IncludeExtend = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div>
           <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-            18.3 Ma trận Rẽ nhánh (Include vs Extend)
+            18.3 Branching Matrix (Include vs Extend)
           </h3>
           <p style={{ color: 'var(--text-muted)' }}>
-            Hãy dùng thanh công cụ để nối Mượn sách với 2 chức năng còn lại. Chú ý loại mũi tên và chiều mũi tên!
+            Use the toolbar to connect Borrow Book with the other 2 functions. Pay attention to the arrow type and direction!
           </p>
         </div>
         <button onClick={handleReset} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #ced4da', background: 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', color: '#495057', fontWeight: 600 }}>
-          <RotateCcw size={16}/> Làm lại
+          <RotateCcw size={16}/> Retry
         </button>
       </div>
 
@@ -117,13 +117,13 @@ const Step3IncludeExtend = ({ onComplete }) => {
 
       <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
         <button onClick={() => { setTool('include'); setSelectedNodeId(null); }} style={{ padding: '8px 16px', borderRadius: '8px', border: tool === 'include' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'include' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <MoveRight size={16}/> Mũi tên &lt;&lt;include&gt;&gt;
+          <MoveRight size={16}/> &lt;&lt;include&gt;&gt; Arrow
         </button>
         <button onClick={() => { setTool('extend'); setSelectedNodeId(null); }} style={{ padding: '8px 16px', borderRadius: '8px', border: tool === 'extend' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'extend' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <MoveRight size={16}/> Mũi tên &lt;&lt;extend&gt;&gt;
+          <MoveRight size={16}/> &lt;&lt;extend&gt;&gt; Arrow
         </button>
         <button onClick={() => { setTool('eraser'); setSelectedNodeId(null); }} style={{ padding: '8px 16px', borderRadius: '8px', border: tool === 'eraser' ? '2px solid #fa5252' : '1px solid #ced4da', background: tool === 'eraser' ? '#ffe3e3' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <Eraser size={16} color={tool === 'eraser' ? '#fa5252' : 'black'}/> Xóa dây
+          <Eraser size={16} color={tool === 'eraser' ? '#fa5252' : 'black'}/> Erase line
         </button>
       </div>
 
@@ -185,11 +185,11 @@ const Step3IncludeExtend = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
         {!success ? (
           <button onClick={handleCheck} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--text-main)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer' }}>
-            Nộp bản vẽ
+            Submit diagram
           </button>
         ) : (
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Qua vòng <ArrowRight size={20} />
+            Next round <ArrowRight size={20} />
           </button>
         )}
       </div>

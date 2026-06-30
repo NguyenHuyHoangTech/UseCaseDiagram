@@ -48,10 +48,10 @@ const LessonCompleteModal = ({ show, starsGained = 10, zapsGained = 1, onContinu
           </motion.div>
 
           <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#2b2254', marginBottom: '8px' }}>
-            Bài học hoàn tất!
+            Lesson Complete!
           </h2>
           <p style={{ color: '#495057', marginBottom: '32px' }}>
-            Bạn đã hoàn thành xuất sắc bài học. Dưới đây là phần thưởng của bạn:
+            You have successfully completed this lesson. Here are your rewards:
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '32px' }}>
@@ -95,7 +95,7 @@ const LessonCompleteModal = ({ show, starsGained = 10, zapsGained = 1, onContinu
               boxShadow: '0 4px 14px rgba(18, 184, 134, 0.3)'
             }}
           >
-            Tiếp tục hành trình
+            Continue Journey
           </button>
         </motion.div>
       </div>

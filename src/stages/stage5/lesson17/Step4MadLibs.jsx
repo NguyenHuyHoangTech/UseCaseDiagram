@@ -2,34 +2,34 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, CheckCircle, ArrowRight, RotateCcw, Link2 } from 'lucide-react';
 
-const storyText = "Mô tả yêu cầu: Khách hàng đút thẻ vào máy ATM để Rút tiền hoặc Xem số dư. Mọi giao dịch đều yêu cầu hệ thống phải Kiểm tra mã PIN thông qua Hệ thống Ngân hàng Trung tâm. Nếu thành công, máy sẽ nhả tiền. Khách hàng có thể chọn in biên lai hoặc không. Cuối cùng hệ thống kết thúc giao dịch.";
+const storyText = "Requirement Description: Customer inserts card into ATM to Withdraw Cash or Check Balance. All transactions require the system to Verify PIN via Central Bank System. If successful, the machine will dispense cash. Customer may choose to print receipt or not. Finally the system ends the transaction.";
 
 const blanksData = [
-  { id: 'm1', label: 'Bước 1', type: 'main', correctAnswer: 'c1' },
-  { id: 'm2', label: 'Bước 2', type: 'main', correctAnswer: 'c2' },
-  { id: 'm3', label: 'Bước 3', type: 'main', correctAnswer: 'c3' },
-  { id: 'm4', label: 'Bước 4 (Tùy chọn)', type: 'main', correctAnswer: 'c4' },
-  { id: 'm5', label: 'Bước 5 (Cuối)', type: 'main', correctAnswer: 'c6' },
-  { id: 'a1', label: 'Ngoại lệ (Lỗi tại Bước 2)', type: 'alt', correctAnswer: 'c5' },
-  { id: 'a2', label: 'Luồng thay thế (Bỏ qua Bước 4)', type: 'alt', correctAnswer: 'c9' }
+  { id: 'm1', label: 'Step 1', type: 'main', correctAnswer: 'c1' },
+  { id: 'm2', label: 'Step 2', type: 'main', correctAnswer: 'c2' },
+  { id: 'm3', label: 'Step 3', type: 'main', correctAnswer: 'c3' },
+  { id: 'm4', label: 'Step 4 (Optional)', type: 'main', correctAnswer: 'c4' },
+  { id: 'm5', label: 'Step 5 (Final)', type: 'main', correctAnswer: 'c6' },
+  { id: 'a1', label: 'Exception (Error at Step 2)', type: 'alt', correctAnswer: 'c5' },
+  { id: 'a2', label: 'Alternative Flow (Skip Step 4)', type: 'alt', correctAnswer: 'c9' }
 ];
 
 const choicesData = [
-  { id: 'c1', text: 'Khách đút thẻ và chọn Rút tiền' },
-  { id: 'c2', text: 'Hệ thống kiểm tra mã PIN' },
-  { id: 'c3', text: 'Máy ATM nhả tiền' },
-  { id: 'c4', text: 'Hệ thống in biên lai' },
-  { id: 'c5', text: 'Sai PIN 3 lần -> Khóa thẻ' },
-  { id: 'c6', text: 'Hệ thống kết thúc giao dịch' },
-  { id: 'c9', text: 'Khách chọn KHÔNG in biên lai' },
-  { id: 'c7', text: 'Máy ATM tự động reset' }, // trap
-  { id: 'c8', text: 'Gọi điện cho bảo vệ' } // trap
+  { id: 'c1', text: 'Customer inserts card and selects Withdraw' },
+  { id: 'c2', text: 'System verifies PIN' },
+  { id: 'c3', text: 'ATM dispenses cash' },
+  { id: 'c4', text: 'System prints receipt' },
+  { id: 'c5', text: 'Wrong PIN 3 times -> Lock card' },
+  { id: 'c6', text: 'System ends transaction' },
+  { id: 'c9', text: 'Customer chooses NOT to print receipt' },
+  { id: 'c7', text: 'ATM auto resets' }, // trap
+  { id: 'c8', text: 'Call security' } // trap
 ];
 
 const VALID_FLOW_CONNECTIONS = [
-  { from: 'm2', to: 'a1', label: 'Tại bước 2, nếu sai PIN...' },
-  { from: 'm3', to: 'a2', label: 'Tại bước 3, nếu KHÔNG in...' },
-  { from: 'a2', to: 'm5', label: 'Bỏ qua bước 4, nối về đích' }
+  { from: 'm2', to: 'a1', label: 'At step 2, if wrong PIN...' },
+  { from: 'm3', to: 'a2', label: 'At step 3, if NOT printing...' },
+  { from: 'a2', to: 'm5', label: 'Skip step 4, connect to destination' }
 ];
 
 const Step4MadLibs = ({ onComplete }) => {
@@ -115,10 +115,10 @@ const Step4MadLibs = ({ onComplete }) => {
 
     const blank = blanksData.find(b => b.id === blankId);
     if (blank.correctAnswer === choice.id) {
-      showFeedback('success', 'Xác định chính xác hành động cho bước này!');
+      showFeedback('success', 'Correctly identified the action for this step!');
       setAnswers(prev => ({ ...prev, [blankId]: choice }));
     } else {
-      showFeedback('error', 'Phân tích sai: Hành động này không thuộc về vị trí hiện tại hoặc nằm ở luồng sự kiện khác.');
+      showFeedback('error', 'Incorrect analysis: This action does not belong to the current position or is in another event flow.');
     }
   };
 
@@ -143,14 +143,14 @@ const Step4MadLibs = ({ onComplete }) => {
       if (isMatch) {
         const alreadyConnected = connections.some(c => c.from === isMatch.from && c.to === isMatch.to);
         if (!alreadyConnected) {
-          showFeedback('success', 'Xác định đúng luồng rẽ nhánh/hợp lưu!');
+          showFeedback('success', 'Correctly identified branch/merge flow!');
           setConnections(prev => [...prev, isMatch]);
         }
       } else {
         if ((selectedBlockId === 'm4' && blankId === 'a2') || (selectedBlockId === 'a2' && blankId === 'm4')) {
-          showFeedback('error', 'Sai vị trí rẽ nhánh: Lựa chọn "in hay không in biên lai" xảy ra NGAY TRƯỚC bước 4 (tức là sau khi kết thúc bước 3), chứ không phải rẽ nhánh từ bước 4!');
+          showFeedback('error', 'Wrong branch location: The choice "print or not print receipt" happens RIGHT BEFORE step 4 (i.e. after step 3), not branching from step 4!');
         } else {
-          showFeedback('error', 'Không hợp lệ: Luồng sự kiện không rẽ nhánh hoặc hợp lưu tại vị trí này.');
+          showFeedback('error', 'Invalid: Event flow does not branch or merge at this position.');
         }
       }
       setSelectedBlockId(null);
@@ -178,17 +178,17 @@ const Step4MadLibs = ({ onComplete }) => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
         <h3 style={{ fontSize: '1.4rem', color: 'var(--brand-color)' }}>
-          {phase === 'drag' ? '17.4 Xây dựng Đặc tả Use Case (Flow of Events)' : '17.4 Xác định Luồng Sự kiện (Main/Alternative Flow)'}
+          {phase === 'drag' ? '17.4 Build Use Case Specification (Flow of Events)' : '17.4 Identify Event Flow (Main/Alternative Flow)'}
         </h3>
         <button onClick={handleReset} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #ced4da', background: 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', color: '#495057', fontWeight: 600 }}>
-          <RotateCcw size={16}/> Làm lại
+          <RotateCcw size={16}/> Retry
         </button>
       </div>
       
       <p style={{ color: 'var(--text-muted)', marginBottom: '16px', fontSize: '1.1rem' }}>
         {phase === 'drag' 
-          ? 'Kéo thả các khối hành động vào đúng thứ tự trong Luồng sự kiện chính và Luồng thay thế/Ngoại lệ.' 
-          : <span><strong>Thiết lập mối quan hệ:</strong> Hãy click chọn 2 khối để tạo đường rẽ nhánh hoặc hợp lưu. Số đường cần thiết lập: <strong style={{color: '#e03131'}}>{3 - connections.length} đường</strong>. Gợi ý: (1) Rẽ nhánh ngoại lệ từ Bước 2, (2) Rẽ nhánh tùy chọn từ Bước 3, (3) Hợp lưu kết thúc về Bước 5.</span>}
+          ? 'Drag and drop action blocks into correct order in the Main Flow and Alternative/Exception Flow.' 
+          : <span><strong>Establish relationships:</strong> Click on 2 blocks to create a branch or merge. Required connections: <strong style={{color: '#e03131'}}>{3 - connections.length} line(s)</strong>. Hint: (1) Branch exception from Step 2, (2) Branch optional from Step 3, (3) Merge end at Step 5.</span>}
       </p>
 
       <div style={{ background: '#e6fcf5', border: '2px solid #20c997', padding: '16px 20px', borderRadius: '12px', marginBottom: '24px', color: '#099268', fontWeight: 500, fontStyle: 'italic', lineHeight: 1.6 }}>
@@ -240,7 +240,7 @@ const Step4MadLibs = ({ onComplete }) => {
 
           {/* Main Flow Column */}
           <div style={{ flex: 1, background: 'white', padding: '24px', borderRadius: '16px', border: '2px solid #339af0', zIndex: 5 }}>
-            <h4 style={{ color: '#1864ab', borderBottom: '2px solid #d0ebff', paddingBottom: '12px', marginBottom: '20px', textAlign: 'center' }}>Luồng sự kiện chính</h4>
+            <h4 style={{ color: '#1864ab', borderBottom: '2px solid #d0ebff', paddingBottom: '12px', marginBottom: '20px', textAlign: 'center' }}>Main Flow</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {mainFlowBlanks.map(blank => {
                 const isSelected = selectedBlockId === blank.id;
@@ -262,7 +262,7 @@ const Step4MadLibs = ({ onComplete }) => {
                         transition: 'all 0.2s', fontSize: '0.95rem'
                       }}
                     >
-                      {answers[blank.id] ? answers[blank.id].text : 'Thả khối hành động vào đây...'}
+                      {answers[blank.id] ? answers[blank.id].text : 'Drop action block here...'}
                     </div>
                   </div>
                 );
@@ -272,7 +272,7 @@ const Step4MadLibs = ({ onComplete }) => {
 
           {/* Alternative Flow Column */}
           <div style={{ flex: 1, background: 'white', padding: '24px', borderRadius: '16px', border: '2px solid #fcc419', zIndex: 5 }}>
-            <h4 style={{ color: '#e67700', borderBottom: '2px solid #ffec99', paddingBottom: '12px', marginBottom: '20px', textAlign: 'center' }}>Luồng thay thế / Ngoại lệ</h4>
+            <h4 style={{ color: '#e67700', borderBottom: '2px solid #ffec99', paddingBottom: '12px', marginBottom: '20px', textAlign: 'center' }}>Alternative / Exception Flow</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {altFlowBlanks.map(blank => {
                 const isSelected = selectedBlockId === blank.id;
@@ -294,7 +294,7 @@ const Step4MadLibs = ({ onComplete }) => {
                         transition: 'all 0.2s', fontSize: '0.95rem'
                       }}
                     >
-                      {answers[blank.id] ? answers[blank.id].text : 'Thả khối hành động vào đây...'}
+                      {answers[blank.id] ? answers[blank.id].text : 'Drop action block here...'}
                     </div>
                   </div>
                 );
@@ -306,8 +306,8 @@ const Step4MadLibs = ({ onComplete }) => {
         {/* Right Side: Inventory Area */}
         {phase === 'drag' && (
           <div style={{ flex: 1, background: '#e9ecef', padding: '24px', borderRadius: '16px', border: '1px solid #ced4da', position: 'sticky', top: '20px' }}>
-            <h4 style={{ color: '#495057', marginBottom: '16px', textAlign: 'center' }}>Danh sách Hành động</h4>
-            <p style={{ color: '#868e96', fontSize: '0.85rem', marginBottom: '24px', textAlign: 'center' }}>Lựa chọn các bước phù hợp để điền vào đặc tả Use Case.</p>
+            <h4 style={{ color: '#495057', marginBottom: '16px', textAlign: 'center' }}>Action List</h4>
+            <p style={{ color: '#868e96', fontSize: '0.85rem', marginBottom: '24px', textAlign: 'center' }}>Select appropriate steps to fill in the Use Case specification.</p>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {choicesData.map(choice => (
@@ -330,7 +330,7 @@ const Step4MadLibs = ({ onComplete }) => {
             {isAllPlaced && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: '32px' }}>
                 <button onClick={startConnectPhase} style={{ width: '100%', padding: '16px', borderRadius: '12px', background: 'var(--brand-color)', color: 'white', fontWeight: 700, fontSize: '1rem', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(18,184,134,0.3)' }}>
-                  <Link2 size={20} /> Hoàn thành: Xác định Rẽ nhánh
+                  <Link2 size={20} /> Complete: Define Branches
                 </button>
               </motion.div>
             )}
@@ -352,7 +352,7 @@ const Step4MadLibs = ({ onComplete }) => {
               transition: 'all 0.3s'
             }}
           >
-            {isAllConnected ? 'Tiếp tục: Xử lý Thay đổi Yêu cầu' : `Cần hoàn thiện luồng sự kiện (${connections.length}/3)`}
+            {isAllConnected ? 'Continue: Handle Requirement Changes' : `Need to complete flow (${connections.length}/3)`}
             {isAllConnected && <ArrowRight size={24} />}
           </button>
         </motion.div>

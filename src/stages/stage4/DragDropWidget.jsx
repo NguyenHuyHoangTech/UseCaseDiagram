@@ -115,9 +115,9 @@ const DragDropWidget = ({ lesson, onSolved }) => {
       {/* Pool of items */}
       <div>
         <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          Danh sách điều kiện cần phân biệt:
+          List of conditions to classify:
           <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-muted)' }}>
-            (Kéo thả hoặc Click chọn rồi ấn vào ô bên dưới)
+            (Drag and drop or Click to select and click the box below)
           </span>
         </h3>
         
@@ -134,7 +134,7 @@ const DragDropWidget = ({ lesson, onSolved }) => {
         }}>
           {pool.length === 0 && !checked && (
             <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', width: '100%', textAlign: 'center' }}>
-              🎉 Đã xếp hết! Hãy nhấn Kiểm tra bên dưới.
+              🎉 All placed! Please click Check Answer below.
             </div>
           )}
           {pool.map(item => {
@@ -191,10 +191,10 @@ const DragDropWidget = ({ lesson, onSolved }) => {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <span style={{ fontWeight: 800, color: '#2b8a3e', fontSize: '1rem' }}>
-              🟢 Tiền điều kiện (Pre-condition)
+              🟢 Pre-condition
             </span>
             <span style={{ fontSize: '0.8rem', color: '#5c7cfa', fontWeight: 600, display: selectedItem ? 'block' : 'none' }}>
-              Click để thả vào đây
+              Click to drop here
             </span>
           </div>
 
@@ -235,7 +235,7 @@ const DragDropWidget = ({ lesson, onSolved }) => {
             })}
             {preConditions.length === 0 && (
               <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', color: '#8fbc8f', fontSize: '0.85rem', fontStyle: 'italic' }}>
-                Kéo thả các điều kiện xảy ra TRƯỚC vào đây
+                Drag conditions that happen BEFORE here
               </div>
             )}
           </div>
@@ -262,10 +262,10 @@ const DragDropWidget = ({ lesson, onSolved }) => {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <span style={{ fontWeight: 800, color: '#1c7ed6', fontSize: '1rem' }}>
-              🔵 Hậu điều kiện (Post-condition)
+              🔵 Post-condition
             </span>
             <span style={{ fontSize: '0.8rem', color: '#5c7cfa', fontWeight: 600, display: selectedItem ? 'block' : 'none' }}>
-              Click để thả vào đây
+              Click to drop here
             </span>
           </div>
 
@@ -306,7 +306,7 @@ const DragDropWidget = ({ lesson, onSolved }) => {
             })}
             {postConditions.length === 0 && (
               <div style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', color: '#7ea8cf', fontSize: '0.85rem', fontStyle: 'italic' }}>
-                Kéo thả các kết quả đạt được SAU vào đây
+                Drag results achieved AFTER here
               </div>
             )}
           </div>
@@ -332,7 +332,7 @@ const DragDropWidget = ({ lesson, onSolved }) => {
           onMouseOut={(e) => e.currentTarget.style.background = '#e9ecef'}
         >
           <RefreshCw size={18} />
-          Làm lại
+          Retry
         </button>
 
         <button 
@@ -364,7 +364,7 @@ const DragDropWidget = ({ lesson, onSolved }) => {
             }
           }}
         >
-          Kiểm tra đáp án
+          Check Answer
         </button>
       </div>
 
@@ -397,17 +397,17 @@ const DragDropWidget = ({ lesson, onSolved }) => {
                   color: isCorrect ? '#2b8a3e' : '#c92a2a',
                   marginBottom: '8px'
                 }}>
-                  {isCorrect ? 'Tuyệt vời! Bạn đã sắp xếp hoàn toàn chính xác. 🎉 (+5 Stars, +2 Zaps)' : 'Chưa chính xác rồi! Hãy kiểm tra lại các điều kiện bị đánh dấu đỏ.'}
+                  {isCorrect ? 'Excellent! You sorted perfectly. 🎉 (+5 Stars, +2 Zaps)' : 'Incorrect! Please check the red marked conditions.'}
                 </h4>
                 
                 <p style={{ color: '#495057', fontSize: '0.95rem', lineHeight: 1.6 }}>
                   {isCorrect ? (
                     <>
-                      <strong>Tiền điều kiện (Pre-conditions)</strong> là những trạng thái bắt buộc phải có thực <strong>trước khi</strong> người dùng thực hiện đăng nhập (VD: Người dùng ở đúng trang login và tài khoản đã được tạo/kích hoạt sẵn). <br/>
-                      <strong>Hậu điều kiện (Post-conditions)</strong> là kết quả bảo đảm hệ thống phải đạt được <strong>sau khi</strong> luồng kết thúc thành công (VD: Hệ thống ghi nhận trạng thái Online và Session làm việc được khởi tạo).
+                      <strong>Pre-conditions</strong> are mandatory states that must exist <strong>before</strong> the user performs the login (e.g., User is on the correct login page and the account is already created/activated). <br/>
+                      <strong>Post-conditions</strong> are guaranteed results the system must achieve <strong>after</strong> the flow finishes successfully (e.g., The system records the Online status and the working Session is initialized).
                     </>
                   ) : (
-                    'Gợi ý: Hãy tự hỏi: "Điều kiện này bắt buộc phải có từ trước hay chỉ xuất hiện sau khi người dùng đăng nhập thành công?". Hãy thử di chuyển các điều kiện bị sai và bấm Kiểm tra lại!'
+                    'Hint: Ask yourself: "Does this condition have to exist beforehand, or does it only appear after the user logs in successfully?". Try moving the incorrect conditions and click Check Answer again!'
                   )}
                 </p>
               </div>

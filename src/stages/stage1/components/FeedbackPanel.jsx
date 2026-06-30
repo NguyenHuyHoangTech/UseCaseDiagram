@@ -18,7 +18,7 @@ export default function FeedbackPanel({ result }) {
         <Icon size={20} />
         <span>{result?.title || "Feedback"}</span>
       </div>
-      <p>{result?.message || "Thao tác trên canvas rồi bấm Run để xem hệ thống phản ứng."}</p>
+      <p>{result?.message || "Interact on the canvas and then click Run to see the system react."}</p>
       {result?.simulation && (
         <div className="simulation-box">
           <strong>Simulation</strong>
@@ -43,18 +43,18 @@ export default function FeedbackPanel({ result }) {
 }
 
 const visualEffectLabels = {
-  shake: "Dừng tại node",
-  bounceBack: "Dừng tại node",
-  crack: "Công nghệ lỗi thời",
-  stopAtNode: "An bị kẹt",
-  flowchartWarning: "Sơ đồ phình thành flowchart",
-  successPath: "Hành trình chạy trọn vẹn",
-  ticketSuccess: "Nhận vé điện tử",
-  backendRoom: "Bị kéo vào phòng backend",
-  databaseRoom: "Bị kéo vào database",
-  outdatedTechnology: "Công nghệ lỗi thời",
-  uiChanged: "UI thay đổi",
-  lockedSeat: "Ghế bị khóa",
-  wrongActor: "Sai góc nhìn Actor",
-  renameMachine: "Cần đổi tên Use Case",
+  shake: "Stop at node",
+  bounceBack: "Stop at node",
+  crack: "Outdated technology",
+  stopAtNode: "An is stuck",
+  flowchartWarning: "Diagram bloated into a flowchart",
+  successPath: "Complete successful journey",
+  ticketSuccess: "Receive e-ticket",
+  backendRoom: "Pulled into backend room",
+  databaseRoom: "Pulled into database",
+  outdatedTechnology: "Outdated technology",
+  uiChanged: "UI changed",
+  lockedSeat: "Seat locked",
+  wrongActor: "Wrong Actor perspective",
+  renameMachine: "Need to rename Use Case",
 };

@@ -3,14 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { UserCircle, Hexagon, AlertTriangle, ArrowRight } from 'lucide-react';
 
 const tokensData = [
-  { id: 't1', text: 'Khách hàng', type: 'actor' },
-  { id: 't2', text: 'máy ATM', type: 'trap', msg: 'Đừng nhầm lẫn! "Máy ATM" là phần cứng chứa hệ thống, không phải chức năng.' },
-  { id: 't3', text: 'Rút tiền', type: 'usecase' },
-  { id: 't4', text: 'Xem số dư', type: 'usecase' },
-  { id: 't5', text: 'Kiểm tra mã PIN', type: 'usecase' },
-  { id: 't6', text: 'Ngân hàng Trung tâm', type: 'actor' },
-  { id: 't7', text: 'nhả tiền', type: 'trap', msg: 'Đừng nhầm lẫn! "Nhả tiền" là hành động vật lý của phần cứng, không phải Use Case.' },
-  { id: 't8', text: 'In biên lai', type: 'usecase' },
+  { id: 't1', text: 'Customer', type: 'actor' },
+  { id: 't2', text: 'ATM Machine', type: 'trap', msg: 'Don\'t be confused! "ATM Machine" is the hardware containing the system, not a function.' },
+  { id: 't3', text: 'Withdraw Cash', type: 'usecase' },
+  { id: 't4', text: 'Check Balance', type: 'usecase' },
+  { id: 't5', text: 'Verify PIN', type: 'usecase' },
+  { id: 't6', text: 'Central Bank', type: 'actor' },
+  { id: 't7', text: 'dispense cash', type: 'trap', msg: 'Don\'t be confused! "dispense cash" is a physical action of the hardware, not a Use Case.' },
+  { id: 't8', text: 'Print Receipt', type: 'usecase' },
 ];
 
 const CheckCircleIcon = () => (
@@ -34,9 +34,9 @@ const Step1Extract = ({ onComplete }) => {
     if (token.type === 'trap') {
       showFeedback('error', token.msg);
     } else if (token.type !== bucketType) {
-      showFeedback('error', `Sai rồi! "${token.text}" không phải là ${bucketType === 'actor' ? 'Actor' : 'Use Case'}.`);
+      showFeedback('error', `Incorrect! "${token.text}" is not a ${bucketType === 'actor' ? 'Actor' : 'Use Case'}.`);
     } else {
-      showFeedback('success', `Chính xác! "${token.text}" là ${bucketType === 'actor' ? 'Actor' : 'Use Case'}.`);
+      showFeedback('success', `Correct! "${token.text}" is a ${bucketType === 'actor' ? 'Actor' : 'Use Case'}.`);
       setPlacedTokens(prev => {
         if (prev[bucketType].find(t => t.id === token.id)) return prev;
         return { ...prev, [bucketType]: [...prev[bucketType], token] };
@@ -66,8 +66,8 @@ const Step1Extract = ({ onComplete }) => {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>17.1 Phân tích Yêu cầu: Trích xuất Actor & Use Case</h3>
-      <p style={{ marginBottom: '16px', color: 'var(--text-muted)' }}>Phân tích đoạn mô tả hệ thống bên dưới. Kéo thả các từ khóa được tô xám vào đúng phân loại: Actor (Tác nhân) hoặc Use Case (Ca sử dụng). Hãy cẩn thận với các từ gây nhiễu!</p>
+      <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>17.1 Requirement Analysis: Extract Actor & Use Case</h3>
+      <p style={{ marginBottom: '16px', color: 'var(--text-muted)' }}>Analyze the system description below. Drag and drop the grayed-out keywords into the correct category: Actor or Use Case. Be careful with distractor words!</p>
       
       <AnimatePresence>
         {feedback && (
@@ -80,12 +80,12 @@ const Step1Extract = ({ onComplete }) => {
 
       <div style={{ display: 'flex', gap: '24px', flexDirection: 'row', flexWrap: 'wrap' }}>
         <div style={{ flex: '1 1 300px', background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e9ecef', lineHeight: '2' }}>
-          {renderToken(tokensData[0])} đút thẻ vào {renderToken(tokensData[1])} để {renderToken(tokensData[2])} hoặc {renderToken(tokensData[3])}. Mọi giao dịch đều yêu cầu hệ thống phải {renderToken(tokensData[4])} thông qua {renderToken(tokensData[5])}. Nếu thành công, máy sẽ {renderToken(tokensData[6])}. Khách hàng có thể chọn {renderToken(tokensData[7])} hoặc không.
+          {renderToken(tokensData[0])} inserts a card into the {renderToken(tokensData[1])} to {renderToken(tokensData[2])} or {renderToken(tokensData[3])}. All transactions require the system to {renderToken(tokensData[4])} via the {renderToken(tokensData[5])}. If successful, the machine will {renderToken(tokensData[6])}. The customer may choose to {renderToken(tokensData[7])} or not.
         </div>
 
         <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div onDrop={(e) => handleDrop(e, 'actor')} onDragOver={handleDragOver} style={{ flex: 1, background: '#e7f5ff', border: '2px dashed #339af0', borderRadius: '16px', padding: '20px', minHeight: '120px', display: 'flex', flexDirection: 'column' }}>
-            <h4 style={{ color: '#1864ab', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><UserCircle size={20} /> Giỏ Actor</h4>
+            <h4 style={{ color: '#1864ab', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><UserCircle size={20} /> Actor Bucket</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <AnimatePresence>
                 {placedTokens.actor.map(t => (
@@ -96,7 +96,7 @@ const Step1Extract = ({ onComplete }) => {
           </div>
 
           <div onDrop={(e) => handleDrop(e, 'usecase')} onDragOver={handleDragOver} style={{ flex: 1, background: '#fff3bf', border: '2px dashed #fcc419', borderRadius: '16px', padding: '20px', minHeight: '120px', display: 'flex', flexDirection: 'column' }}>
-            <h4 style={{ color: '#e67700', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><Hexagon size={20} /> Giỏ Use Case</h4>
+            <h4 style={{ color: '#e67700', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}><Hexagon size={20} /> Use Case Bucket</h4>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <AnimatePresence>
                 {placedTokens.usecase.map(t => (
@@ -111,7 +111,7 @@ const Step1Extract = ({ onComplete }) => {
       {isComplete && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(18, 184, 134, 0.3)', cursor: 'pointer', border: 'none', fontSize: '1rem' }}>
-            Tiếp tục: Xác định Ranh giới Hệ thống <ArrowRight size={20} />
+            Continue: Define System Boundary <ArrowRight size={20} />
           </button>
         </motion.div>
       )}

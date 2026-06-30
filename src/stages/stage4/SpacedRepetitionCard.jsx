@@ -66,7 +66,7 @@ const SpacedRepetitionCard = ({ data, onSolved }) => {
         boxShadow: '0 4px 10px rgba(112, 72, 232, 0.2)'
       }}>
         <Sparkles size={14} />
-        Brain Boost • Ôn tập ngắt quãng
+        Brain Boost • Spaced Repetition
       </div>
 
       {/* Question */}
@@ -174,7 +174,7 @@ const SpacedRepetitionCard = ({ data, onSolved }) => {
                 alignItems: 'center',
                 gap: '6px'
               }}>
-                {isCorrect ? '🎉 Tuyệt vời! Chính xác! (+1 Star, +1 Zap)' : '💡 Hãy ghi nhớ kiến thức này!'}
+                {isCorrect ? '🎉 Excellent! Correct! (+1 Star, +1 Zap)' : '💡 Keep this knowledge in mind!'}
               </h4>
               <p style={{
                 fontSize: '0.9rem',

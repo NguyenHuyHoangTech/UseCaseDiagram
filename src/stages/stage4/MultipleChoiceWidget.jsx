@@ -210,7 +210,7 @@ const MultipleChoiceWidget = ({ lesson, onSolved }) => {
             e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
-          Gửi câu trả lời
+          Submit Answer
         </button>
       )}
 
@@ -243,22 +243,22 @@ const MultipleChoiceWidget = ({ lesson, onSolved }) => {
                   color: isCorrect ? '#2b8a3e' : '#c92a2a',
                   marginBottom: '8px'
                 }}>
-                  {isCorrect ? 'Tuyệt vời! Câu trả lời hoàn toàn chính xác. 💡 (+5 Stars, +2 Zaps)' : 'Rất tiếc, câu trả lời chưa đúng rồi!'}
+                  {isCorrect ? 'Excellent! The answer is completely correct. 💡 (+5 Stars, +2 Zaps)' : 'Sorry, the answer is incorrect!'}
                 </h4>
 
                 <p style={{ color: '#495057', fontSize: '0.95rem', lineHeight: 1.6 }}>
                   {isCorrect ? (
                     <>
-                      Nếu người dùng nhập sai mã OTP vượt quá số lần tối đa (3 lần), giao dịch <strong>bị hủy hoàn toàn</strong> và tài khoản/tính năng nhận OTP bị khóa tạm thời. Đây là kịch bản của một <strong>Luồng ngoại lệ (Exception Flow)</strong> vì nó <strong>không đạt được mục tiêu chính</strong> của Use Case (Thanh toán hóa đơn thất bại). <br /><br />
-                      <strong>Phân biệt nhanh:</strong>
+                      If the user enters the wrong OTP exceeding the maximum number of times (3 times), the transaction is <strong>completely canceled</strong> and the account/OTP receiving feature is temporarily locked. This is a scenario of an <strong>Exception Flow</strong> because it <strong>fails to achieve the main goal</strong> of the Use Case (Bill payment fails). <br /><br />
+                      <strong>Quick distinction:</strong>
                       <ul style={{ paddingLeft: '20px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <li>• <strong>Happy Path:</strong> Thanh toán thành công ngay lần đầu.</li>
-                        <li>• <strong>Alternative Flow (Luồng thay thế):</strong> Nhập sai OTP lần 1, nhưng nhập lại đúng ở lần 2 vì thế Vẫn thanh toán thành công (đạt được mục tiêu).</li>
-                        <li>• <strong>Exception Flow (Luồng ngoại lệ):</strong> Nhập sai quá 3 lần vì thế Bị khóa, giao dịch bị hủy bỏ hoàn toàn (thất bại mục tiêu).</li>
+                        <li>• <strong>Happy Path:</strong> Successful payment on the first try.</li>
+                        <li>• <strong>Alternative Flow:</strong> Wrong OTP on the 1st try, but correct on the 2nd try so payment is still successful (goal achieved).</li>
+                        <li>• <strong>Exception Flow:</strong> Wrong input over 3 times so locked out, transaction is completely canceled (goal failed).</li>
                       </ul>
                     </>
                   ) : (
-                    'Gợi ý: Hãy suy nghĩ xem kết quả của kịch bản này có giúp Actor đạt được mục tiêu "Thanh toán hóa đơn" hay không? Nếu nó làm đứt gãy luồng và hủy giao dịch, nó phải là loại luồng nào? Hãy chọn lại!'
+                    'Hint: Think about whether the outcome of this scenario helps the Actor achieve the "Pay Bill" goal? If it breaks the flow and cancels the transaction, what kind of flow should it be? Try again!'
                   )}
                 </p>
               </div>

@@ -20,8 +20,8 @@ export default function DragToBoundary({ step, onResult }) {
     if (mistakes.length === 0) {
       onResult({
         tone: "success",
-        title: "Boundary hợp lý",
-        message: "Actor, Use Case và chi tiết kỹ thuật đã được đặt đúng chỗ.",
+        title: "Reasonable Boundary",
+        message: "Actor, Use Case, and technical details are placed correctly.",
         simulation: data.successSimulation,
         visualEffect: data.successVisualEffect,
         visualState: buildVisualState(data.successVisualEffect || "successPath", {
@@ -36,15 +36,15 @@ export default function DragToBoundary({ step, onResult }) {
 
     onResult({
       tone: "error",
-      title: "Boundary đang làm sai scope",
-      message: "Một vài phần tử khiến hệ thống nhận sai trách nhiệm.",
-      simulation: firstMistakeWithScene?.simulation || "Run dừng lại trước khi scenario chạy vì boundary chưa sạch.",
+      title: "Boundary has wrong scope",
+      message: "Some elements make the system misunderstand its responsibilities.",
+      simulation: firstMistakeWithScene?.simulation || "Run stopped before scenario execution because the boundary is not clean.",
       visualEffect: firstMistakeWithScene?.visualEffect,
       visualState: buildVisualState(firstMistakeWithScene?.visualEffect, {
         block: firstMistakeWithScene,
         message: firstMistakeWithScene?.simulation,
       }),
-      details: mistakes.map((block) => `${block.label}: ${block.feedback || block.penalty || `đúng ra thuộc "${data.zones.find((zone) => zone.id === block.correctZoneId)?.label}"`}`),
+      details: mistakes.map((block) => `${block.label}: ${block.feedback || block.penalty || `should belong to "${data.zones.find((zone) => zone.id === block.correctZoneId)?.label}"`}`),
     });
   };
 

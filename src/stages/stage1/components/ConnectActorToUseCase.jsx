@@ -21,8 +21,8 @@ export default function ConnectActorToUseCase({ step, onResult }) {
     if (missing.length === 0 && extra.length === 0) {
       onResult({
         tone: "success",
-        title: "Association đúng",
-        message: "Actor đã nối đúng với mục tiêu mà họ kích hoạt.",
+        title: "Correct Association",
+        message: "The actor is correctly associated with the goal they trigger.",
         simulation: data.successSimulation,
         visualEffect: data.successVisualEffect,
         visualState: buildVisualState(data.successVisualEffect || "successPath", {
@@ -38,9 +38,9 @@ export default function ConnectActorToUseCase({ step, onResult }) {
 
     onResult({
       tone: "error",
-      title: "Đường nối bị đỏ",
-      message: "Run dừng ở association sai hoặc thiếu.",
-      simulation: firstExtraFeedback?.simulation || "Scenario không thể chạy trơn tru vì actor không đi tới đúng use case.",
+      title: "Red connection line",
+      message: "Run stopped at incorrect or missing association.",
+      simulation: firstExtraFeedback?.simulation || "The scenario cannot run smoothly because the actor does not go to the correct use case.",
       visualEffect: firstExtraFeedback?.visualEffect,
       visualState: buildVisualState(firstExtraFeedback?.visualEffect || "wrongActor", {
         message: firstExtraFeedback?.simulation,
@@ -48,9 +48,9 @@ export default function ConnectActorToUseCase({ step, onResult }) {
       details: [
         ...extra.map((item) => {
           const feedback = data.feedbackByConnection?.[connectionKey(item.actorId, item.useCaseId)];
-          return typeof feedback === "object" ? feedback.feedback : feedback || `Nối thừa: ${labelActor(data, item.actorId)} -> ${labelUseCase(data, item.useCaseId)}`;
+          return typeof feedback === "object" ? feedback.feedback : feedback || `Extra: ${labelActor(data, item.actorId)} -> ${labelUseCase(data, item.useCaseId)}`;
         }),
-        ...missing.map((item) => `Thiếu: ${labelActor(data, item.actorId)} -> ${labelUseCase(data, item.useCaseId)}`),
+        ...missing.map((item) => `Missing: ${labelActor(data, item.actorId)} -> ${labelUseCase(data, item.useCaseId)}`),
       ],
     });
   };
@@ -73,7 +73,7 @@ export default function ConnectActorToUseCase({ step, onResult }) {
         </section>
         <section className="connection-list">
           <h3>Connections</h3>
-          {connections.length === 0 ? <p>Chọn actor rồi bấm use case để nối.</p> : connections.map((item) => (
+          {connections.length === 0 ? <p>Select an actor then click a use case to connect.</p> : connections.map((item) => (
             <div className="connection-pill" key={connectionKey(item.actorId, item.useCaseId)}>
               {labelActor(data, item.actorId)} {"->"} {labelUseCase(data, item.useCaseId)}
             </div>

@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, CheckCircle, ArrowRight, MousePointer2, Eraser, MoveUpRight, Minus, User, RotateCcw } from 'lucide-react';
 
 const initialNodes = [
-  { id: 'n1', text: 'Sinh viên', type: 'actor', x: 100, y: 250 },
-  { id: 'n2', text: 'Giảng viên', type: 'actor', x: 300, y: 250 },
-  { id: 'n3', text: 'Đăng nhập', type: 'usecase', x: 100, y: 400 },
-  { id: 'n4', text: 'Tìm kiếm sách', type: 'usecase', x: 250, y: 400 },
-  { id: 'n5', text: 'Mượn sách', type: 'usecase', x: 400, y: 400 },
+  { id: 'n1', text: 'Student', type: 'actor', x: 100, y: 250 },
+  { id: 'n2', text: 'Lecturer', type: 'actor', x: 300, y: 250 },
+  { id: 'n3', text: 'Login', type: 'usecase', x: 100, y: 400 },
+  { id: 'n4', text: 'Search Book', type: 'usecase', x: 250, y: 400 },
+  { id: 'n5', text: 'Borrow Book', type: 'usecase', x: 400, y: 400 },
   { id: 'n6', text: '', type: 'actor_hidden', x: 200, y: 100 }
 ];
 
@@ -63,26 +63,26 @@ const Step2Generalization = ({ onComplete }) => {
   const handleCheck = () => {
     const hiddenNode = nodes.find(n => n.id === 'n6');
     if (!hiddenNode.text.trim()) {
-      showFeedback('error', 'Vui lòng đặt tên cho Actor ẩn danh (VD: Bạn đọc).');
+      showFeedback('error', 'Please name the hidden Actor (e.g., Reader).');
       return;
     }
 
     const backwardGen = edges.find(e => e.type === 'generalization' && e.from === 'n6');
     if (backwardGen) {
-      showFeedback('error', 'Sai hướng Kế thừa: Mũi tên tam giác rỗng phải chĩa từ Đứa con (Sinh viên) lên Cha (Bạn đọc). Bạn đang vẽ ngược!');
+      showFeedback('error', 'Wrong Generalization direction: The hollow triangle arrow must point from Child (Student) up to Parent (Reader). You are drawing backwards!');
       return;
     }
 
     const svGen = edges.find(e => e.type === 'generalization' && e.from === 'n1' && e.to === 'n6');
     const gvGen = edges.find(e => e.type === 'generalization' && e.from === 'n2' && e.to === 'n6');
     if (!svGen || !gvGen) {
-      showFeedback('error', 'Chưa đúng! Cần nối Sinh viên và Giảng viên LÊN Actor Cha bằng mũi tên Kế thừa.');
+      showFeedback('error', 'Incorrect! You need to connect Student and Lecturer UP to the Parent Actor using a Generalization arrow.');
       return;
     }
 
     const oldMessy = edges.filter(e => (e.from === 'n1' || e.from === 'n2') && e.type === 'association');
     if (oldMessy.length > 0) {
-      showFeedback('error', 'Hãy dùng cục tẩy (Eraser) xóa hết các đường chằng chịt cũ đi nhé!');
+      showFeedback('error', 'Please use the Eraser to remove all the old messy lines!');
       return;
     }
 
@@ -91,11 +91,11 @@ const Step2Generalization = ({ onComplete }) => {
     const b3 = edges.find(e => e.type === 'association' && (e.from === 'n6' && e.to === 'n5') || (e.from === 'n5' && e.to === 'n6'));
 
     if (!b1 || !b2 || !b3) {
-      showFeedback('error', 'Sau khi tạo Actor Cha, bạn cần nối Actor đó với 3 Use Case dùng chung.');
+      showFeedback('error', 'After creating the Parent Actor, you need to connect that Actor with the 3 shared Use Cases.');
       return;
     }
 
-    showFeedback('success', 'Tuyệt vời! Sơ đồ giờ đã gọn gàng và chuẩn xác.');
+    showFeedback('success', 'Great! The diagram is now clean and accurate.');
     setSuccess(true);
   };
 
@@ -109,14 +109,14 @@ const Step2Generalization = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div>
           <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-            18.2 Trò chơi Gia phả (Generalization)
+            18.2 Family Tree Game (Generalization)
           </h3>
           <p style={{ color: 'var(--text-muted)' }}>
-            Bãi chiến trường! Hãy dọn dẹp các đường chằng chịt, đặt tên cho Actor Cha và kế thừa.
+            Battlefield! Let's clean up the messy lines, name the Parent Actor and generalize.
           </p>
         </div>
         <button onClick={handleReset} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #ced4da', background: 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', color: '#495057', fontWeight: 600 }}>
-          <RotateCcw size={16}/> Làm lại
+          <RotateCcw size={16}/> Retry
         </button>
       </div>
 
@@ -131,16 +131,16 @@ const Step2Generalization = ({ onComplete }) => {
 
       <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
         <button onClick={() => { setTool('select'); setSelectedNodeId(null); }} style={{ padding: '8px 16px', borderRadius: '8px', border: tool === 'select' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'select' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <MousePointer2 size={16}/> Chọn
+          <MousePointer2 size={16}/> Select
         </button>
         <button onClick={() => { setTool('eraser'); setSelectedNodeId(null); }} style={{ padding: '8px 16px', borderRadius: '8px', border: tool === 'eraser' ? '2px solid #fa5252' : '1px solid #ced4da', background: tool === 'eraser' ? '#ffe3e3' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <Eraser size={16} color={tool === 'eraser' ? '#fa5252' : 'black'}/> Xóa dây
+          <Eraser size={16} color={tool === 'eraser' ? '#fa5252' : 'black'}/> Erase line
         </button>
         <button onClick={() => { setTool('generalization'); setSelectedNodeId(null); }} style={{ padding: '8px 16px', borderRadius: '8px', border: tool === 'generalization' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'generalization' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <MoveUpRight size={16}/> Mũi tên Kế thừa
+          <MoveUpRight size={16}/> Generalization Arrow
         </button>
         <button onClick={() => { setTool('association'); setSelectedNodeId(null); }} style={{ padding: '8px 16px', borderRadius: '8px', border: tool === 'association' ? '2px solid var(--brand-color)' : '1px solid #ced4da', background: tool === 'association' ? '#e6fcf5' : 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <Minus size={16}/> Mũi tên Nối
+          <Minus size={16}/> Association Line
         </button>
       </div>
 
@@ -188,7 +188,7 @@ const Step2Generalization = ({ onComplete }) => {
               >
                 <User size={40} color={n.id === 'n6' ? '#868e96' : '#339af0'} strokeWidth={1.5} />
                 {n.type === 'actor_hidden' ? (
-                  <input type="text" placeholder="Tên Actor?" value={n.text} onChange={e => updateHiddenName(e.target.value)} onClick={e => e.stopPropagation()} style={{ width: '80px', border: '1px solid #ced4da', borderRadius: '4px', background: 'white', textAlign: 'center', outline: 'none', fontWeight: 600, fontSize: '0.8rem' }} />
+                  <input type="text" placeholder="Actor Name?" value={n.text} onChange={e => updateHiddenName(e.target.value)} onClick={e => e.stopPropagation()} style={{ width: '80px', border: '1px solid #ced4da', borderRadius: '4px', background: 'white', textAlign: 'center', outline: 'none', fontWeight: 600, fontSize: '0.8rem' }} />
                 ) : (
                   <span style={{ fontWeight: 600, color: '#339af0', fontSize: '0.8rem', textAlign: 'center' }}>{n.text}</span>
                 )}
@@ -210,11 +210,11 @@ const Step2Generalization = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
         {!success ? (
           <button onClick={handleCheck} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--text-main)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer' }}>
-            Chốt sơ đồ
+            Finalize diagram
           </button>
         ) : (
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            Tiếp tục <ArrowRight size={20} />
+            Continue <ArrowRight size={20} />
           </button>
         )}
       </div>

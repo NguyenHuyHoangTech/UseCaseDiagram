@@ -15,7 +15,7 @@ export default function BuildUseCaseName({ step, onResult }) {
 
   const run = () => {
     if (!verbId || !nounId) {
-      onResult({ tone: "error", title: "Thiếu mảnh ghép", message: "Chọn một động từ và một danh từ nghiệp vụ." });
+      onResult({ tone: "error", title: "Missing piece", message: "Select a verb and a business noun." });
       return;
     }
 
@@ -28,10 +28,10 @@ export default function BuildUseCaseName({ step, onResult }) {
 
     onResult({
       tone: enough ? "success" : "error",
-      title: enough ? "Tên Use Case dùng được" : "Tên chưa ổn",
-      message: data.feedbackByPair?.[selectedKey] || (currentIsValid ? `Đúng. Hãy tạo đủ ${requiredCount} tên tốt.` : "Cặp này còn dính UI, code, database hoặc quá rộng."),
-      simulation: enough ? data.successSimulation : "Oval này khiến người đọc không biết actor muốn đạt mục tiêu nghiệp vụ nào.",
-      details: data.requiredCount ? [`Đã tạo ${validAccepted.length}/${requiredCount} tên tốt.`] : [buildLabel(data, verbId, nounId)],
+      title: enough ? "Usable Use Case name" : "Name not quite right",
+      message: data.feedbackByPair?.[selectedKey] || (currentIsValid ? `Correct. Please create enough ${requiredCount} good names.` : "This pair is still tied to UI, code, database, or is too broad."),
+      simulation: enough ? data.successSimulation : "This oval makes the reader not know what business goal the actor wants to achieve.",
+      details: data.requiredCount ? [`Created ${validAccepted.length}/${requiredCount} good names.`] : [buildLabel(data, verbId, nounId)],
     });
   };
 
@@ -39,7 +39,7 @@ export default function BuildUseCaseName({ step, onResult }) {
     <div className="interaction-stack">
       <div className="name-builder">
         <section>
-          <h3>Động từ</h3>
+          <h3>Verb</h3>
           {data.verbs.map((verb) => (
             <button className={`choice-block ${verbId === verb.id ? "selected" : ""}`} key={verb.id} onClick={() => setVerbId(verb.id)}>
               {verb.label}
@@ -53,7 +53,7 @@ export default function BuildUseCaseName({ step, onResult }) {
           {data.requiredCount && <button className="small-button" onClick={addPair}>Add name</button>}
         </div>
         <section>
-          <h3>Danh từ nghiệp vụ</h3>
+          <h3>Business Noun</h3>
           {data.nouns.map((noun) => (
             <button className={`choice-block ${nounId === noun.id ? "selected" : ""}`} key={noun.id} onClick={() => setNounId(noun.id)}>
               {noun.label}

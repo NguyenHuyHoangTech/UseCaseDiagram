@@ -20,8 +20,8 @@ export default function SortBlocks({ step, onResult }) {
     if (mistakes.length === 0) {
       onResult({
         tone: "success",
-        title: "Phân loại đúng",
-        message: "Các block đang nằm đúng vùng.",
+        title: "Correct Classification",
+        message: "The blocks are in the correct zones.",
         simulation: data.successSimulation,
         visualEffect: data.successVisualEffect,
         visualState: buildVisualState(data.successVisualEffect || "successPath", {
@@ -38,15 +38,15 @@ export default function SortBlocks({ step, onResult }) {
 
     onResult({
       tone: "mixed",
-      title: "Có block lệch vùng",
-      message: "Hệ thống dừng ở những block chưa đúng.",
-      simulation: firstMistakeWithScene?.simulation || data.mixedSimulation || "Một vài block đang làm sơ đồ diễn giải sai trách nhiệm hoặc mục tiêu.",
+      title: "Some blocks are misplaced",
+      message: "The system stopped at incorrect blocks.",
+      simulation: firstMistakeWithScene?.simulation || data.mixedSimulation || "Some blocks are making the diagram misinterpret responsibilities or goals.",
       visualEffect: firstMistakeWithScene?.visualEffect || data.mixedVisualEffect,
       visualState: buildVisualState(firstMistakeWithScene?.visualEffect || data.mixedVisualEffect, {
         block: firstMistakeWithScene,
         message: firstMistakeWithScene?.simulation || data.mixedSimulation,
       }),
-      details: mistakes.map((block) => `${block.label}: ${block.feedback || `nên nằm ở "${data.zones.find((zone) => zone.id === block.correctZoneId)?.label}"`}`),
+      details: mistakes.map((block) => `${block.label}: ${block.feedback || `should be in "${data.zones.find((zone) => zone.id === block.correctZoneId)?.label}"`}`),
     });
   };
 

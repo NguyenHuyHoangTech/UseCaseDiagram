@@ -12,9 +12,9 @@ export default function InsightStep({ step, onResult }) {
     if (mistakes.length === 0) {
       onResult({
         tone: "success",
-        title: "Insight đã khớp",
+        title: "Insight Matched",
         message: data.mantra ? `${data.finalInsight} ${data.mantra}` : data.finalInsight,
-        simulation: "Bạn vừa tự rút ra quy tắc, không cần đọc lý thuyết trước.",
+        simulation: "You just derived the rule yourself, no need to read theory first.",
         visualEffect: "successPath",
       });
       return;
@@ -22,10 +22,10 @@ export default function InsightStep({ step, onResult }) {
 
     onResult({
       tone: "error",
-      title: "Câu chốt chưa đúng",
-      message: "Điền lại các khoảng trống theo quy tắc vừa thử nghiệm.",
-      simulation: "Nếu insight sai, các bước sau sẽ dễ nhầm goal với kỹ thuật.",
-      details: mistakes.map((item) => `Ô ${item.index + 1} chưa khớp.`),
+      title: "Incorrect statement",
+      message: "Fill in the blanks according to the tested rule.",
+      simulation: "If the insight is wrong, subsequent steps will easily confuse goals with techniques.",
+      details: mistakes.map((item) => `Blank ${item.index + 1} does not match.`),
     });
   };
 

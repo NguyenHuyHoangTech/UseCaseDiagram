@@ -44,12 +44,12 @@ export default function UseCaseRunSimulation({ step, onResult }) {
       <section className="run-sim-left">
         <div>
           <span className="lesson-kicker">Goal</span>
-          <h3>An đặt vé online</h3>
+          <h3>An books movie tickets online</h3>
           <p>{data.goalText}</p>
         </div>
 
         <div className="run-sim-picker">
-          <h4>Use Case cần thiết</h4>
+          <h4>Required Use Cases</h4>
           {data.useCases.map((useCase) => (
             <button
               className={`choice-block ${selectedUseCases.includes(useCase.id) ? "selected" : ""}`}
@@ -83,14 +83,14 @@ export default function UseCaseRunSimulation({ step, onResult }) {
           </div>
           <button className={`actor-link-button ${actorConnected ? "selected" : ""}`} onClick={() => setActorConnected((value) => !value)}>
             <Link2 size={16} />
-            {actorConnected ? "Đã nối Actor" : "Nối Actor"}
+            {actorConnected ? "Actor Connected" : "Connect Actor"}
           </button>
         </div>
 
         <div className="usecase-diagram-stage">
           <div className={`diagram-actor ${actorConnected ? "connected" : ""}`}>
             <UserRound size={26} />
-            <strong>Khách hàng</strong>
+            <strong>Customer</strong>
             <span className={`an-token ${runState.status}`}>An</span>
           </div>
 
@@ -124,7 +124,7 @@ export default function UseCaseRunSimulation({ step, onResult }) {
 
         {selectedLabels.length > 0 && (
           <div className="selected-usecase-line">
-            Đang chọn: <strong>{selectedLabels.join(" -> ")}</strong>
+            Selected: <strong>{selectedLabels.join(" -> ")}</strong>
           </div>
         )}
 
@@ -147,8 +147,8 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
       failedAt: technical.id,
       technical,
       feedbackTitle: "Test failed",
-      feedbackBody: "❌ Diagram đang mô tả cách hệ thống hoạt động bên trong, không mô tả mục tiêu của actor.",
-      suggestion: "Use Case Diagram nên trả lời: Actor muốn đạt được điều gì?, không phải Code chạy như thế nào?",
+      feedbackBody: "❌ Diagram is describing how the internal system works, not the actor's goal.",
+      suggestion: "A Use Case Diagram should answer: What does the actor want to achieve?, not How does the code run?",
       technicalOnly: true,
     });
   }
@@ -158,8 +158,8 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
       failedAt: technical.id,
       technical,
       feedbackTitle: "Test failed",
-      feedbackBody: `❌ An bị kẹt ở đây. ${technical.feedback}`,
-      suggestion: technical.suggestion || "Trong Use Case Diagram, hãy dùng tên mục tiêu người dùng thay cho chi tiết triển khai.",
+      feedbackBody: `❌ An is stuck here. ${technical.feedback}`,
+      suggestion: technical.suggestion || "In Use Case Diagram, use user goal names instead of implementation details.",
     });
   }
 
@@ -167,8 +167,8 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
     return buildEvaluation("failed", data, {
       failedAt: "bookTicket",
       feedbackTitle: "Test failed",
-      feedbackBody: "❌ An chưa có đường đi từ Actor Khách hàng vào mục tiêu chính.",
-      suggestion: "Hãy nối Actor Khách hàng với mục tiêu chính Đặt vé xem phim rồi chạy lại.",
+      feedbackBody: "❌ An does not have a path from Customer Actor to the main goal.",
+      suggestion: "Please connect the Customer Actor to the main goal Book movie tickets and run again.",
     });
   }
 
@@ -178,15 +178,15 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
     return buildEvaluation("failed", data, {
       failedAt: firstMissing.id,
       feedbackTitle: "Test failed",
-      feedbackBody: missingRule?.feedbackBody || `❌ Hành trình còn thiếu Use Case ${firstMissing.label}.`,
-      suggestion: missingRule?.suggestion || "Một Use Case tốt phải thể hiện kết quả có giá trị với actor.",
+      feedbackBody: missingRule?.feedbackBody || `❌ The journey is missing Use Case ${firstMissing.label}.`,
+      suggestion: missingRule?.suggestion || "A good Use Case must represent a valuable result to the actor.",
     });
   }
 
   return buildEvaluation("passed", data, {
     feedbackTitle: "Test passed",
-    feedbackBody: "✅ An đã nhận được vé!",
-    suggestion: "Diagram của bạn tập trung vào mục tiêu người dùng: xem lịch chiếu, đặt vé, chọn ghế, thanh toán và nhận vé. Các thao tác như query database, gọi API hay insert record không nên xuất hiện trong Use Case Diagram vì đó là chi tiết triển khai.",
+    feedbackBody: "✅ An received the tickets!",
+    suggestion: "Your diagram focuses on user goals: view schedule, book tickets, select seats, pay, and receive tickets. Operations like querying database, calling API, or inserting record should not appear in Use Case Diagram because they are implementation details.",
   });
 }
 
@@ -216,9 +216,9 @@ function buildEvaluation(status, data, options = {}) {
     technical: options.technical,
     technicalOnly: options.technicalOnly,
     steps,
-    feedbackTitle: options.feedbackTitle || "Trạng thái: Chưa chạy",
-    feedbackBody: options.feedbackBody || "Mục tiêu kiểm thử: An muốn đặt vé xem phim và nhận được vé.",
-    suggestion: options.suggestion || "Điều kiện pass: chọn đúng Use Case, không chọn block kỹ thuật, có mục tiêu cuối cùng Nhận vé.",
+    feedbackTitle: options.feedbackTitle || "Status: Not run",
+    feedbackBody: options.feedbackBody || "Test goal: An wants to book movie tickets and receive the tickets.",
+    suggestion: options.suggestion || "Pass condition: select correct Use Cases, do not select technical blocks, have the final goal Receive tickets.",
   };
 }
 
@@ -240,7 +240,7 @@ function resultFromEvaluation(evaluation, data) {
     simulation: evaluation.suggestion,
     visualEffect: isIdle ? undefined : isPassed ? "ticketSuccess" : evaluation.technical ? evaluation.technical.visualEffect || "backendRoom" : "stopAtNode",
     visualState: buildVisualState(isIdle ? "idle" : isPassed ? "ticketSuccess" : evaluation.technical ? evaluation.technical.visualEffect || "backendRoom" : "stopAtNode", {
-      title: isIdle ? "Trạng thái: Chưa chạy" : evaluation.feedbackTitle,
+      title: isIdle ? "Status: Not run" : evaluation.feedbackTitle,
       message: evaluation.feedbackBody,
       selectedBlock: evaluation.technical?.label || failedStep?.label,
       checkpoints,
