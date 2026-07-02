@@ -47,7 +47,7 @@ function LegacyRunDiagramScenario({ step, onResult }) {
         tone: "error",
         title: "Diagram contains technical details",
         message: firstBadItem?.feedback || "Database, controller or UI detail do not belong to Use Case Diagram.",
-        simulation: firstBadItem?.simulation || "Run stopped right at the diagram build step.",
+        simulation: firstBadItem?.simulation || "Check stopped at diagram building step.",
         visualEffect: firstBadItem?.visualEffect,
         visualState: buildVisualState(firstBadItem?.visualEffect, {
           block: firstBadItem,
@@ -100,8 +100,8 @@ function LegacyRunDiagramScenario({ step, onResult }) {
 
     onResult({
       tone: "success",
-      title: "Diagram Run successful",
-      message: "Boundary, actor, use case and connection are sufficient to run scenarios.",
+      title: "Diagram verification successful",
+      message: "Boundary, actor, use case and connection are sufficient to verify scenarios.",
       simulation: data.successSimulation,
       visualEffect: data.successVisualEffect,
       visualState: buildVisualState(data.successVisualEffect || "ticketSuccess", {
@@ -145,7 +145,7 @@ function LegacyRunDiagramScenario({ step, onResult }) {
         <section className="palette-panel">
           <h3>Connect Actor</h3>
           {data.actors.filter((actor) => actors.includes(actor.id)).map((actor) => (
-            <button className={`actor-node ${selectedActor === actor.id ? "selected" : ""}`} key={actor.id} onClick={() => setSelectedActor(actor.id)}>
+            <button className={`actor-node ${selectedActor === actor.id ? "selected" : ""}`} key={actor.id} onClick={() => setSelectedActor(current => current === actor.id ? null : actor.id)}>
               {actor.label}
             </button>
           ))}
@@ -157,7 +157,7 @@ function LegacyRunDiagramScenario({ step, onResult }) {
           ))}
         </section>
       </div>
-      <button className="run-button" onClick={run}>Run Diagram</button>
+      <button className="run-button" onClick={run}>Check Diagram</button>
     </div>
   );
 }

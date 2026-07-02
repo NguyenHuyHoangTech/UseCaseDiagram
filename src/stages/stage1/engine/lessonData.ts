@@ -70,8 +70,8 @@ export const interactiveLessons: Lesson[] = [
   },
   {
     id: "what-not-how",
-    title: "Bài 1: Use Case là gì?",
-    description: "Cinema Booking System: nhìn Use Case như mục tiêu và giá trị mà Actor muốn đạt được, không phải UI, database, API hay xử lý kỹ thuật.",
+    title: "Lesson 1: What is a Use Case?",
+    description: "Cinema Booking System: view Use Cases as goals and value that Actors want to achieve, not UI, databases, APIs, or technical processing.",
     steps: [
       {
         id: "what-01",
@@ -275,7 +275,7 @@ export const interactiveLessons: Lesson[] = [
         id: "what-07",
         title: "Run Diagram: Does the customer get the ticket?",
         story: "The customer wants to book a movie ticket online. If the Use Case Diagram is correct, the journey will reach the final goal: Receive ticket. If you select technical actions or miss an important Use Case, the journey will get stuck.",
-        instruction: "Select the necessary Use Cases for the booking journey. Then connect the Customer Actor to the main goals and click Run Diagram.",
+        instruction: "Select the necessary Use Cases for the booking journey. Then connect the Customer Actor to the main goal and click Run Simulation.",
         type: "RUN_DIAGRAM_SCENARIO",
         data: {
           mode: "useCaseRunSimulation",
@@ -285,16 +285,16 @@ export const interactiveLessons: Lesson[] = [
           passCondition: "Pass condition: select the correct Use Cases, no technical blocks, ending with the Receive ticket goal.",
           actors: [{ id: "customer", label: "Customer", kind: "human" }],
           useCases: [
-            { id: "viewSchedule", label: "View schedule", icon: "Lịch" },
-            { id: "bookTicket", label: "Book movie ticket", icon: "Vé" },
-            { id: "chooseSeat", label: "Choose seat", icon: "Ghế" },
+            { id: "viewSchedule", label: "View schedule", icon: "Calendar" },
+            { id: "bookTicket", label: "Book movie ticket", icon: "Ticket" },
+            { id: "chooseSeat", label: "Choose seat", icon: "Seat" },
             { id: "payTicket", label: "Pay for ticket", icon: "Pay" },
             { id: "receiveTicket", label: "Receive ticket", icon: "QR" },
           ],
           journeySteps: [
-            { id: "viewSchedule", label: "View schedule", icon: "Lịch" },
-            { id: "bookTicket", label: "Book movie ticket", icon: "Vé" },
-            { id: "chooseSeat", label: "Choose seat", icon: "Ghế" },
+            { id: "viewSchedule", label: "View schedule", icon: "Calendar" },
+            { id: "bookTicket", label: "Book movie ticket", icon: "Ticket" },
+            { id: "chooseSeat", label: "Choose seat", icon: "Seat" },
             { id: "payTicket", label: "Pay for ticket", icon: "Pay" },
             { id: "receiveTicket", label: "Receive ticket", icon: "QR" },
           ],

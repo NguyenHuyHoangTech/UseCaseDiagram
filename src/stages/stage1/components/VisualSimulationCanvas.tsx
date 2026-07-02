@@ -10,48 +10,48 @@ const statusIcon = {
 
 const copyByEffect = {
   idle: {
-    title: "Hành trình của Actor",
-    message: "Chọn block rồi bấm Run để thấy hệ thống phản ứng trên canvas.",
+    title: "Actor's Journey",
+    message: "Select a block and click Check to see the system response.",
   },
   successPath: {
-    title: "Actor đi trọn hành trình",
-    message: "Actor đã hoàn thành hành trình đặt vé và nhận được vé điện tử.",
+    title: "Actor completes the journey",
+    message: "Actor completed the booking journey and received the e-ticket.",
   },
   ticketSuccess: {
-    title: "Vé điện tử đã xuất hiện",
-    message: "Khách hàng nhận được vé điện tử. Đây là giá trị cuối cùng mà Actor quan tâm.",
+    title: "E-ticket generated",
+    message: "Customer received the e-ticket. This is the final value the Actor cares about.",
   },
   stopAtNode: {
-    title: "Actor bị kẹt giữa đường",
-    message: "Hành trình dừng lại vì block được chọn chưa đưa Actor tới mục tiêu đủ rõ.",
+    title: "Actor got stuck",
+    message: "The journey stopped because the selected block did not bring the Actor to a clear goal.",
   },
   backendRoom: {
-    title: "Actor bị kéo vào phòng kỹ thuật",
-    message: "Actor không cần quan tâm chi tiết kỹ thuật này. Actor chỉ muốn hoàn thành mục tiêu đặt vé.",
+    title: "Actor dragged into technical details",
+    message: "The Actor does not care about this technical detail. The Actor only wants to achieve the ticket booking goal.",
   },
   databaseRoom: {
-    title: "Actor đứng trước database",
-    message: "Database giúp hệ thống vận hành, nhưng không phải điều Actor muốn đạt được.",
+    title: "Actor stands before the database",
+    message: "The database helps the system run, but it is not what the Actor wants to achieve.",
   },
   outdatedTechnology: {
-    title: "Tên Use Case bị gắn với công nghệ",
-    message: "Khi công nghệ thay đổi, block này nhanh chóng lỗi thời.",
+    title: "Use Case name tied to technology",
+    message: "When the technology changes, this block quickly becomes outdated.",
   },
   uiChanged: {
-    title: "UI thay đổi",
-    message: "Nếu tên Use Case phụ thuộc vào nút hoặc màn hình, nó sẽ lỗi thời khi giao diện đổi.",
+    title: "UI changes",
+    message: "If a Use Case name depends on a button or screen, it becomes outdated when the interface changes.",
   },
   flowchartWarning: {
-    title: "Sơ đồ đang phình thành flowchart",
-    message: "Use Case Diagram nên mô tả mục tiêu, không mô tả từng click hoặc từng xử lý nhỏ.",
+    title: "Diagram bloating into a flowchart",
+    message: "A Use Case Diagram should describe goals, not every single click or small action.",
   },
   lockedSeat: {
-    title: "Ghế bị khóa tạm thời",
-    message: "Đây là cơ chế hỗ trợ. An chưa đạt mục tiêu chỉ vì ghế bị khóa tạm thời.",
+    title: "Seat locked temporarily",
+    message: "This is a supporting mechanism. An has not achieved the goal just because the seat is locked temporarily.",
   },
   wrongActor: {
-    title: "Sai góc nhìn Actor",
-    message: "Association này làm Actor đi tới mục tiêu không thuộc vai trò của họ.",
+    title: "Incorrect Actor perspective",
+    message: "This association leads the Actor to a goal that does not belong to their role.",
   },
 };
 
@@ -76,7 +76,7 @@ export default function VisualSimulationCanvas({ state }) {
 
       {state?.selectedBlock && (
         <div className="visual-selected-block">
-          Block đang chạy thử: <strong>{state.selectedBlock}</strong>
+          Block under test: <strong>{state.selectedBlock}</strong>
         </div>
       )}
 
@@ -118,7 +118,7 @@ function renderScene(effect, state) {
             </div>
           );
         })}
-        <div className="broken-block">{state?.selectedBlock || "Block cụ thể"} bị lỗi thời</div>
+        <div className="broken-block">{state?.selectedBlock || "Specific block"} is outdated</div>
       </div>
     );
   }
@@ -128,7 +128,7 @@ function renderScene(effect, state) {
       <div className="seat-lock-scene">
         <div className="seat-grid">
           {Array.from({ length: 9 }).map((_, index) => (
-            <span className={index === 4 ? "seat locked" : "seat"} key={index}>Ghế</span>
+            <span className={index === 4 ? "seat locked" : "seat"} key={index}>Seat</span>
           ))}
         </div>
         <div className="seat-timer">05:00</div>
@@ -142,7 +142,7 @@ function renderScene(effect, state) {
         <div className="ticket-card">
           <Ticket size={34} />
           <strong>Cinema Ticket</strong>
-          <span>Phim • Suất chiếu • Ghế</span>
+          <span>Movie • Showtime • Seat</span>
           <code>QR-TICKET-2026</code>
         </div>
       </div>

@@ -18,16 +18,16 @@ export function moveBlock(placements, blockId, zoneId) {
 
 export const idleResult = {
   tone: "idle",
-  title: "Sẵn sàng chạy thử",
-  message: "Chọn hoặc kéo block, sau đó bấm Run.",
+  title: "Ready to check",
+  message: "Choose an answer, then press Check.",
 };
 
 export const defaultCinemaCheckpoints = [
-  { id: "movie", label: "Chọn phim", icon: "🎬", status: "idle" },
-  { id: "showtime", label: "Chọn suất chiếu", icon: "🕒", status: "idle" },
-  { id: "seat", label: "Chọn ghế", icon: "🪑", status: "idle" },
-  { id: "payment", label: "Thanh toán vé", icon: "💳", status: "idle" },
-  { id: "ticket", label: "Nhận vé", icon: "🎟️", status: "idle" },
+  { id: "movie", label: "Select movie", icon: "🎬", status: "idle" },
+  { id: "showtime", label: "Select showtime", icon: "🕒", status: "idle" },
+  { id: "seat", label: "Select seat", icon: "🪑", status: "idle" },
+  { id: "payment", label: "Pay ticket", icon: "💳", status: "idle" },
+  { id: "ticket", label: "Receive ticket", icon: "🎟️", status: "idle" },
 ];
 
 export function buildVisualState(effect, options = {}) {
@@ -47,8 +47,8 @@ export function buildVisualState(effect, options = {}) {
   if (normalizedEffect === "idle") {
     return {
       ...state,
-      title: "Hành trình của Actor",
-      message: "Chọn block rồi bấm Run để thấy hệ thống phản ứng trên canvas.",
+      title: "Actor's Journey",
+      message: "Select a block and click Check to see the system response.",
     };
   }
 
@@ -81,9 +81,9 @@ function checkpointsForEffect(effect) {
   if (effect === "flowchartWarning") {
     return [
       ...defaultCinemaCheckpoints.map((checkpoint) => ({ ...checkpoint, status: "warning" })),
-      { id: "click", label: "Bấm nút", icon: "☝️", status: "warning" },
-      { id: "query", label: "Kiểm tra", icon: "🔎", status: "warning" },
-      { id: "lock", label: "Khóa tạm", icon: "⏱️", status: "warning" },
+      { id: "click", label: "Click button", icon: "☝️", status: "warning" },
+      { id: "query", label: "Check", icon: "🔎", status: "warning" },
+      { id: "lock", label: "Temp lock", icon: "⏱️", status: "warning" },
     ];
   }
 
@@ -102,15 +102,15 @@ function timelineForEffect(effect) {
     return [
       { label: "VNPay", status: "success" },
       { label: "Momo", status: "error" },
-      { label: "Ví nội bộ", status: "error" },
+      { label: "Internal wallet", status: "error" },
     ];
   }
 
   if (effect === "uiChanged") {
     return [
-      { label: "Nút bấm", status: "success" },
-      { label: "Giọng nói", status: "error" },
-      { label: "Gợi ý tự động", status: "error" },
+      { label: "Button click", status: "success" },
+      { label: "Voice control", status: "error" },
+      { label: "Auto suggestion", status: "error" },
     ];
   }
 

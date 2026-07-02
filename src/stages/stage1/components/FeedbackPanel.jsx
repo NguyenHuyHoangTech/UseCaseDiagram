@@ -18,7 +18,7 @@ export default function FeedbackPanel({ result }) {
         <Icon size={20} />
         <span>{result?.title || "Feedback"}</span>
       </div>
-      <p>{result?.message || "Interact on the canvas and then click Run to see the system react."}</p>
+      <p>{result?.message || "Interact on the canvas and then click Check to see the system react."}</p>
       {result?.simulation && (
         <div className="simulation-box">
           <strong>Simulation</strong>

@@ -22,11 +22,22 @@ const componentByType = {
   INSIGHT: InsightStep,
 };
 
+const friendlyTypeNames = {
+  SELECT_BLOCK_AND_RUN: "Select the Correct Block",
+  SORT_BLOCKS: "Sort the Blocks",
+  DRAG_TO_BOUNDARY: "Drag to Boundary",
+  CONNECT_ACTOR_TO_USECASE: "Connect Actor",
+  BUILD_USECASE_NAME: "Build Use Case Name",
+  RUN_DIAGRAM_SCENARIO: "Verify Diagram",
+  INSIGHT: "Insight",
+};
+
 export default function LessonPlayer({ lesson, onBack, onNextLesson, hasNextLesson }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [result, setResult] = useState(idleResult);
   const [visualState, setVisualState] = useState(buildVisualState("idle"));
   const [completedSteps, setCompletedSteps] = useState([]);
+  const [resetKey, setResetKey] = useState(0);
   const step = lesson.steps[stepIndex];
   const Interaction = componentByType[step.type];
 
@@ -48,13 +59,14 @@ export default function LessonPlayer({ lesson, onBack, onNextLesson, hasNextLess
     setStepIndex(nextIndex);
     setResult(idleResult);
     setVisualState(buildVisualState("idle"));
+    setResetKey((prev) => prev + 1);
   };
 
   const isLastStep = stepIndex === lesson.steps.length - 1;
   const lessonDone = completedSteps.length === lesson.steps.length;
 
   return (
-    <main className="lesson-page-shell">
+    <main className="lesson-page-shell single-card-shell">
       <section className="lesson-topbar">
         <button className="icon-text-button" onClick={onBack}>
           <ArrowLeft size={18} />
@@ -78,33 +90,55 @@ export default function LessonPlayer({ lesson, onBack, onNextLesson, hasNextLess
         </div>
       </section>
 
-      <section className="lesson-workspace">
-        <aside className="scenario-panel">
-          <span className="lesson-kicker">{step.type.replaceAll("_", " ")}</span>
-          <h2>{step.title}</h2>
-          {step.story && <p>{step.story}</p>}
-          {step.instruction && <div className="instruction-box">{step.instruction}</div>}
-          <div className="step-list">
-            {lesson.steps.map((item, index) => (
-              <button
-                className={`${index === stepIndex ? "active" : ""} ${completedSteps.includes(item.id) ? "done" : ""}`}
-                key={item.id}
-                onClick={() => goStep(index)}
-              >
-                <span>{index + 1}</span>
-                {item.title}
-              </button>
-            ))}
+      {/* Single Centered Card Layout */}
+      <div className="lesson-card-wrapper">
+        <div className="lesson-card-body">
+          <div className="lesson-card-step-header">
+            <span className="lesson-kicker">{friendlyTypeNames[step.type] || step.type.replaceAll("_", " ")}</span>
+            <span className="step-label">Step {stepIndex + 1} of {lesson.steps.length}</span>
           </div>
-        </aside>
 
-        <section className="canvas-panel">
-          {lesson.id === "what-not-how" && step.data?.mode !== "useCaseRunSimulation" && <VisualSimulationCanvas state={visualState} />}
-          <Interaction key={step.id} step={step} onResult={updateResult} />
+          <h2 className="step-card-title">{step.title}</h2>
+          
+          {step.story && <p className="step-story-text">{step.story}</p>}
+          {step.instruction && <div className="instruction-box-clean">{step.instruction}</div>}
+
+          {/* Interaction Component */}
+          <div className="step-interaction-container">
+            <Interaction key={`${step.id}-${resetKey}`} step={step} onResult={updateResult} />
+          </div>
+
+          {/* Inline Feedback Panel */}
+          <div className="inline-feedback-container">
+            <FeedbackPanel result={result} />
+          </div>
+        </div>
+
+        {/* Step actions navigation */}
+        <section className="lesson-actions-clean">
+          <button className="secondary-button" onClick={() => goStep(stepIndex)}>
+            <RotateCcw size={18} />
+            Reset step
+          </button>
+          <div>
+            <button className="secondary-button" disabled={stepIndex === 0} onClick={() => goStep(stepIndex - 1)}>
+              <ArrowLeft size={18} />
+              Back
+            </button>
+            {isLastStep ? (
+              <button className="run-button" onClick={onNextLesson} disabled={!hasNextLesson && !lessonDone}>
+                {hasNextLesson ? "Next lesson" : "Finish course"}
+                <ArrowRight size={18} />
+              </button>
+            ) : (
+              <button className="run-button" onClick={() => goStep(stepIndex + 1)}>
+                Next
+                <ArrowRight size={18} />
+              </button>
+            )}
+          </div>
         </section>
-
-        <FeedbackPanel result={result} />
-      </section>
+      </div>
 
       {lessonDone && (
         <section className="lesson-recap">
@@ -112,30 +146,6 @@ export default function LessonPlayer({ lesson, onBack, onNextLesson, hasNextLess
           <span>{lesson.title} completed. You have run through all scenarios and derived the main rule yourself.</span>
         </section>
       )}
-
-      <section className="lesson-actions">
-        <button className="secondary-button" onClick={() => goStep(stepIndex)}>
-          <RotateCcw size={18} />
-          Reset step
-        </button>
-        <div>
-          <button className="secondary-button" disabled={stepIndex === 0} onClick={() => goStep(stepIndex - 1)}>
-            <ArrowLeft size={18} />
-            Back
-          </button>
-          {isLastStep ? (
-            <button className="run-button" onClick={onNextLesson} disabled={!hasNextLesson && !lessonDone}>
-              {hasNextLesson ? "Next lesson" : "Finish course"}
-              <ArrowRight size={18} />
-            </button>
-          ) : (
-            <button className="run-button" onClick={() => goStep(stepIndex + 1)}>
-              Next
-              <ArrowRight size={18} />
-            </button>
-          )}
-        </div>
-      </section>
     </main>
   );
 }

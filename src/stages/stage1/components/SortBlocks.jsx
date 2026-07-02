@@ -90,7 +90,7 @@ export default function SortBlocks({ step, onResult }) {
           </section>
         ))}
       </div>
-      <button className="run-button" onClick={run}>Run</button>
+      <button className="run-button" onClick={run}>Check</button>
     </div>
   );
 }

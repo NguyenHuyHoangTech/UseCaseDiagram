@@ -79,7 +79,7 @@ export default function UseCaseRunSimulation({ step, onResult }) {
         <div className="run-diagram-toolbar">
           <div>
             <span className="lesson-kicker">Cinema Booking System</span>
-            <h3>Run Diagram Simulation</h3>
+            <h3>Run Simulation</h3>
           </div>
           <button className={`actor-link-button ${actorConnected ? "selected" : ""}`} onClick={() => setActorConnected((value) => !value)}>
             <Link2 size={16} />
@@ -130,7 +130,7 @@ export default function UseCaseRunSimulation({ step, onResult }) {
 
         <button className="run-button" onClick={run}>
           <Play size={18} />
-          Run Diagram
+          Run Simulation
         </button>
       </section>
     </div>
@@ -141,14 +141,15 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
   const selected = new Set(selectedUseCases);
   const technical = selectedTechnicalBlocks[0] ? data.distractors.find((item) => item.id === selectedTechnicalBlocks[0]) : null;
   const hasAnyCorrect = data.journeySteps.some((step) => selected.has(step.id));
+  const actorName = data.actors?.[0]?.label || "The actor";
 
   if (technical && !hasAnyCorrect) {
     return buildEvaluation("failed", data, {
       failedAt: technical.id,
       technical,
       feedbackTitle: "Test failed",
-      feedbackBody: "❌ Diagram is describing how the internal system works, not the actor's goal.",
-      suggestion: "A Use Case Diagram should answer: What does the actor want to achieve?, not How does the code run?",
+      feedbackBody: `❌ Diagram is describing how the internal system works, not the ${actorName.toLowerCase()}'s goal.`,
+      suggestion: `A Use Case Diagram should answer: What does the ${actorName.toLowerCase()} want to achieve?, not How does the code run?`,
       technicalOnly: true,
     });
   }
@@ -158,7 +159,7 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
       failedAt: technical.id,
       technical,
       feedbackTitle: "Test failed",
-      feedbackBody: `❌ An is stuck here. ${technical.feedback}`,
+      feedbackBody: `❌ ${actorName} is stuck here. ${technical.feedback}`,
       suggestion: technical.suggestion || "In Use Case Diagram, use user goal names instead of implementation details.",
     });
   }
@@ -167,8 +168,8 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
     return buildEvaluation("failed", data, {
       failedAt: "bookTicket",
       feedbackTitle: "Test failed",
-      feedbackBody: "❌ An does not have a path from Customer Actor to the main goal.",
-      suggestion: "Please connect the Customer Actor to the main goal Book movie tickets and run again.",
+      feedbackBody: `❌ ${actorName} does not have a path to the main goal.`,
+      suggestion: `Please connect the ${actorName} to the main goal Book movie tickets and run again.`,
     });
   }
 
@@ -185,7 +186,7 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
 
   return buildEvaluation("passed", data, {
     feedbackTitle: "Test passed",
-    feedbackBody: "✅ An received the tickets!",
+    feedbackBody: `✅ ${actorName} received the tickets!`,
     suggestion: "Your diagram focuses on user goals: view schedule, book tickets, select seats, pay, and receive tickets. Operations like querying database, calling API, or inserting record should not appear in Use Case Diagram because they are implementation details.",
   });
 }
@@ -193,6 +194,7 @@ function evaluateUseCaseRun(selectedUseCases, selectedTechnicalBlocks, actorConn
 function buildEvaluation(status, data, options = {}) {
   const failedAt = options.failedAt;
   let hasFailed = false;
+  const actorName = data.actors?.[0]?.label || "The actor";
   const steps = options.technical
     ? [
       ...data.journeySteps.map((step) => ({ ...step, status: "pending" })),
@@ -216,8 +218,8 @@ function buildEvaluation(status, data, options = {}) {
     technical: options.technical,
     technicalOnly: options.technicalOnly,
     steps,
-    feedbackTitle: options.feedbackTitle || "Status: Not run",
-    feedbackBody: options.feedbackBody || "Test goal: An wants to book movie tickets and receive the tickets.",
+    feedbackTitle: options.feedbackTitle || "Status: Not simulated",
+    feedbackBody: options.feedbackBody || `Test goal: ${actorName} wants to book movie tickets and receive the tickets.`,
     suggestion: options.suggestion || "Pass condition: select correct Use Cases, do not select technical blocks, have the final goal Receive tickets.",
   };
 }
@@ -240,7 +242,7 @@ function resultFromEvaluation(evaluation, data) {
     simulation: evaluation.suggestion,
     visualEffect: isIdle ? undefined : isPassed ? "ticketSuccess" : evaluation.technical ? evaluation.technical.visualEffect || "backendRoom" : "stopAtNode",
     visualState: buildVisualState(isIdle ? "idle" : isPassed ? "ticketSuccess" : evaluation.technical ? evaluation.technical.visualEffect || "backendRoom" : "stopAtNode", {
-      title: isIdle ? "Status: Not run" : evaluation.feedbackTitle,
+      title: isIdle ? "Status: Not simulated" : evaluation.feedbackTitle,
       message: evaluation.feedbackBody,
       selectedBlock: evaluation.technical?.label || failedStep?.label,
       checkpoints,

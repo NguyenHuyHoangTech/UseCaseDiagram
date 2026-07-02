@@ -7,7 +7,7 @@ export default function SelectBlockAndRun({ step, onResult }) {
 
   const run = () => {
     if (!selectedId) {
-      onResult({ tone: "error", title: "No block selected", message: "Please put a name in the oval and then run." });
+      onResult({ tone: "error", title: "No block selected", message: "Please put a name in the oval and then check." });
       return;
     }
 
@@ -45,7 +45,7 @@ export default function SelectBlockAndRun({ step, onResult }) {
           </button>
         ))}
       </div>
-      <button className="run-button" onClick={run}>Run</button>
+      <button className="run-button" onClick={run}>Check</button>
     </div>
   );
 }
