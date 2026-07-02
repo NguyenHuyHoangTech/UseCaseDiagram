@@ -1,7 +1,7 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import JourneyMap from '../components/JourneyMap';
+import Navbar from '../core/components/Navbar';
+import Hero from '../core/components/Hero';
+import JourneyMap from '../core/components/JourneyMap';
 
 const Home = () => {
   return (

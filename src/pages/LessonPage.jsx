@@ -1,26 +1,29 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, CheckCircle2, Lock, HelpCircle } from 'lucide-react';
-import { courseData } from '../courseData';
-import Navbar from '../components/Navbar';
-import Lesson17Interactive from '../components/Lesson17Interactive';
-import Lesson18Interactive from '../components/Lesson18Interactive';
-import Lesson19Interactive from '../components/Lesson19Interactive';
-import LessonPlayer from '../components/lesson/LessonPlayer';
-import { interactiveLessons } from '../components/lessonEngine/lessonData';
+import { courseData } from '../core/courseData';
+import Navbar from '../core/components/Navbar';
+import Lesson17Interactive from '../stages/stage5/Lesson17Interactive';
+import Lesson18Interactive from '../stages/stage5/Lesson18Interactive';
+import Lesson19Interactive from '../stages/stage5/Lesson19Interactive';
+import LessonPlayer from '../stages/stage1/components/LessonPlayer';
+import { interactiveLessons } from '../stages/stage1/engine/lessonData';
+import LessonCompleteModal from '../core/components/LessonCompleteModal';
 
 // Import widgets
-import DragDropWidget from '../components/widgets/DragDropWidget';
-import ReorderWidget from '../components/widgets/ReorderWidget';
-import MultipleChoiceWidget from '../components/widgets/MultipleChoiceWidget';
-import SpacedRepetitionCard from '../components/widgets/SpacedRepetitionCard';
-import BrainGymDashboard from '../components/widgets/BrainGymDashboard';
-import HighlighterWidget from '../components/widgets/HighlighterWidget';
-import DecisionTreeWidget from '../components/widgets/DecisionTreeWidget';
-import SpotErrorWidget from '../components/widgets/SpotErrorWidget';
+import DragDropWidget from '../stages/stage4/DragDropWidget';
+import ReorderWidget from '../stages/stage4/ReorderWidget';
+import MultipleChoiceWidget from '../stages/stage4/MultipleChoiceWidget';
+import SpacedRepetitionCard from '../stages/stage4/SpacedRepetitionCard';
+import BrainGymDashboard from '../stages/stage4/BrainGymDashboard';
+import HighlighterWidget from '../stages/stage3/HighlighterWidget';
+import DecisionTreeWidget from '../stages/stage3/DecisionTreeWidget';
+import SpotErrorWidget from '../stages/stage3/SpotErrorWidget';
+import Level1AssociationWidget from '../stages/stage2/Level1AssociationWidget';
 
 // Import helper
-import { injectSpacedRepetitionQuestion } from '../utils/spacedRepetition';
+import { injectSpacedRepetitionQuestion } from '../core/utils/spacedRepetition';
+import { markLessonCompleted } from '../core/utils/progress';
 
 const LessonPage = () => {
   const { id } = useParams();
@@ -46,8 +49,8 @@ const LessonPage = () => {
   if (!lesson) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: 'var(--bg-color)' }}>
-        <h2 style={{ marginBottom: '16px' }}>Bài học không tồn tại!</h2>
-        <button onClick={() => navigate('/')} style={{ padding: '12px 24px', background: 'var(--brand-color)', color: 'white', borderRadius: '100px', fontWeight: 600 }}>Quay lại Trang chủ</button>
+        <h2 style={{ marginBottom: '16px' }}>Lesson not found!</h2>
+        <button onClick={() => navigate('/')} style={{ padding: '12px 24px', background: 'var(--brand-color)', color: 'white', borderRadius: '100px', fontWeight: 600 }}>Back to Home</button>
       </div>
     );
   }
@@ -58,6 +61,7 @@ const LessonPage = () => {
   // Solved states
   const [mainSolved, setMainSolved] = useState(false);
   const [srSolved, setSrSolved] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   // Reset solved states when the lesson ID changes
   useEffect(() => {
@@ -65,7 +69,7 @@ const LessonPage = () => {
     // If it's a standard static lesson, it starts as solved.
     const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
     setMainSolved((lesson.type || isHardcodedInteractive) ? false : true);
-    
+
     // If there is a Spaced Repetition card injected, it starts as unsolved.
     // If not, it starts as solved.
     setSrSolved(srData ? false : true);
@@ -93,12 +97,30 @@ const LessonPage = () => {
     const interactiveLessonData = interactiveLessons.find(l => l.id === lesson.engineId);
     if (interactiveLessonData) {
       return (
-        <LessonPlayer 
-          lesson={interactiveLessonData} 
-          onBack={() => navigate('/')} 
-          onNextLesson={isLastLesson ? () => navigate('/') : handleNext} 
-          hasNextLesson={!isLastLesson} 
-        />
+        <>
+          <LessonPlayer
+            lesson={interactiveLessonData}
+            onBack={() => navigate('/')}
+            onNextLesson={() => {
+              const isNew = markLessonCompleted(lesson.id, 15, 2);
+              if (isNew) {
+                setShowModal(true);
+              } else {
+                isLastLesson ? navigate('/') : handleNext();
+              }
+            }}
+            hasNextLesson={!isLastLesson}
+          />
+          <LessonCompleteModal
+            show={showModal}
+            starsGained={15}
+            zapsGained={2}
+            onContinue={() => {
+              setShowModal(false);
+              isLastLesson ? navigate('/') : handleNext();
+            }}
+          />
+        </>
       );
     }
   }
@@ -120,16 +142,18 @@ const LessonPage = () => {
         return <MultipleChoiceWidget lesson={lesson} onSolved={setMainSolved} />;
       case 'spaced-repetition-hub':
         return <BrainGymDashboard onSolved={setMainSolved} />;
+      case 'level1-association':
+        return <Level1AssociationWidget lesson={lesson} onSolved={setMainSolved} />;
       default:
         // Default text-only lesson fallback
         const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
-        
+
         return (
           <div>
             <p style={{ fontSize: '1.1rem', color: '#495057', lineHeight: 1.8, marginBottom: '30px' }}>
               {lesson.content}
             </p>
-            
+
             {lesson.id === 'lesson-17' && <Lesson17Interactive onFinish={() => setMainSolved(true)} />}
             {lesson.id === 'lesson-18' && <Lesson18Interactive onFinish={() => setMainSolved(true)} />}
             {lesson.id === 'lesson-19' && <Lesson19Interactive onFinish={() => setMainSolved(true)} />}
@@ -140,8 +164,8 @@ const LessonPage = () => {
                   <CheckCircle2 size={24} color="#2b8a3e" />
                 </div>
                 <div>
-                  <h4 style={{ color: '#2b8a3e', marginBottom: '4px' }}>Mục tiêu bài học</h4>
-                  <p style={{ color: '#495057', fontSize: '0.95rem' }}>Bằng việc hoàn thành bài học này, bạn đã tiến thêm một bước trong hành trình chinh phục Use Case Diagram.</p>
+                  <h4 style={{ color: '#2b8a3e', marginBottom: '4px' }}>Lesson Objective</h4>
+                  <p style={{ color: '#495057', fontSize: '0.95rem' }}>By completing this lesson, you have taken another step in your journey to master Use Case Diagrams.</p>
                 </div>
               </div>
             ) : (
@@ -154,10 +178,10 @@ const LessonPage = () => {
               }}>
                 <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-hover)', marginBottom: '8px', fontWeight: 700 }}>
                   <CheckCircle2 size={20} />
-                  Hướng dẫn lý thuyết
+                  Theoretical Guide
                 </h4>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                  Đọc kỹ lý thuyết trên để chuẩn bị cho các bài tập thực hành tương tác ở các bài tiếp theo trong chặng này. Hãy nhấn Tiếp tục để đi tiếp!
+                  Read the theory above carefully to prepare for the interactive exercises in the upcoming lessons of this stage. Click Continue to proceed!
                 </p>
               </div>
             )}
@@ -169,30 +193,30 @@ const LessonPage = () => {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-color)' }}>
       <Navbar />
-      
+
       {/* Progress Bar Header */}
       <div style={{ width: '100%', height: '4px', background: '#e9ecef', position: 'sticky', top: '72px', zIndex: 90 }}>
-        <div style={{ 
-          width: `${((currentIndex + 1) / allLessons.length) * 100}%`, 
-          height: '100%', 
+        <div style={{
+          width: `${((currentIndex + 1) / allLessons.length) * 100}%`,
+          height: '100%',
           background: 'linear-gradient(90deg, var(--brand-color) 0%, var(--brand-hover) 100%)',
           transition: 'width 0.5s ease-in-out'
         }} />
       </div>
 
-      <main style={{ 
-        flex: 1, 
-        maxWidth: ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id) ? '1200px' : '850px', 
-        width: '100%', 
-        margin: '0 auto', 
+      <main style={{
+        flex: 1,
+        maxWidth: ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id) ? '1200px' : '850px',
+        width: '100%',
+        margin: '0 auto',
         padding: '30px 20px 80px',
         display: 'flex',
         flexDirection: 'column'
       }}>
         {/* Breadcrumb / Stage Info */}
-        <div style={{ 
-          color: 'var(--brand-color)', 
-          fontWeight: 700, 
+        <div style={{
+          color: 'var(--brand-color)',
+          fontWeight: 700,
           fontSize: '0.85rem',
           textTransform: 'uppercase',
           letterSpacing: '1px',
@@ -201,15 +225,15 @@ const LessonPage = () => {
           alignItems: 'center',
           gap: '8px'
         }}>
-          <span style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Hành trình</span>
+          <span style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Journey</span>
           <span>/</span>
           <span>{lesson.stageTitle}</span>
         </div>
 
         {/* Lesson Title */}
-        <h1 style={{ 
-          fontSize: '2rem', 
-          fontWeight: 800, 
+        <h1 style={{
+          fontSize: '2rem',
+          fontWeight: 800,
           color: 'var(--text-main)',
           marginBottom: '24px',
           lineHeight: 1.25,
@@ -231,7 +255,7 @@ const LessonPage = () => {
           {/* Subtitle / Prompt for interactive lessons */}
           {lesson.type && lesson.type !== 'spaced-repetition-hub' && (
             <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '28px', borderBottom: '1px solid #f1f3f5', paddingBottom: '16px' }}>
-              🎯 <strong>Thử thách thực hành:</strong> {lesson.content}
+              🎯 <strong>Practice Challenge:</strong> {lesson.content}
             </p>
           )}
 
@@ -244,16 +268,16 @@ const LessonPage = () => {
         )}
 
         {/* Bottom Navigation */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
           marginTop: '20px',
           paddingTop: '20px',
           borderTop: '1px solid #e9ecef'
         }}>
           {/* Back Button */}
-          <button 
+          <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
             style={{
@@ -274,12 +298,21 @@ const LessonPage = () => {
             onMouseOut={(e) => currentIndex > 0 && (e.currentTarget.style.borderColor = '#e9ecef')}
           >
             <ChevronLeft size={20} />
-            Bài trước
+            Previous
           </button>
 
           {/* Continue / Lock Button */}
-          <button 
-            onClick={isLastLesson ? () => navigate('/') : handleNext}
+          <button
+            onClick={() => {
+              if (isFullySolved) {
+                const isNew = markLessonCompleted(lesson.id, 10, 1);
+                if (isNew) {
+                  setShowModal(true);
+                } else {
+                  isLastLesson ? navigate('/') : handleNext();
+                }
+              }
+            }}
             disabled={!isFullySolved}
             style={{
               padding: '14px 36px',
@@ -310,10 +343,20 @@ const LessonPage = () => {
             }}
           >
             {!isFullySolved && <Lock size={18} />}
-            {isLastLesson ? 'Hoàn thành khóa học' : 'Tiếp tục'}
+            {isLastLesson ? 'Complete Course' : 'Continue'}
             {isFullySolved && !isLastLesson && <ChevronRight size={20} />}
           </button>
         </div>
+
+        <LessonCompleteModal
+          show={showModal}
+          starsGained={10}
+          zapsGained={1}
+          onContinue={() => {
+            setShowModal(false);
+            isLastLesson ? navigate('/') : handleNext();
+          }}
+        />
       </main>
     </div>
   );
