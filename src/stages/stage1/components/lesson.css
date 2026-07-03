@@ -853,6 +853,22 @@
   font-weight: 800;
 }
 
+/* Color overrides for simulation box on incorrect answers */
+.lesson-feedback.error .simulation-box,
+.lesson-feedback.mixed .simulation-box {
+  background: #fff0f0;
+  border-color: #ffc9c9;
+  color: #c92a2a;
+}
+
+.lesson-feedback.error .simulation-box .visual-effect-chip,
+.lesson-feedback.mixed .simulation-box .visual-effect-chip {
+  color: #c92a2a;
+  background: #ffe3e3;
+  border-color: #ffc9c9;
+}
+
+
 .feedback-list {
   margin: 16px 0 0 18px;
   color: #3f4652;
