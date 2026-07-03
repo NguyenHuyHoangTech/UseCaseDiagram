@@ -45,7 +45,7 @@ const DecisionTreeWidget = ({ lesson, onSolved }) => {
       }}>
         <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--brand-hover)', marginBottom: '8px', display: 'flex', gap: '8px', alignItems: 'center' }}>
           <ShieldAlert size={18} />
-          Bối cảnh thiết kế phân quyền (CRUD)
+          {lesson.scenarioTitle || 'Bối cảnh thiết kế phân quyền (CRUD)'}
         </h4>
         <p style={{ margin: 0, fontSize: '0.98rem', color: '#495057', lineHeight: 1.6 }}>
           {lesson.scenario}

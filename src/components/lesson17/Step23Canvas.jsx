@@ -76,11 +76,11 @@ const Step23Canvas = ({ onComplete }) => {
     const item = JSON.parse(itemStr);
 
     if (targetArea === 'inside' && item.type === 'actor') {
-      showFeedback('error', `Khoan đã! Chẳng lẽ đội dev định code lại toàn bộ "${item.text}" sao? Nó là tác nhân bên ngoài!`);
+      showFeedback('error', `Lưu ý: "${item.text}" là một Actor (Tác nhân bên ngoài), do đó không thể nằm bên trong phạm vi của Hệ thống.`);
     } else if (targetArea === 'outside' && item.type === 'usecase') {
-      showFeedback('error', `Sai rồi! "${item.text}" là một chức năng phần mềm, nó phải nằm bên trong Hệ thống.`);
+      showFeedback('error', `Chưa chính xác: "${item.text}" là một chức năng (Use Case), nó phải được đặt bên trong Hệ thống.`);
     } else {
-      showFeedback('success', `Chuẩn! "${item.text}" đã ở đúng vị trí.`);
+      showFeedback('success', `Chính xác! "${item.text}" đã được đặt đúng vị trí.`);
       setItems(prev => prev.map(i => i.id === item.id ? { ...i, placed: targetArea } : i));
     }
   };
@@ -114,13 +114,13 @@ const Step23Canvas = ({ onComplete }) => {
       }
 
       if (n1.type === 'actor' && n2.type === 'actor') {
-        showFeedback('error', 'Sai logic! Các Actor (Người dùng/Hệ thống ngoài) không giao tiếp trực tiếp với nhau trong sơ đồ này.');
+        showFeedback('error', 'Lỗi logic: Trong biểu đồ Use Case, các Actor không giao tiếp trực tiếp với nhau.');
         setSelectedNodeId(null);
         return;
       }
 
       if (n1.type === 'usecase' && n2.type === 'usecase') {
-        showFeedback('error', 'Chưa đến lúc nối Use Case với Use Case (Include/Extend)! Ở màn này, hãy tập trung nối Actor với chức năng họ cần dùng.');
+        showFeedback('error', 'Chưa hợp lệ: Ở bước này, chúng ta chỉ tập trung vào việc thiết lập mối quan hệ giữa Actor và Use Case (Association).');
         setSelectedNodeId(null);
         return;
       }
@@ -128,17 +128,17 @@ const Step23Canvas = ({ onComplete }) => {
       const isMatch = VALID_CONNECTIONS.find(v => (v.p1 === n1.id && v.p2 === n2.id) || (v.p1 === n2.id && v.p2 === n1.id));
       
       if (isMatch) {
-        showFeedback('success', 'Nối chính xác!');
+        showFeedback('success', 'Thiết lập mối quan hệ chính xác!');
         setConnections([...connections, { id: Date.now().toString(), sourceId: n1.id, targetId: n2.id }]);
       } else {
         if ((n1.id === 'a1' && n2.id === 'u3') || (n1.id === 'u3' && n2.id === 'a1')) {
-          showFeedback('error', 'Sai! Khách hàng không trực tiếp kiểm tra mã PIN. Hệ thống ATM mới là người ngầm gửi lệnh sang Ngân hàng Trung tâm để kiểm tra!');
+          showFeedback('error', 'Phân tích sai: Khách hàng không trực tiếp kiểm tra mã PIN. Hệ thống ATM mới là chủ thể tương tác với Ngân hàng Trung tâm để kiểm tra thông tin này.');
         } else if ((n1.id === 'a2' && n2.id === 'u1') || (n1.id === 'u1' && n2.id === 'a2')) {
-          showFeedback('error', 'Sai! Ngân hàng Trung tâm không bấm nút rút tiền. Việc đó là của Khách hàng!');
+          showFeedback('error', 'Phân tích sai: Ngân hàng Trung tâm không thực hiện hành động rút tiền. Đó là chức năng dành cho Khách hàng.');
         } else if (n1.id === 'u4' || n2.id === 'u4') {
-          showFeedback('error', '"In biên lai" là chức năng tùy chọn đi kèm với Rút tiền. Chúng ta thường chỉ nối Actor với các chức năng chính yếu nhất!');
+          showFeedback('error', 'Lưu ý: "In biên lai" là chức năng tùy chọn (Extend) của Rút tiền, thường không cần Actor trực tiếp kích hoạt trong bối cảnh này.');
         } else {
-          showFeedback('error', 'Cặp nối này không hợp lý về mặt logic nghiệp vụ.');
+          showFeedback('error', 'Cặp quan hệ này không hợp lý về mặt logic nghiệp vụ.');
         }
       }
       setSelectedNodeId(null);
@@ -216,10 +216,10 @@ const Step23Canvas = ({ onComplete }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div>
           <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>
-            {step === 2 ? '17.2 Trò chơi Lãnh thổ (Xác định Ranh giới)' : '17.3 Mạng lưới Chức năng'}
+            {step === 2 ? '17.2 Phân định Ranh giới Hệ thống (System Boundary)' : '17.3 Thiết lập Quan hệ Giao tiếp (Association)'}
           </h3>
           <p style={{ color: 'var(--text-muted)' }}>
-            {step === 2 ? 'Kéo các thẻ vào đúng vị trí: BÊN TRONG hoặc BÊN NGOÀI Hệ thống ATM.' : 'Bấm chọn một Actor và một Use Case tương ứng để nối chúng với nhau.'}
+            {step === 2 ? 'Kéo thả các phần tử vào đúng vị trí: BÊN TRONG (Use Case) hoặc BÊN NGOÀI (Actor) Hệ thống ATM.' : 'Bấm chọn một Actor và một Use Case tương ứng để thiết lập mối quan hệ giao tiếp.'}
           </p>
         </div>
         <button onClick={handleReset} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #ced4da', background: 'white', cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', color: '#495057', fontWeight: 600 }}>
@@ -290,9 +290,9 @@ const Step23Canvas = ({ onComplete }) => {
 
         {step === 2 && (
           <div style={{ width: '100%', background: '#e9ecef', borderRadius: '16px', padding: '20px', display: 'flex', gap: '12px', border: '1px solid #ced4da', alignItems: 'center', flexWrap: 'wrap' }}>
-            <h4 style={{ color: '#495057', margin: 0, marginRight: '16px' }}>Kho vật liệu:</h4>
+            <h4 style={{ color: '#495057', margin: 0, marginRight: '16px' }}>Danh sách phần tử:</h4>
             {items.filter(i => !i.placed).map(renderItem)}
-            {items.filter(i => !i.placed).length === 0 && <span style={{ color: '#868e96', fontStyle: 'italic' }}>Đã phân loại hết!</span>}
+            {items.filter(i => !i.placed).length === 0 && <span style={{ color: '#868e96', fontStyle: 'italic' }}>Đã phân loại toàn bộ phần tử.</span>}
           </div>
         )}
       </div>
@@ -300,7 +300,7 @@ const Step23Canvas = ({ onComplete }) => {
       {step === 2 && allPlaced && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
           <button onClick={handleProceedToStep3} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', border: 'none', cursor: 'pointer' }}>
-            Tuyệt vời! Tiếp tục nối dây <ArrowRight size={20} />
+            Hoàn thành: Chuyển sang Nối quan hệ <ArrowRight size={20} />
           </button>
         </motion.div>
       )}
@@ -308,7 +308,7 @@ const Step23Canvas = ({ onComplete }) => {
       {step === 3 && allConnected && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', border: 'none', cursor: 'pointer' }}>
-            Hoàn thành sơ đồ! Viết đặc tả <ArrowRight size={20} />
+            Hoàn thành: Chuyển sang Đặc tả Use Case <ArrowRight size={20} />
           </button>
         </motion.div>
       )}

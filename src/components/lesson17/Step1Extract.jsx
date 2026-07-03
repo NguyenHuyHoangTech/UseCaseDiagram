@@ -66,8 +66,8 @@ const Step1Extract = ({ onComplete }) => {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>17.1 Thử thách "Đãi Cát Tìm Vàng"</h3>
-      <p style={{ marginBottom: '16px', color: 'var(--text-muted)' }}>Kéo thả các từ khóa tô xám vào đúng giỏ Actor hoặc Use Case. Cẩn thận với các từ gây nhiễu!</p>
+      <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: 'var(--brand-color)' }}>17.1 Phân tích Yêu cầu: Trích xuất Actor & Use Case</h3>
+      <p style={{ marginBottom: '16px', color: 'var(--text-muted)' }}>Phân tích đoạn mô tả hệ thống bên dưới. Kéo thả các từ khóa được tô xám vào đúng phân loại: Actor (Tác nhân) hoặc Use Case (Ca sử dụng). Hãy cẩn thận với các từ gây nhiễu!</p>
       
       <AnimatePresence>
         {feedback && (
@@ -111,7 +111,7 @@ const Step1Extract = ({ onComplete }) => {
       {isComplete && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', justifyContent: 'center', marginTop: '32px' }}>
           <button onClick={onComplete} style={{ padding: '12px 32px', borderRadius: '100px', background: 'var(--brand-color)', color: 'white', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(18, 184, 134, 0.3)', cursor: 'pointer', border: 'none', fontSize: '1rem' }}>
-            Tiếp tục: Trò chơi Lãnh thổ <ArrowRight size={20} />
+            Tiếp tục: Xác định Ranh giới Hệ thống <ArrowRight size={20} />
           </button>
         </motion.div>
       )}

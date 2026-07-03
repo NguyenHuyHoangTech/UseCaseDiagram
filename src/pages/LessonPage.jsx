@@ -6,6 +6,8 @@ import Navbar from '../components/Navbar';
 import Lesson17Interactive from '../components/Lesson17Interactive';
 import Lesson18Interactive from '../components/Lesson18Interactive';
 import Lesson19Interactive from '../components/Lesson19Interactive';
+import LessonPlayer from '../components/lesson/LessonPlayer';
+import { interactiveLessons } from '../components/lessonEngine/lessonData';
 
 // Import widgets
 import DragDropWidget from '../components/widgets/DragDropWidget';
@@ -16,17 +18,8 @@ import BrainGymDashboard from '../components/widgets/BrainGymDashboard';
 import HighlighterWidget from '../components/widgets/HighlighterWidget';
 import DecisionTreeWidget from '../components/widgets/DecisionTreeWidget';
 import SpotErrorWidget from '../components/widgets/SpotErrorWidget';
+import Level1AssociationWidget from '../components/widgets/Level1AssociationWidget';
 
-// Import specific lesson components (split files)
-import Lesson10 from '../lesson 3/Lesson10';
-import Lesson11 from '../lesson 3/Lesson11';
-import Lesson11b from '../lesson 3/Lesson11b';
-import Lesson12 from '../lesson 3/Lesson12';
-import Lesson12b from '../lesson 3/Lesson12b';
-import Lesson13 from '../lesson 4/Lesson13';
-import Lesson14 from '../lesson 4/Lesson14';
-import Lesson15 from '../lesson 4/Lesson15';
-import Lesson16 from '../lesson 4/Lesson16';
 
 // Import helper
 import { injectSpacedRepetitionQuestion } from '../utils/spacedRepetition';
@@ -52,6 +45,32 @@ const LessonPage = () => {
     };
   }, [id]);
 
+  const lessonId = lesson?.id;
+  const lessonType = lesson?.type;
+
+  // Get Spaced Repetition injected card if applicable
+  const srData = useMemo(() => lessonId ? injectSpacedRepetitionQuestion(lessonId) : null, [lessonId]);
+
+  // Solved states
+  const [mainSolved, setMainSolved] = useState(false);
+  const [srSolved, setSrSolved] = useState(false);
+
+  // Reset solved states when the lesson ID changes
+  useEffect(() => {
+    if (!lessonId) return;
+    // If the lesson has an interactive type, it starts as unsolved.
+    // If it's a standard static lesson, it starts as solved.
+    const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lessonId);
+    setMainSolved((lessonType || isHardcodedInteractive) ? false : true);
+    
+    // If there is a Spaced Repetition card injected, it starts as unsolved.
+    // If not, it starts as solved.
+    setSrSolved(srData ? false : true);
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id, lessonId, lessonType, srData]);
+
   if (!lesson) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: 'var(--bg-color)' }}>
@@ -60,28 +79,6 @@ const LessonPage = () => {
       </div>
     );
   }
-
-  // Get Spaced Repetition injected card if applicable
-  const srData = useMemo(() => injectSpacedRepetitionQuestion(lesson.id), [lesson.id]);
-
-  // Solved states
-  const [mainSolved, setMainSolved] = useState(false);
-  const [srSolved, setSrSolved] = useState(false);
-
-  // Reset solved states when the lesson ID changes
-  useEffect(() => {
-    // If the lesson has an interactive type, it starts as unsolved.
-    // If it's a standard static lesson, it starts as solved.
-    const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
-    setMainSolved((lesson.type || isHardcodedInteractive) ? false : true);
-    
-    // If there is a Spaced Repetition card injected, it starts as unsolved.
-    // If not, it starts as solved.
-    setSrSolved(srData ? false : true);
-
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [id, lesson.id, srData]);
 
   const handleNext = () => {
     if (currentIndex < allLessons.length - 1) {
@@ -98,90 +95,84 @@ const LessonPage = () => {
   const isLastLesson = currentIndex === allLessons.length - 1;
   const isFullySolved = mainSolved && srSolved;
 
+  if (lesson.type === 'interactive-engine') {
+    const interactiveLessonData = interactiveLessons.find(l => l.id === lesson.engineId);
+    if (interactiveLessonData) {
+      return (
+        <LessonPlayer 
+          lesson={interactiveLessonData} 
+          onBack={() => navigate('/')} 
+          onNextLesson={isLastLesson ? () => navigate('/') : handleNext} 
+          hasNextLesson={!isLastLesson} 
+        />
+      );
+    }
+  }
+
   // Render the appropriate work area based on lesson type
   const renderWorkspace = () => {
-    // Prioritize rendering specific modular lesson components if matched by ID
-    switch (lesson.id) {
-      case 'lesson-10':
-        return <Lesson10 onSolved={setMainSolved} />;
-      case 'lesson-11':
-        return <Lesson11 onSolved={setMainSolved} />;
-      case 'lesson-11b':
-        return <Lesson11b onSolved={setMainSolved} />;
-      case 'lesson-12':
-        return <Lesson12 onSolved={setMainSolved} />;
-      case 'lesson-12b':
-        return <Lesson12b onSolved={setMainSolved} />;
-      case 'lesson-13':
-        return <Lesson13 onSolved={setMainSolved} />;
-      case 'lesson-14':
-        return <Lesson14 onSolved={setMainSolved} />;
-      case 'lesson-15':
-        return <Lesson15 onSolved={setMainSolved} />;
-      case 'lesson-16':
-        return <Lesson16 onSolved={setMainSolved} />;
+    // Fallback to generic widget engine
+    switch (lesson.type) {
+      case 'highlighter':
+        return <HighlighterWidget lesson={lesson} onSolved={setMainSolved} />;
+      case 'decision-tree':
+        return <DecisionTreeWidget lesson={lesson} onSolved={setMainSolved} />;
+      case 'spot-the-error':
+        return <SpotErrorWidget lesson={lesson} onSolved={setMainSolved} />;
+      case 'drag-and-drop':
+        return <DragDropWidget lesson={lesson} onSolved={setMainSolved} />;
+      case 'reorder':
+        return <ReorderWidget lesson={lesson} onSolved={setMainSolved} />;
+      case 'multiple-choice':
+        return <MultipleChoiceWidget lesson={lesson} onSolved={setMainSolved} />;
+      case 'spaced-repetition-hub':
+        return <BrainGymDashboard onSolved={setMainSolved} />;
+      case 'level1-association':
+        return <Level1AssociationWidget lesson={lesson} onSolved={setMainSolved} />;
       default:
-        // Fallback to generic widget engine
-        switch (lesson.type) {
-          case 'highlighter':
-            return <HighlighterWidget lesson={lesson} onSolved={setMainSolved} />;
-          case 'decision-tree':
-            return <DecisionTreeWidget lesson={lesson} onSolved={setMainSolved} />;
-          case 'spot-the-error':
-            return <SpotErrorWidget lesson={lesson} onSolved={setMainSolved} />;
-          case 'drag-and-drop':
-            return <DragDropWidget lesson={lesson} onSolved={setMainSolved} />;
-          case 'reorder':
-            return <ReorderWidget lesson={lesson} onSolved={setMainSolved} />;
-          case 'multiple-choice':
-            return <MultipleChoiceWidget lesson={lesson} onSolved={setMainSolved} />;
-          case 'spaced-repetition-hub':
-            return <BrainGymDashboard onSolved={setMainSolved} />;
-          default:
-            // Default text-only lesson fallback (Combined with remote changes for hardcoded interactive 17-19)
-            const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
-            return (
-              <div>
-                <p style={{ fontSize: '1.1rem', color: '#495057', lineHeight: 1.8, marginBottom: '30px' }}>
-                  {lesson.content}
-                </p>
-                
-                {lesson.id === 'lesson-17' && <Lesson17Interactive onFinish={() => setMainSolved(true)} />}
-                {lesson.id === 'lesson-18' && <Lesson18Interactive onFinish={() => setMainSolved(true)} />}
-                {lesson.id === 'lesson-19' && <Lesson19Interactive onFinish={() => setMainSolved(true)} />}
+        // Default text-only lesson fallback (Combined with remote changes for hardcoded interactive 17-19)
+        const isHardcodedInteractive = ['lesson-17', 'lesson-18', 'lesson-19'].includes(lesson.id);
+        return (
+          <div>
+            <p style={{ fontSize: '1.1rem', color: '#495057', lineHeight: 1.8, marginBottom: '30px' }}>
+              {lesson.content}
+            </p>
+            
+            {lesson.id === 'lesson-17' && <Lesson17Interactive onFinish={() => setMainSolved(true)} />}
+            {lesson.id === 'lesson-18' && <Lesson18Interactive onFinish={() => setMainSolved(true)} />}
+            {lesson.id === 'lesson-19' && <Lesson19Interactive onFinish={() => setMainSolved(true)} />}
 
-                {isHardcodedInteractive ? (
-                  <div style={{ marginTop: '40px', padding: '24px', background: 'white', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px', border: '1px solid #dee2e6' }}>
-                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#d3f9d8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <CheckCircle2 size={24} color="#2b8a3e" />
-                    </div>
-                    <div>
-                      <h4 style={{ color: '#2b8a3e', marginBottom: '4px' }}>Mục tiêu bài học</h4>
-                      <p style={{ color: '#495057', fontSize: '0.95rem' }}>Bằng việc hoàn thành bài học này, bạn đã tiến thêm một bước trong hành trình chinh phục Use Case Diagram.</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div style={{
-                    marginTop: '40px',
-                    padding: '24px',
-                    background: '#f8f9fa',
-                    borderRadius: '16px',
-                    borderLeft: '4px solid var(--brand-color)'
-                  }}>
-                    <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-hover)', marginBottom: '8px', fontWeight: 700 }}>
-                      <CheckCircle2 size={20} />
-                      Hướng dẫn lý thuyết
-                    </h4>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                      Đọc kỹ lý thuyết trên để chuẩn bị cho các bài tập thực hành tương tác ở các bài tiếp theo trong chặng này. Hãy nhấn Tiếp tục để đi tiếp!
-                    </p>
-                  </div>
-                )}
+            {isHardcodedInteractive ? (
+              <div style={{ marginTop: '40px', padding: '24px', background: 'white', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '16px', border: '1px solid #dee2e6' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#d3f9d8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <CheckCircle2 size={24} color="#2b8a3e" />
+                </div>
+                <div>
+                  <h4 style={{ color: '#2b8a3e', marginBottom: '4px' }}>Mục tiêu bài học</h4>
+                  <p style={{ color: '#495057', fontSize: '0.95rem' }}>Bằng việc hoàn thành bài học này, bạn đã tiến thêm một bước trong hành trình chinh phục Use Case Diagram.</p>
+                </div>
               </div>
-            );
-        }
+            ) : (
+              <div style={{
+                marginTop: '40px',
+                padding: '24px',
+                background: '#f8f9fa',
+                borderRadius: '16px',
+                borderLeft: '4px solid var(--brand-color)'
+              }}>
+                <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-hover)', marginBottom: '8px', fontWeight: 700 }}>
+                  <CheckCircle2 size={20} />
+                  Hướng dẫn lý thuyết
+                </h4>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                  Đọc kỹ lý thuyết trên để chuẩn bị cho các bài tập thực hành tương tác ở các bài tiếp theo trong chặng này. Hãy nhấn Tiếp tục để đi tiếp!
+                </p>
+              </div>
+            )}
+          </div>
+        );
     }
-  };
+  };;
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-color)' }}>
@@ -250,6 +241,26 @@ const LessonPage = () => {
             <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '28px', borderBottom: '1px solid #f1f3f5', paddingBottom: '16px' }}>
               🎯 <strong>Thử thách thực hành:</strong> {lesson.content}
             </p>
+          )}
+
+          {/* Scenario Briefing Card */}
+          {lesson.scenario && lesson.type !== 'decision-tree' && (
+            <div style={{
+              background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+              padding: '24px',
+              borderRadius: '20px',
+              border: '1px solid #dee2e6',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+              marginBottom: '28px'
+            }}>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--brand-hover)', marginBottom: '8px', display: 'flex', gap: '8px', alignItems: 'center', margin: 0 }}>
+                <HelpCircle size={18} color="var(--brand-color)" />
+                {lesson.scenarioTitle || 'Tình huống nghiệp vụ'}
+              </h4>
+              <p style={{ margin: '8px 0 0 0', fontSize: '0.98rem', color: '#495057', lineHeight: 1.6 }}>
+                {lesson.scenario}
+              </p>
+            </div>
           )}
 
           {renderWorkspace()}

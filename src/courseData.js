@@ -6,24 +6,39 @@ export const courseData = [
     description: "Giúp người học biết ngay Use Case dùng để làm gì và gọi tên đúng các thành phần.",
     lessons: [
       {
+        id: "lesson-0",
+        title: "Bài 0: Hệ thống tạo ra giá trị cho ai?",
+        content: "Trước khi học Use Case, hãy nhìn hệ thống từ bên ngoài: một người hoặc tác nhân tương tác với hệ thống để đạt được một kết quả có ích.",
+        type: "interactive-engine",
+        engineId: "intro-machine"
+      },
+      {
         id: "lesson-1",
-        title: "Bài 1: Use Case là gì và Lăng kính hệ thống",
-        content: "Soạn nội dung giải thích khái niệm Use Case. Nhấn mạnh nguyên tắc: Use Case mô tả 'Hệ thống làm được gì?' (What) chứ không phải 'Hệ thống làm điều đó như thế nào?' (How)."
+        title: "Bài 1: Use Case là gì?",
+        content: "Cinema Booking System: nhìn Use Case như mục tiêu và giá trị mà Actor muốn đạt được, không phải UI, database, API hay xử lý kỹ thuật.",
+        type: "interactive-engine",
+        engineId: "what-not-how"
       },
       {
         id: "lesson-2",
         title: "Bài 2: Ranh giới hệ thống (System Boundary)",
-        content: "Dạy cách vẽ và xác định vạch ranh giới. Định nghĩa rõ cái gì nằm trong (phần mềm cần code) và cái gì nằm ngoài (môi trường)."
+        content: "Use Case nằm trong boundary; Actor và external system đứng ngoài.",
+        type: "interactive-engine",
+        engineId: "system-boundary"
       },
       {
         id: "lesson-3",
-        title: "Bài 3: Tác nhân (Actor)",
-        content: "Phân loại và lấy ví dụ chi tiết về 3 loại Actor: Con người (Khách hàng, Admin), Hệ thống bên ngoài (Cổng thanh toán, API), và Thời gian (Hệ thống tự động chạy lúc 00:00)."
+        title: "Bài 3: Tác nhân (Actor không chỉ là con người)",
+        content: "Actor là vai trò, external system hoặc thời gian kích hoạt hệ thống.",
+        type: "interactive-engine",
+        engineId: "actor"
       },
       {
         id: "lesson-4",
-        title: "Bài 4: Ca sử dụng (Use Case) Quy tắc đặt tên",
-        content: "Hướng dẫn công thức đặt tên chuẩn bằng 'Động từ + Danh từ' (VD: Đăng nhập, Thêm vào giỏ hàng) và liệt kê các tên gọi sai phổ biến cần tránh."
+        title: "Bài 4: Quy tắc đặt tên Use Case",
+        content: "Tên tốt thường là động từ nghiệp vụ + đối tượng nghiệp vụ.",
+        type: "interactive-engine",
+        engineId: "naming"
       }
     ]
   },
@@ -35,27 +50,37 @@ export const courseData = [
       {
         id: "lesson-5",
         title: "Bài 5: Quan hệ giao tiếp (Association)",
-        content: "Quy tắc nối đường thẳng cơ bản giữa Actor và Use Case. Nguyên tắc: Hai Actor không giao tiếp với nhau trong biểu đồ này."
+        type: "level1-association",
+        levelIndex: 1,
+        content: "Hệ thống cần người kích hoạt. Hãy chọn đường nối đúng."
       },
       {
         id: "lesson-6",
         title: "Bài 6: Quan hệ bắt buộc (<<include>>)",
-        content: "Định nghĩa, cách vẽ mũi tên (chĩa vào Use Case được gọi). Lấy ví dụ minh họa (VD: 'Rút tiền' bắt buộc phải có 'Kiểm tra mã PIN')."
+        type: "level1-association",
+        levelIndex: 2,
+        content: "Để rút được tiền, hệ thống BẮT BUỘC phải kiểm tra mã PIN."
       },
       {
         id: "lesson-7",
         title: "Bài 7: Quan hệ tùy chọn (<<extend>> & Extension Point)",
-        content: "Định nghĩa điều kiện rẽ nhánh, cách vẽ mũi tên (chĩa ngược lại Use Case gốc). Lấy ví dụ minh họa (VD: 'Mua hàng' có tùy chọn 'Áp mã giảm giá')."
+        type: "level1-association",
+        levelIndex: 3,
+        content: "Hệ thống có tính năng \"Áp mã giảm giá\" nhưng đây là tùy chọn."
       },
       {
         id: "lesson-8",
         title: "Bài 8: Phân biệt <<include>> và <<extend>>",
-        content: "Tổng hợp bảng so sánh điểm khác biệt và soạn 10 tình huống trắc nghiệm để người học tự phân biệt."
+        type: "level1-association",
+        levelIndex: 4,
+        content: "Phân biệt rõ cái nào bắt buộc, cái nào tùy chọn bằng cách lấp đầy 4 khoảng trống."
       },
       {
         id: "lesson-9",
         title: "Bài 9: Quan hệ kế thừa (Generalization)",
-        content: "Hướng dẫn cách gom nhóm các Actor có chung quyền hạn hoặc các Use Case có chung bản chất."
+        type: "level1-association",
+        levelIndex: 5,
+        content: "Khách hàng VIP bản chất vẫn là một Khách hàng. Hãy dùng lệnh Kế thừa để gom nhóm chúng lại."
       }
     ]
   },
@@ -178,6 +203,8 @@ export const courseData = [
         id: "lesson-13",
         title: "Bài 13: Cấu trúc Đặc tả Use Case (Pre/Post-conditions)",
         type: "drag-and-drop",
+        scenarioTitle: "Tình huống: Đăng nhập hệ thống",
+        scenario: "Một thành viên đã đăng ký tài khoản thành công trên hệ thống. Bây giờ, họ truy cập vào trang đăng nhập và điền thông tin để bắt đầu sử dụng các tính năng bảo mật.",
         content: "Phân biệt Tiền điều kiện và Hậu điều kiện của Use Case: Đăng nhập hệ thống.",
         items: [
           { text: "Người dùng truy cập trang login", category: "Pre-condition" },
@@ -190,6 +217,8 @@ export const courseData = [
         id: "lesson-14",
         title: "Bài 14: Luồng sự kiện chính (Happy Path)",
         type: "reorder",
+        scenarioTitle: "Tình huống: Rút tiền ATM thành công",
+        scenario: "Khách hàng muốn rút một khoản tiền mặt tại cây ATM. Mọi việc diễn ra thuận lợi: thẻ hợp lệ, nhập đúng mã PIN, số dư tài khoản đủ và máy ATM còn đủ tiền để giao dịch thành công.",
         content: "Sắp xếp kịch bản kịch bản hội thoại chuẩn giữa Actor và Hệ thống cho Use Case: Rút tiền ATM.",
         steps: [
           "1. Actor đưa thẻ vào máy và nhập PIN.",
@@ -202,6 +231,8 @@ export const courseData = [
         id: "lesson-15",
         title: "Bài 15: Luồng ngoại lệ & Luồng thay thế",
         type: "multiple-choice",
+        scenarioTitle: "Tình huống: Nhập sai mã OTP quá giới hạn",
+        scenario: "Khi thực hiện thanh toán hóa đơn mua sắm trực tuyến, hệ thống gửi một mã OTP về điện thoại khách hàng. Vì nhập nhầm, khách hàng đã điền sai mã này liên tiếp 3 lần.",
         question: "Trong Use Case 'Thanh toán hóa đơn', nếu khách hàng nhập sai mã OTP quá 3 lần, kịch bản này nên xử lý theo luồng nào?",
         content: "Trong Use Case 'Thanh toán hóa đơn', nếu khách hàng nhập sai mã OTP quá 3 lần, kịch bản này nên xử lý theo luồng nào?",
         options: [
