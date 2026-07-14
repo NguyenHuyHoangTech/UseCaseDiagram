@@ -177,9 +177,9 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
   };
 
   return (
-    <div style={{ backgroundColor: '#0b0f19', color: 'white', padding: '40px', borderRadius: '16px', fontFamily: 'sans-serif' }}>
+    <div style={{ backgroundColor: '#0b0f19', color: 'white', padding: '25px 30px', borderRadius: '16px', fontFamily: 'sans-serif' }}>
       
-      <div style={{ maxWidth: '900px', margin: '0 auto 40px auto', position: 'relative' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto 20px auto', position: 'relative' }}>
         <h1 style={{ fontSize: '28px', marginTop: '10px' }}>{current.heading}</h1>
         <p style={{ color: '#9ca3af', lineHeight: '1.6', fontSize: '16px', maxWidth: '600px' }}>{current.desc}</p>
         
@@ -190,14 +190,14 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
         </div>
       </div>
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', backgroundColor: '#111827', borderRadius: '16px', padding: '60px 30px', border: '1px solid #1f293d', position: 'relative', overflowX: 'auto' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', backgroundColor: '#111827', borderRadius: '16px', padding: '40px 30px', border: '1px solid #1f293d', position: 'relative', overflowX: 'auto' }}>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', width: '100%', minWidth: '700px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', width: '100%' }}>
           {current.flows.map((flow) => {
             const zoneIds = Object.keys(flow.zones);
 
             return (
-              <div key={flow.id} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px' }}>
+              <div key={flow.id} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
                 {flow.nodes.map((node, index) => {
                   const zoneId = zoneIds[index]; 
                   const zoneConfig = flow.zones[zoneId];
@@ -205,7 +205,7 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
 
                   return (
                     <React.Fragment key={node.id}>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: node.type === 'Actor' ? '120px' : '160px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: node.type === 'Actor' ? '100px' : '140px' }}>
                         {node.type === 'Actor' ? (
                           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             {node.icon}
@@ -214,7 +214,7 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
                         ) : (
                           <div style={{ width: '100%', height: '60px', border: '2px solid #3b82f6', borderRadius: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#1e3a8a', gap: '8px', padding: '0 10px' }}>
                             {node.icon}
-                            <span style={{ color: '#bfdbfe', fontWeight: 'bold', fontSize: '13px', textAlign: 'center' }}>{node.text}</span>
+                            <span style={{ color: '#bfdbfe', fontWeight: 'bold', fontSize: '12px', textAlign: 'center' }}>{node.text}</span>
                           </div>
                         )}
                         <span style={{ marginTop: '10px', fontSize: '10px', backgroundColor: '#374151', color: '#d1d5db', padding: '3px 8px', borderRadius: '12px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
@@ -223,7 +223,7 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
                       </div>
 
                       {!isLastNode && (
-                        <div style={{ position: 'relative', width: '150px', height: '60px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-30px' }}>
+                        <div style={{ position: 'relative', width: '100px', height: '60px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-30px' }}>
                           {!droppedItems[zoneId] ? (
                             <div 
                               onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, zoneId)}
@@ -271,7 +271,7 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
         </div>
       </div>
 
-      <div style={{ maxWidth: '900px', margin: '60px auto 0 auto', display: 'flex', gap: '30px' }}>
+      <div style={{ maxWidth: '900px', margin: '30px auto 0 auto', display: 'flex', gap: '30px' }}>
         
         <div style={{ flex: 1.2 }}>
           <h3 style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '15px' }}>Connections (Drag and drop into diagram):</h3>
