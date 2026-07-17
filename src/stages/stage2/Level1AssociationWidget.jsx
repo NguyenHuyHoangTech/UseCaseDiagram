@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Search, CreditCard, Key, ShoppingCart, Ticket, HelpCircle, RotateCcw, CheckCircle, Car, MapPin, Star, Heart, Crown } from 'lucide-react';
+import { User, Search, CreditCard, Key, ShoppingCart, Ticket, HelpCircle, RotateCcw, CheckCircle, Car, MapPin, Star, Heart, Crown, ShoppingBag, Wallet, ArrowRight } from 'lucide-react';
 
 export default function Level1AssociationWidget({ lesson, onSolved }) {
   const [droppedItems, setDroppedItems] = useState({});
@@ -9,14 +9,23 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
   const [whyText, setWhyText] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // Quản lý subStep nội bộ khi học viên ở Bài cuối cùng của bạn
+  // subStep 0: Bài gốc (Generalization), subStep 1: Bài 9.1 Tổng hợp (Food Delivery Canvas)
+  const [subStep9, setSubStep9] = useState(0);
+
+  const levelIndex = lesson.levelIndex || 1;
+
   useEffect(() => {
     setDroppedItems({});
     setIsSuccess(false);
     setShowWhy(false);
     setErrorZone(null);
     onSolved(false);
-  }, [lesson, onSolved]);
+  }, [lesson, subStep9, onSolved]);
 
+  // ==========================================
+  // KHU VỰC DỮ LIỆU BÀI 1 -> BÀI 5 GỐC
+  // ==========================================
   const levelData = {
     1: {
       heading: 'Interacting Customer',
@@ -125,7 +134,18 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
     }
   };
 
-  const current = levelData[lesson.levelIndex || 1];
+  // Cấu hình kiểm tra cho bài 9.1 tổng hợp
+  const zoneRequirements91 = {
+    z1: { correct: 'association', err: 'Incorrect! Direct interaction between a User and a Feature must use Association.' },
+    z2: { correct: 'include', err: 'Think again! When ordering food, the system mandatory processes payment, so use <<include>>.' },
+    z3: { correct: 'extend', err: 'Not quite! Applying a voucher is an optional extension when ordering food, so use <<extend>>.' },
+    z4: { correct: 'generalization', err: 'Wrong! E-Wallet inherits from the general Process Payment method, so use Generalization.' }
+  };
+
+  const current = levelData[levelIndex] || levelData[1];
+
+  // FIX LỖI ẨN/HIỆN: Kiểm tra chính xác xem tiêu đề bài học hiện tại có phải bài toán Generalization gốc hay không
+  const isFinalLessonCombo = current.heading === 'Grouping Objects';
 
   const handleDragStart = (e, itemType) => {
     e.dataTransfer.setData("type", itemType);
@@ -134,7 +154,32 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
   const handleDrop = (e, zoneId) => {
     e.preventDefault();
     const draggedType = e.dataTransfer.getData("type");
-    
+
+    // NẾU ĐANG ĐỨNG Ở PHẦN 9.1 (FOOD DELIVERY CANVAS)
+    if (isFinalLessonCombo && subStep9 === 1) {
+      const config = zoneRequirements91[zoneId];
+      if (draggedType === config.correct) {
+        const newDrops = { ...droppedItems, [zoneId]: draggedType };
+        setDroppedItems(newDrops);
+        setErrorZone(null);
+        setShowWhy(false);
+
+        const isAllSolved = Object.keys(zoneRequirements91).every(z => newDrops[z]);
+        if (isAllSolved) {
+          setIsSuccess(true);
+          onSolved(true); // CHÍNH THỨC MỞ KHÓA NÚT CONTINUE TO ĐÙNG CỦA HỆ THỐNG LỚN ĐỂ SANG BÀI 10!
+        }
+      } else {
+        setErrorZone(zoneId);
+        setShowWhy(true);
+        setIsSuccess(false);
+        setWhyText(config.err);
+        setTimeout(() => setErrorZone(null), 500);
+      }
+      return;
+    }
+
+    // LUỒNG XỬ LÝ GỐC CHO BÀI 1 -> BÀI 5 CŨ
     let zoneConfig = null;
     current.flows.forEach(flow => { if (flow.zones[zoneId]) zoneConfig = flow.zones[zoneId]; });
 
@@ -150,7 +195,13 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
       if (isAllSolved) {
         setIsSuccess(true);
         setShowWhy(false);
-        onSolved(true);
+        
+        if (isFinalLessonCombo) {
+          // Nếu giải xong bài 9 gốc, KHÔNG mở nút cha ngay, mà giữ lại để chuyển sang subStep 9.1
+          onSolved(false);
+        } else {
+          onSolved(true);
+        }
       } else {
         setShowWhy(false);
       }
@@ -176,6 +227,125 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
     onSolved(false);
   };
 
+  // =========================================================
+  // GIAO DIỆN HIỂN THỊ BÀI 9.1 (FOOD DELIVERY COMBO CANVAS)
+  // =========================================================
+  if (isFinalLessonCombo && subStep9 === 1) {
+    return (
+      <div style={{ backgroundColor: '#0b0f19', color: 'white', padding: '25px 30px', borderRadius: '16px', fontFamily: 'sans-serif' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto 20px auto', position: 'relative' }}>
+          <h1 style={{ fontSize: '26px', marginTop: '10px', color: '#a78bfa' }}>Lesson 9.1</h1>
+          <p style={{ color: '#9ca3af', lineHeight: '1.6', fontSize: '15px', maxWidth: '700px' }}>
+            Hệ thống đặt đồ ăn online (Food Delivery). 
+          </p>
+          <div style={{ position: 'absolute', top: '10px', right: '0' }}>
+            <button onClick={resetLevel} style={{ display: 'flex', alignItems: 'center', gap: '5px', padding: '8px 12px', backgroundColor: '#1f293d', color: '#9ca3af', border: '1px solid #374151', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+              <RotateCcw size={16} /> Retry
+            </button>
+          </div>
+        </div>
+
+        <div style={{ maxWidth: '900px', margin: '0 auto', backgroundColor: '#111827', borderRadius: '16px', padding: '40px 30px', border: '1px solid #1f293d', display: 'flex', flexDirection: 'column', gap: '40px', alignItems: 'center' }}>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100px' }}>
+              <User size={40} color="#a78bfa" />
+              <span style={{ marginTop: '10px', fontWeight: 'bold', fontSize: '13px' }}>Customer</span>
+            </div>
+
+            {/* Z1 Zone */}
+            <div onDragOver={e => e.preventDefault()} onDrop={e => handleDrop(e, 'z1')} style={{ width: '100px', height: '45px', border: errorZone === 'z1' ? '2px dashed #ef4444' : droppedItems.z1 ? 'none' : '2px dashed #374151', borderRadius: '8px', backgroundColor: '#1f293d', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '12px', color: '#6b7280', borderBottom: droppedItems.z1 ? '4px solid #10b981' : '', animation: errorZone === 'z1' ? 'shake 0.4s' : 'none' }}>
+              {droppedItems.z1 ? <span style={{color: '#10b981', fontWeight: 'bold'}}>Association</span> : 'Zone Z1'}
+            </div>
+
+            <div style={{ width: '140px', height: '60px', border: '2px solid #3b82f6', borderRadius: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#1e3a8a' }}>
+              <ShoppingBag size={20} color="#93c5fd" style={{marginRight: '6px'}} />
+              <span style={{ color: '#bfdbfe', fontWeight: 'bold', fontSize: '12px' }}>Order Food</span>
+            </div>
+
+            {/* Z3 Zone */}
+            <div onDragOver={e => e.preventDefault()} onDrop={e => handleDrop(e, 'z3')} style={{ width: '100px', height: '45px', border: errorZone === 'z3' ? '2px dashed #ef4444' : droppedItems.z3 ? 'none' : '2px dashed #374151', borderRadius: '8px', backgroundColor: '#1f293d', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '12px', color: '#6b7280', position: 'relative', borderBottom: droppedItems.z3 ? '3px dashed #10b981' : '', animation: errorZone === 'z3' ? 'shake 0.4s' : 'none' }}>
+              {droppedItems.z3 ? (
+                <>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" style={{ position: 'absolute', left: '-10px', top: '-11px' }}><polyline points="15 18 9 12 15 6" /></svg>
+                  <span style={{ color: '#10b981', fontSize: '11px', fontWeight: 'bold', position: 'absolute', top: '-25px' }}>&lt;&lt;extend&gt;&gt;</span>
+                </>
+              ) : 'Zone Z3'}
+            </div>
+
+            <div style={{ width: '140px', height: '60px', border: '2px solid #3b82f6', borderRadius: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#1e3a8a' }}>
+              <Ticket size={20} color="#93c5fd" style={{marginRight: '6px'}} />
+              <span style={{ color: '#bfdbfe', fontWeight: 'bold', fontSize: '12px' }}>Apply Voucher</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', marginLeft: '115px' }}>
+            {/* Z2 Zone */}
+            <div onDragOver={e => e.preventDefault()} onDrop={e => handleDrop(e, 'z2')} style={{ width: '45px', height: '60px', border: errorZone === 'z2' ? '2px dashed #ef4444' : droppedItems.z2 ? 'none' : '2px dashed #374151', borderRadius: '8px', backgroundColor: '#1f293d', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '12px', color: '#6b7280', position: 'relative', borderLeft: droppedItems.z2 ? '3px dashed #10b981' : '', animation: errorZone === 'z2' ? 'shake 0.4s' : 'none' }}>
+              {droppedItems.z2 ? (
+                <>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" style={{ position: 'absolute', bottom: '-10px', left: '-11px', transform: 'rotate(90deg)' }}><polyline points="9 18 15 12 9 6" /></svg>
+                  <span style={{ color: '#10b981', fontSize: '10px', fontWeight: 'bold', position: 'absolute', left: '10px' }}>&lt;&lt;inc&gt;&gt;</span>
+                </>
+              ) : 'Z2'}
+            </div>
+
+            <div style={{ width: '140px', height: '60px', border: '2px solid #3b82f6', borderRadius: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#1e3a8a' }}>
+              <CreditCard size={20} color="#93c5fd" style={{marginRight: '6px'}} />
+              <span style={{ color: '#bfdbfe', fontWeight: 'bold', fontSize: '12px' }}>Process Payment</span>
+            </div>
+
+            {/* Z4 Zone */}
+            <div onDragOver={e => e.preventDefault()} onDrop={e => handleDrop(e, 'z4')} style={{ width: '45px', height: '60px', border: errorZone === 'z4' ? '2px dashed #ef4444' : droppedItems.z4 ? 'none' : '2px dashed #374151', borderRadius: '8px', backgroundColor: '#1f293d', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '12px', color: '#6b7280', position: 'relative', borderLeft: droppedItems.z4 ? '4px solid #10b981' : '', animation: errorZone === 'z4' ? 'shake 0.4s' : 'none' }}>
+              {droppedItems.z4 ? (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="#111827" stroke="#10b981" strokeWidth="2" style={{ position: 'absolute', top: '-12px', left: '-12px', transform: 'rotate(-90deg)' }}><polygon points="6 5 18 12 6 19" /></svg>
+              ) : 'Z4'}
+            </div>
+
+            <div style={{ width: '140px', height: '60px', border: '2px solid #3b82f6', borderRadius: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#1e3a8a' }}>
+              <Wallet size={20} color="#93c5fd" style={{marginRight: '6px'}} />
+              <span style={{ color: '#bfdbfe', fontWeight: 'bold', fontSize: '12px' }}>E-Wallet Pay</span>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Hộp kéo thả và Thông báo */}
+        <div style={{ maxWidth: '900px', margin: '30px auto 0 auto', display: 'flex', gap: '30px', width: '100%' }}>
+          <div style={{ flex: 1.2 }}>
+            <h3 style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '15px' }}>Connections:</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+              <div draggable onDragStart={e => handleDragStart(e, 'association')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', fontWeight: 'bold', textAlign: 'center' }}>Association</div>
+              <div draggable onDragStart={e => handleDragStart(e, 'include')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', fontWeight: 'bold', color: '#818cf8', textAlign: 'center' }}>&lt;&lt; include &gt;&gt;</div>
+              <div draggable onDragStart={e => handleDragStart(e, 'extend')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', fontWeight: 'bold', color: '#34d399', textAlign: 'center' }}>&lt;&lt; extend &gt;&gt;</div>
+              <div draggable onDragStart={e => handleDragStart(e, 'generalization')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', fontWeight: 'bold', color: '#fcd34d', textAlign: 'center' }}>Generalization</div>
+            </div>
+          </div>
+          <div style={{ flex: 1.5 }}>
+            <AnimatePresence mode="wait">
+              {showWhy && !isSuccess && (
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} style={{ padding: '20px', backgroundColor: '#312e81', border: '1px solid #4338ca', borderRadius: '12px', display: 'flex', gap: '15px' }}>
+                  <HelpCircle size={30} color="#818cf8" style={{ flexShrink: 0 }} />
+                  <div><h4 style={{ margin: '0 0 5px 0', color: '#c7d2fe' }}>Koji Bot says:</h4><p style={{ margin: 0, color: '#e0e7ff', fontSize: '14px', lineHeight: '1.5' }}>{whyText}</p></div>
+                </motion.div>
+              )}
+              {isSuccess && (
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} style={{ padding: '20px', backgroundColor: '#064e3b', border: '1px solid #059669', borderRadius: '12px', display: 'flex', gap: '15px' }}>
+                  <CheckCircle size={30} color="#34d399" style={{ flexShrink: 0 }} />
+                  <div><h4 style={{ margin: '0 0 5px 0', color: '#a7f3d0' }}>Lesson learned:</h4><p style={{ margin: 0, color: '#d1fae5', fontSize: '14px', lineHeight: '1.5' }}>Congratulations! You have successfully completed the Stage 2 integration challenge. Click the main Continue button below to proceed!</p></div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+        <style>{`@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 50% { transform: translateX(8px); } 75% { transform: translateX(-8px); } }`}</style>
+      </div>
+    );
+  }
+
+  // =========================================================
+  // GIAO DIỆN HIỂN THỊ CŨ CHO BÀI 1 -> BÀI 9 GỐC
+  // =========================================================
   return (
     <div style={{ backgroundColor: '#0b0f19', color: 'white', padding: '25px 30px', borderRadius: '16px', fontFamily: 'sans-serif' }}>
       
@@ -209,7 +379,7 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
                         {node.type === 'Actor' ? (
                           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             {node.icon}
-                            <span style={{ marginTop: '10px', fontWeight: 'bold', textAlign: 'center', color: node.id === 'n1' && lesson.levelIndex === 5 ? '#fcd34d' : 'white' }}>{node.text}</span>
+                            <span style={{ marginTop: '10px', fontWeight: 'bold', textAlign: 'center', color: node.id === 'n1' && levelIndex === 5 ? '#fcd34d' : 'white' }}>{node.text}</span>
                           </div>
                         ) : (
                           <div style={{ width: '100%', height: '60px', border: '2px solid #3b82f6', borderRadius: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#1e3a8a', gap: '8px', padding: '0 10px' }}>
@@ -234,7 +404,6 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
                           ) : (
                             <motion.div initial={{ width: 0, opacity: 0 }} animate={{ width: '100%', opacity: 1 }} transition={{ duration: 0.5, ease: "easeOut" }} style={{ width: '100%', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottom: zoneConfig.lineStyle === 'solid' ? '4px solid #10b981' : '3px dashed #10b981' }}>
                               
-                              {/* 🎯 CUSTOM SVG ARROWS CHUẨN UML */}
                               {zoneConfig.correct === 'include' && (
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" style={{ position: 'absolute', right: '-12px', top: '-13px' }}>
                                   <polyline points="9 18 15 12 9 6" />
@@ -272,16 +441,13 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
       </div>
 
       <div style={{ maxWidth: '900px', margin: '30px auto 0 auto', display: 'flex', gap: '30px' }}>
-        
         <div style={{ flex: 1.2 }}>
           <h3 style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '15px' }}>Connections (Drag and drop into diagram):</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-            
             <div draggable onDragStart={(e) => handleDragStart(e, 'association')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', display: 'flex', flexDirection: 'column', gap: '5px' }}>
               <div style={{ width: '40px', height: '3px', backgroundColor: '#cbd5e1' }}></div>
               <span style={{ fontWeight: 'bold', color: '#f8fafc', fontSize: '13px' }}>Association</span>
             </div>
-            
             <div draggable onDragStart={(e) => handleDragStart(e, 'include')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', display: 'flex', flexDirection: 'column', gap: '5px' }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ width: '30px', height: '2px', borderBottom: '2px dashed #818cf8' }}></div>
@@ -289,7 +455,6 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
               </div>
               <span style={{ fontWeight: 'bold', color: '#818cf8', fontSize: '13px' }}>&lt;&lt; include &gt;&gt;</span>
             </div>
-
             <div draggable onDragStart={(e) => handleDragStart(e, 'extend')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', display: 'flex', flexDirection: 'column', gap: '5px' }}>
                <div style={{ display: 'flex', alignItems: 'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="3" style={{ marginRight: '-4px' }}><polyline points="15 18 9 12 15 6" /></svg>
@@ -297,7 +462,6 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
               </div>
               <span style={{ fontWeight: 'bold', color: '#34d399', fontSize: '13px' }}>&lt;&lt; extend &gt;&gt;</span>
             </div>
-
             <div draggable onDragStart={(e) => handleDragStart(e, 'generalization')} style={{ padding: '12px', backgroundColor: '#1f293d', border: '1px solid #374151', borderRadius: '8px', cursor: 'grab', display: 'flex', flexDirection: 'column', gap: '5px' }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ width: '30px', height: '2px', backgroundColor: '#fcd34d' }}></div>
@@ -317,9 +481,18 @@ export default function Level1AssociationWidget({ lesson, onSolved }) {
                </motion.div>
              )}
              {isSuccess && (
-               <motion.div key="success" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, scale: 0.9 }} style={{ padding: '20px', backgroundColor: '#064e3b', border: '1px solid #059669', borderRadius: '12px', display: 'flex', gap: '15px' }}>
-                 <CheckCircle size={30} color="#34d399" style={{ flexShrink: 0 }} />
-                 <div><h4 style={{ margin: '0 0 5px 0', color: '#a7f3d0' }}>Lesson learned:</h4><p style={{ margin: 0, color: '#d1fae5', fontSize: '14px', lineHeight: '1.5' }}>{current.successText}</p></div>
+               <motion.div key="success" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, scale: 0.9 }} style={{ padding: '20px', backgroundColor: '#064e3b', border: '1px solid #059669', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
+                 <div style={{ display: 'flex', gap: '15px' }}>
+                   <CheckCircle size={30} color="#34d399" style={{ flexShrink: 0 }} />
+                   <div><h4 style={{ margin: '0 0 5px 0', color: '#a7f3d0' }}>Lesson learned:</h4><p style={{ margin: 0, color: '#d1fae5', fontSize: '14px', lineHeight: '1.5' }}>{current.successText}</p></div>
+                 </div>
+                 {isFinalLessonCombo && (
+                   <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                     <button onClick={() => setSubStep9(1)} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 20px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+                       Final Combo Challenge (9.1) <ArrowRight size={16} />
+                     </button>
+                   </div>
+                 )}
                </motion.div>
              )}
            </AnimatePresence>
